@@ -1,15 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Button,
   Card,
   CardImg,
   CardText,
+  CardTitle,
   Col,
   Container,
-  Row
+  Row,
 } from "reactstrap";
 
-function CourCollectif() {
+function Boutique() {
   const { t } = useTranslation();
 
   return (
@@ -31,7 +33,7 @@ function CourCollectif() {
       <Container className="mt--8 pb-5 position-relative">
         <Row className="justify-content-center">
           <Col md={12} className="my-4">
-            <h1 className="text-white text-center">{t("Cour.title")}</h1>
+            <h1 className="text-white text-center">{t("Market.title")}</h1>
           </Col>
           <Col md={12} className="mt-5">
             <Row className="row-grid">
@@ -45,10 +47,13 @@ function CourCollectif() {
                     className="centered-and-covered-img "
                   />
                   <div className="p-3">
-                    <CardText>
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </CardText>
+                    <CardTitle>
+                      <h3 className="bold">Cuilliere</h3>
+                    </CardTitle>
+                    <CardText className="color-footer">$25</CardText>
+                    <button className="btn btn-primary btn-block" type="button">
+                      Commander
+                    </button>
                   </div>
                 </Card>
               </Col>
@@ -61,11 +66,14 @@ function CourCollectif() {
                     height={300}
                     className="centered-and-covered-img "
                   />
-                  <div className="p-3">
-                    <CardText>
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </CardText>
+                   <div className="p-3">
+                    <CardTitle>
+                      <h3 className="bold">Cuilliere</h3>
+                    </CardTitle>
+                    <CardText className="color-footer">$25</CardText>
+                    <button className="btn btn-primary btn-block" type="button">
+                      Commander
+                    </button>
                   </div>
                 </Card>
               </Col>
@@ -79,10 +87,13 @@ function CourCollectif() {
                     className="centered-and-covered-img "
                   />
                   <div className="p-3">
-                    <CardText>
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </CardText>
+                    <CardTitle>
+                      <h3 className="bold">Cuilliere</h3>
+                    </CardTitle>
+                    <CardText className="color-footer">$25</CardText>
+                    <button className="btn btn-primary btn-block" type="button">
+                      Commander
+                    </button>
                   </div>
                 </Card>
               </Col>
@@ -94,4 +105,4 @@ function CourCollectif() {
   );
 }
 
-export default CourCollectif;
+export default Boutique;

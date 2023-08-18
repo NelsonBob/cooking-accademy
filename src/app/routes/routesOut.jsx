@@ -5,6 +5,7 @@ import Login from "../views/vitrine/Login";
 import Prix from "../views/vitrine/Prix";
 import Register from "../views/vitrine/Register";
 import Evenement from "../views/vitrine/Evenement";
+import Boutique from "../views/vitrine/Boutique";
 
 var routesOut = [
   {
@@ -15,10 +16,10 @@ var routesOut = [
     layout: "/out",
   },
   {
-    path: "/price",
-    name: "Menu.prices",
-    icon: "ni ni-diamond",
-    component: <Prix />,
+    path: "/market",
+    name: "Menu.market",
+    icon: "ni ni-shop",
+    component: <Boutique />,
     layout: "/out",
   },
 
@@ -34,6 +35,13 @@ var routesOut = [
     name: "Menu.calender",
     icon: "ni ni-calendar-grid-58",
     component: <Evenement />,
+    layout: "/out",
+  },
+  {
+    path: "/price",
+    name: "Menu.prices",
+    icon: "ni ni-diamond",
+    component: <Prix />,
     layout: "/out",
   },
   {

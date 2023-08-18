@@ -68,6 +68,9 @@
 .bg-footer {
   background: #ff8400;
 }
+.color-footer {
+  color: #ff8400;
+}
 .card-food:hover {
   background: #ff8400;
   border-color: transparent;
