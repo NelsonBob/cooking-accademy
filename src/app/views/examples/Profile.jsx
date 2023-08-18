@@ -11,8 +11,7 @@ import {
   Input,
   Row,
 } from "reactstrap";
-// core components
-import UserHeader from "components/Headers/UserHeader.js";
+import UserHeader from "../../components/Headers/UserHeader";
 
 const Profile = () => {
   return (
@@ -30,7 +29,7 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={require("../../assets/img/theme/team-4-800x800.jpg")}
+                        src={require("../../../assets/img/theme/team-4-800x800.jpg")}
                       />
                     </a>
                   </div>

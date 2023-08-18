@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import routes from "../../routes";
 
-const Admin = (props) => {
+const AdminLayout = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -48,7 +48,7 @@ const Admin = (props) => {
         routes={routes}
         logo={{
           innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png"),
+          imgSrc: require("../../assets/img/brand/argon-react.png"),
           imgAlt: "...",
         }}
       />
@@ -69,4 +69,4 @@ const Admin = (props) => {
   );
 };
 
-export default Admin;
+export default AdminLayout;

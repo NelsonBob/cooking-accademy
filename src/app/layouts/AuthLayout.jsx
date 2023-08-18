@@ -1,12 +1,11 @@
 import React from "react";
-import { useLocation, Route, Routes, Navigate } from "react-router-dom";
-import { Container, Row, Col } from "reactstrap";
-import AuthNavbar from "../components/Navbars/AuthNavbar";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Col, Container, Row } from "reactstrap";
+import routes from "../../routes";
 import AuthFooter from "../components/Footers/AuthFooter";
+import AuthNavbar from "../components/Navbars/AuthNavbar";
 
-import routes from "routes.js";
-
-const Auth = (props) => {
+const AuthLayout = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -82,4 +81,4 @@ const Auth = (props) => {
   );
 };
 
-export default Auth;
+export default AuthLayout;

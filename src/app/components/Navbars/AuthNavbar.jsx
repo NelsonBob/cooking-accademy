@@ -19,7 +19,7 @@ const AdminNavbar = () => {
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={require("../../assets/img/brand/argon-react-white.png")}
+              src={require("../../../assets/img/brand/argon-react-white.png")}
             />
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
@@ -32,7 +32,7 @@ const AdminNavbar = () => {
                   <Link to="/">
                     <img
                       alt="..."
-                      src={require("../../assets/img/brand/argon-react.png")}
+                      src={require("../../../assets/img/brand/argon-react.png")}
                     />
                   </Link>
                 </Col>
@@ -46,7 +46,7 @@ const AdminNavbar = () => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink className="nav-link-icon" to="/" tag={Link}>
+                <NavLink className="nav-link-icon" to="/admin/index" tag={Link}>
                   <i className="ni ni-planet" />
                   <span className="nav-link-inner--text">Dashboard</span>
                 </NavLink>

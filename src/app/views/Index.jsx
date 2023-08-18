@@ -1,4 +1,3 @@
-import Chart from "chart.js";
 import classnames from "classnames";
 import React, { useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
@@ -16,15 +15,14 @@ import {
   Row,
   Table,
 } from "reactstrap";
-
+import Header from "../components/Headers/Header";
 import {
   chartExample1,
   chartExample2,
   chartOptions,
   parseOptions,
-} from "variables/charts.js";
-
-import Header from "components/Headers/Header.js";
+} from "../variables/charts.js";
+const Chart = require("chart.js");
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);

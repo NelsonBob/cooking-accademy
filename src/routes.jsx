@@ -1,6 +1,8 @@
 import React from "react";
 import Index from "./app/views/Index";
 import Profile from "./app/views/examples/Profile";
+import Login from "./app/views/examples/Login";
+import Register from "./app/views/examples/Register";
 
 var routes = [
   {
@@ -18,19 +20,19 @@ var routes = [
     layout: "/admin",
   },
 
-  // {
-  //   path: "/login",
-  //   name: "Login",
-  //   icon: "ni ni-key-25 text-info",
-  //   component: <Login />,
-  //   layout: "/auth",
-  // },
-  // {
-  //   path: "/register",
-  //   name: "Register",
-  //   icon: "ni ni-circle-08 text-pink",
-  //   component: <Register />,
-  //   layout: "/auth",
-  // },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "ni ni-key-25 text-info",
+    component: <Login />,
+    layout: "/auth",
+  },
+  {
+    path: "/register",
+    name: "Register",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Register />,
+    layout: "/auth",
+  },
 ];
 export default routes;
