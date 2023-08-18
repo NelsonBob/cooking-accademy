@@ -1,8 +1,14 @@
+import i18next from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   Col,
   Container,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Media,
   Nav,
   NavItem,
   NavLink,
@@ -10,9 +16,17 @@ import {
   NavbarBrand,
   Row,
   UncontrolledCollapse,
+  UncontrolledDropdown,
 } from "reactstrap";
 import routesOut from "../../routes/routesOut";
+
 const OutNavbar = () => {
+  const { t } = useTranslation();
+
+  function handleClick(lang) {
+    i18next.changeLanguage(lang);
+  }
+
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
@@ -54,12 +68,36 @@ const OutNavbar = () => {
                     tag={Link}
                   >
                     <i className={el.icon} />
-                    <span className="nav-link-inner--text">{el.name}</span>
+                    <span className="nav-link-inner--text">{t(el.name)}</span>
                   </NavLink>
                 </NavItem>
               ))}
             </Nav>
           </UncontrolledCollapse>
+
+          <UncontrolledDropdown nav>
+            <DropdownToggle className="pr-0" nav>
+              <Media className="align-items-center">
+                <Media className="ml-2 text-white d-flex justify-content-between">
+                  <span>
+                    <i class="fa fa-language mr-2" aria-hidden="true"></i>
+                  </span>
+                  {t("Langue.name")}
+                </Media>
+              </Media>
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu-arrow" right>
+              <DropdownItem onClick={() => handleClick("en")}>
+                <i className="ni ni-single-02" />
+                <span> {t("Langue.en")}</span>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem onClick={() => handleClick("fr")}>
+                <i className="ni ni-user-run" />
+                <span> {t("Langue.fr")}</span>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
         </Container>
       </Navbar>
     </>

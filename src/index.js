@@ -9,6 +9,7 @@ import "./assets/scss/custom.css";
 
 import InLayout from "./app/layouts/InLayout";
 import OutLayout from "./app/layouts/OutLayout";
+import './i18n';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

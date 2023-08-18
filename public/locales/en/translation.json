@@ -1,0 +1,20 @@
+{
+  "Langue": {
+    "name": "Language",
+    "en": "English",
+    "fr": "French"
+  },
+  "Menu": {
+    "home": "Home",
+    "prices": "Prices",
+    "groupLessons": "Group Lessons",
+    "login": "Login",
+    "register": "Register"
+  },
+  "Thanks": {
+    "1": "Thank you"
+  },
+  "Why": {
+    "1": "For watching this video"
+  }
+}

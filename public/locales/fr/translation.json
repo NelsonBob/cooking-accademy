@@ -1,0 +1,26 @@
+{
+  "Langue": {
+    "name": "Langue",
+    "en": "Anglais",
+    "fr": "Français"
+  },
+  "Menu": {
+    "home": "Accueil",
+    "prices": "Prix",
+    "groupLessons": "Cours collectifs",
+    "login": "Se connecter",
+    "register": "S'enregistrer"
+  },
+  "Home": {
+    "title1": "Nos délices à l'honneur",
+    "chef": "Chefs renommés",
+    "chefcmmentaire": "Rencontrez les experts du goût",
+    "chefcmmentaire1": "Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti."
+  },
+  "Thanks": {
+    "1": "Merci"
+  },
+  "Why": {
+    "1": "Pour avoir regardé cette vidéo"
+  }
+}

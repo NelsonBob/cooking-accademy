@@ -8,14 +8,14 @@ import Register from "../views/vitrine/Register";
 var routesOut = [
   {
     path: "/index",
-    name: "Home",
+    name: "Menu.home",
     icon: "ni ni-world-2",
     component: <Home />,
     layout: "/out",
   },
   {
     path: "/price",
-    name: "Prices",
+    name: "Menu.prices",
     icon: "ni ni-diamond",
     component: <Prix />,
     layout: "/out",
@@ -23,21 +23,21 @@ var routesOut = [
 
   {
     path: "/group-lessons",
-    name: "Group Lessons",
+    name: "Menu.groupLessons",
     icon: "ni ni-books",
     component: <CourCollectif />,
     layout: "/out",
   },
   {
     path: "/login",
-    name: "Login",
+    name: "Menu.login",
     icon: "ni ni-key-25",
     component: <Login />,
     layout: "/out",
   },
   {
     path: "/register",
-    name: "Register",
+    name: "Menu.register",
     icon: "ni ni-circle-08",
     component: <Register />,
     layout: "/out",
