@@ -7,9 +7,10 @@
   "Menu": {
     "home": "Accueil",
     "prices": "Prix",
-    "groupLessons": "Cours collectifs",
+    "groupLessons": "Cours",
     "login": "Se connecter",
-    "register": "S'enregistrer"
+    "register": "S'enregistrer",
+    "calender": "Evenement"
   },
   "Home": {
     "title1": "Nos délices à l'honneur",
@@ -40,5 +41,11 @@
     "row17": "Chèque cadeau de 5€ tous les 3 nouveaux inscrits (hors formule Free)",
     "row18": "Chèque cadeau de 5€ pour chaque nouvel inscrit (hors formule Free) + bonus de 3% du montant sur le total de la première commande du nouvel inscrit",
     "row19": "Réduction de 10% du montant de l’abonnement en cas de renouvellement, valable uniquement sur le tarif annuel."
+  },
+  "Cour": {
+    "title": "Nos cours"
+  },
+  "Event": {
+    "title": "Nos evenement"
   }
 }

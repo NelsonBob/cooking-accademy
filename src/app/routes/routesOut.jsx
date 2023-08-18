@@ -4,6 +4,7 @@ import Home from "../views/vitrine/Home";
 import Login from "../views/vitrine/Login";
 import Prix from "../views/vitrine/Prix";
 import Register from "../views/vitrine/Register";
+import Evenement from "../views/vitrine/Evenement";
 
 var routesOut = [
   {
@@ -29,6 +30,13 @@ var routesOut = [
     layout: "/out",
   },
   {
+    path: "/evenement",
+    name: "Menu.calender",
+    icon: "ni ni-calendar-grid-58",
+    component: <Evenement />,
+    layout: "/out",
+  },
+  {
     path: "/login",
     name: "Menu.login",
     icon: "ni ni-key-25",
@@ -42,5 +50,6 @@ var routesOut = [
     component: <Register />,
     layout: "/out",
   },
+  
 ];
 export default routesOut;

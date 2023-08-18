@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
   DropdownItem,
@@ -11,6 +11,11 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 const InNavbar = (props) => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    return navigate("/out/index");
+  };
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -47,7 +52,7 @@ const InNavbar = (props) => {
                   <span>My profile</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem onClick={logout}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>

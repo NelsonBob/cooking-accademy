@@ -10,7 +10,7 @@ import {
   Row,
 } from "reactstrap";
 
-function CourCollectif() {
+function Evenement() {
   const { t } = useTranslation();
 
   return (
@@ -32,7 +32,7 @@ function CourCollectif() {
       <Container className="mt--8 pb-5 position-relative">
         <Row className="justify-content-center">
           <Col md={12} className="my-4">
-            <h1 className="text-white text-center">{t("Cour.title")}</h1>
+            <h1 className="text-white text-center">{t("Event.title")}</h1>
           </Col>
           <Col md={12} className="mt-5">
             <Row className="row-grid">
@@ -95,4 +95,4 @@ function CourCollectif() {
   );
 }
 
-export default CourCollectif;
+export default Evenement;

@@ -1,6 +1,6 @@
 import { PropTypes } from "prop-types";
 import React, { useState } from "react";
-import { Link, NavLink as NavLinkRRD } from "react-router-dom";
+import { Link, NavLink as NavLinkRRD, useNavigate } from "react-router-dom";
 import {
   Col,
   Collapse,
@@ -65,7 +65,11 @@ const Sidebar = (props) => {
       target: "_blank",
     };
   }
+  const navigate = useNavigate();
 
+  const logout = () => {
+    return navigate("/out/index");
+  };
   return (
     <Navbar
       className="navbar-vertical fixed-left navbar-light bg-white"
@@ -140,7 +144,7 @@ const Sidebar = (props) => {
                 <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+              <DropdownItem onClick={logout}>
                 <i className="ni ni-user-run" />
                 <span>Logout</span>
               </DropdownItem>

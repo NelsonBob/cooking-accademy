@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AuthFooter from "../components/Footers/AuthFooter";
 import OutNavbar from "../components/Navbars/OutNavbar";
 import routes from "../routes/routesOut";
+import Register from "../views/vitrine/Register";
 
 const OutLayout = (props) => {
   const mainContent = React.useRef(null);
@@ -30,6 +31,7 @@ const OutLayout = (props) => {
         return null;
       }
     });
+    
   };
 
   return (

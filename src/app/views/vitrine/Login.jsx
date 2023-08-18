@@ -91,12 +91,12 @@ const Login = () => {
             </Card>
             <Row className="mt-3">
               <Col xs="6">
-                <a className="text-light" href="#pablo">
+                <a href="#pablo">
                   <small>Forgot password?</small>
                 </a>
               </Col>
               <Col className="text-right" xs="6">
-                <a className="text-light" href="/out/register">
+                <a  href="/out/register">
                   <small>Create new account</small>
                 </a>
               </Col>

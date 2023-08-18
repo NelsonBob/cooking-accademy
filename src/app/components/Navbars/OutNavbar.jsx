@@ -60,18 +60,23 @@ const OutNavbar = () => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
-              {routesOut.map((el, index) => (
-                <NavItem key={index}>
-                  <NavLink
-                    className="nav-link-icon"
-                    to={el.layout + el.path}
-                    tag={Link}
-                  >
-                    <i className={el.icon} />
-                    <span className="nav-link-inner--text">{t(el.name)}</span>
-                  </NavLink>
-                </NavItem>
-              ))}
+              {routesOut.map(
+                (el, index) =>
+                  el.path != "/register" && (
+                    <NavItem key={index}>
+                      <NavLink
+                        className="nav-link-icon"
+                        to={el.layout + el.path}
+                        tag={Link}
+                      >
+                        <i className={el.icon} />
+                        <span className="nav-link-inner--text">
+                          {t(el.name)}
+                        </span>
+                      </NavLink>
+                    </NavItem>
+                  )
+              )}
             </Nav>
           </UncontrolledCollapse>
 
