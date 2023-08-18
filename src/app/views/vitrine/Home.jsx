@@ -53,8 +53,8 @@ function Home() {
                     alt="..."
                     src={require("../../../assets/img/repas/food6-free-img.png")}
                     top
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="centered-and-covered-img"
                   />
                 </Card>
@@ -74,8 +74,8 @@ function Home() {
                     alt="..."
                     src={require("../../../assets/img/repas/food5-free-img.png")}
                     top
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="centered-and-covered-img"
                   />
                 </Card>
@@ -95,8 +95,8 @@ function Home() {
                     alt="..."
                     src={require("../../../assets/img/repas/food3-free-img.png")}
                     top
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="centered-and-covered-img"
                   />
                 </Card>
@@ -116,8 +116,8 @@ function Home() {
                     alt="..."
                     src={require("../../../assets/img/repas/food4-free-img.png")}
                     top
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="centered-and-covered-img"
                   />
                 </Card>
@@ -137,8 +137,8 @@ function Home() {
                     alt="..."
                     src={require("../../../assets/img/repas/food-dish-06.png")}
                     top
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="centered-and-covered-img"
                   />
                 </Card>
@@ -158,8 +158,8 @@ function Home() {
                     alt="..."
                     src={require("../../../assets/img/repas/food-dish-05.png")}
                     top
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="centered-and-covered-img"
                   />
                 </Card>
