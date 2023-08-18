@@ -2,12 +2,12 @@ import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Container } from "reactstrap";
 import AdminFooter from "../components/Footers/AdminFooter";
-import AdminNavbar from "../components/Navbars/AdminNavbar";
 import Sidebar from "../components/Sidebar/Sidebar";
 
-import routes from "../../routes";
+import InNavbar from "../components/Navbars/InNavbar";
+import routes from "../routes/routesIn";
 
-const AdminLayout = (props) => {
+const InLayout = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -19,7 +19,7 @@ const AdminLayout = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/in") {
         return (
           <Route path={prop.path} element={prop.component} key={key} exact />
         );
@@ -47,19 +47,19 @@ const AdminLayout = (props) => {
         {...props}
         routes={routes}
         logo={{
-          innerLink: "/admin/index",
+          innerLink: "/in/index",
           imgSrc: require("../../assets/img/brand/argon-react.png"),
           imgAlt: "...",
         }}
       />
       <div className="main-content" ref={mainContent}>
-        <AdminNavbar
+        <InNavbar
           {...props}
           brandText={getBrandText(props?.location?.pathname)}
         />
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/admin/index" replace />} />
+          <Route path="*" element={<Navigate to="/in/index" replace />} />
         </Routes>
         <Container fluid>
           <AdminFooter />
@@ -69,4 +69,4 @@ const AdminLayout = (props) => {
   );
 };
 
-export default AdminLayout;
+export default InLayout;

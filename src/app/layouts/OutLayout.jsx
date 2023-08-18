@@ -1,11 +1,10 @@
 import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { Col, Container, Row } from "reactstrap";
-import routes from "../../routes";
 import AuthFooter from "../components/Footers/AuthFooter";
-import AuthNavbar from "../components/Navbars/AuthNavbar";
+import OutNavbar from "../components/Navbars/OutNavbar";
+import routes from "../routes/routesOut";
 
-const AuthLayout = (props) => {
+const OutLayout = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -23,7 +22,7 @@ const AuthLayout = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
+      if (prop.layout === "/out") {
         return (
           <Route path={prop.path} element={prop.component} key={key} exact />
         );
@@ -36,8 +35,12 @@ const AuthLayout = (props) => {
   return (
     <>
       <div className="main-content" ref={mainContent}>
-        <AuthNavbar />
-        <div className="header bg-gradient-info py-7 py-lg-8">
+        <OutNavbar />
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="*" element={<Navigate to="/out/index" replace />} />
+        </Routes>
+        {/* <div className="header bg-gradient-info py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
@@ -71,14 +74,14 @@ const AuthLayout = (props) => {
           <Row className="justify-content-center">
             <Routes>
               {getRoutes(routes)}
-              <Route path="*" element={<Navigate to="/auth/login" replace />} />
+              <Route path="*" element={<Navigate to="/out/login" replace />} />
             </Routes>
           </Row>
-        </Container>
+        </Container> */}
       </div>
       <AuthFooter />
     </>
   );
 };
 
-export default AuthLayout;
+export default OutLayout;
