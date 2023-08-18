@@ -1,16 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardImg,
-  CardText,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "reactstrap";
+import { Card, CardImg, Col, Container, Row } from "reactstrap";
 
 function Home() {
   const { t } = useTranslation();
@@ -39,129 +29,141 @@ function Home() {
           <Col md={12} className="mt-5">
             <Row className="row-grid">
               <Col lg={4}>
-                <Card className="card-food pt-3 d-flex justify-content-center">
+                <Card className="card-food py-3 center-grid">
                   <p className="text-center font-weight-500">
                     Poulet grillé et frit
                   </p>
                   <p className="text-center">$20.00</p>
-                  <div className="d-flex justify-content-center mb-4">
+                  <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
                       <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
-                  <CardImg
-                    alt="..."
-                    src={require("../../../assets/img/repas/food6-free-img.png")}
-                    top
-                    width={250}
-                    height={250}
-                    className="centered-and-covered-img"
-                  />
+                  <div className="center-grid">
+                    <CardImg
+                      alt="..."
+                      src={require("../../../assets/img/repas/food6-free-img.png")}
+                      top
+                      width={250}
+                      height={250}
+                      className="centered-and-covered-img"
+                    />
+                  </div>
                 </Card>
               </Col>
               <Col lg={4}>
-                <Card className="card-food pt-3 d-flex justify-content-center">
+                <Card className="card-food py-3 center-grid">
                   <p className="text-center font-weight-500">
                     Filet de saumon grillé avec salade
                   </p>
                   <p className="text-center">$20.00</p>
-                  <div className="d-flex justify-content-center mb-4">
+                  <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
                       <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
-                  <CardImg
-                    alt="..."
-                    src={require("../../../assets/img/repas/food5-free-img.png")}
-                    top
-                    width={250}
-                    height={250}
-                    className="centered-and-covered-img"
-                  />
+                  <div className="center-grid">
+                    <CardImg
+                      alt="..."
+                      src={require("../../../assets/img/repas/food5-free-img.png")}
+                      top
+                      width={250}
+                      height={250}
+                      className="centered-and-covered-img"
+                    />
+                  </div>
                 </Card>
               </Col>
               <Col lg={4}>
-                <Card className="card-food pt-3 d-flex justify-content-center">
+                <Card className="card-food py-3 center-grid">
                   <p className="text-center font-weight-500">
                     Steak de maquereau grillé
                   </p>
                   <p className="text-center">$18.00</p>
-                  <div className="d-flex justify-content-center mb-4">
+                  <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
                       <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
-                  <CardImg
-                    alt="..."
-                    src={require("../../../assets/img/repas/food3-free-img.png")}
-                    top
-                    width={250}
-                    height={250}
-                    className="centered-and-covered-img"
-                  />
+                  <div className="center-grid">
+                    <CardImg
+                      alt="..."
+                      src={require("../../../assets/img/repas/food3-free-img.png")}
+                      top
+                      width={250}
+                      height={250}
+                      className="centered-and-covered-img"
+                    />
+                  </div>
                 </Card>
               </Col>
               <Col lg={4} className="mt-4">
-                <Card className="card-food pt-3 d-flex justify-content-center">
+                <Card className="card-food py-3 center-grid">
                   <p className="text-center font-weight-500">
                     Poulet à la sauce Teriyaki
                   </p>
                   <p className="text-center">$47.00</p>
-                  <div className="d-flex justify-content-center mb-4">
+                  <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
                       <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
-                  <CardImg
-                    alt="..."
-                    src={require("../../../assets/img/repas/food4-free-img.png")}
-                    top
-                    width={250}
-                    height={250}
-                    className="centered-and-covered-img"
-                  />
+                  <div className="center-grid">
+                    <CardImg
+                      alt="..."
+                      src={require("../../../assets/img/repas/food4-free-img.png")}
+                      top
+                      width={250}
+                      height={250}
+                      className="centered-and-covered-img"
+                    />
+                  </div>
                 </Card>
               </Col>
               <Col lg={4} className="mt-4">
-                <Card className="card-food pt-3 d-flex justify-content-center">
+                <Card className="card-food py-3 center-grid">
                   <p className="text-center font-weight-500">
                     Nuggets de poulet avec pommes de terre
                   </p>
                   <p className="text-center">$25.00</p>
-                  <div className="d-flex justify-content-center mb-4">
+                  <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
                       <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
-                  <CardImg
-                    alt="..."
-                    src={require("../../../assets/img/repas/food-dish-06.png")}
-                    top
-                    width={250}
-                    height={250}
-                    className="centered-and-covered-img"
-                  />
+                  <div className="center-grid">
+                    <CardImg
+                      alt="..."
+                      src={require("../../../assets/img/repas/food-dish-06.png")}
+                      top
+                      width={250}
+                      height={250}
+                      className="centered-and-covered-img"
+                    />
+                  </div>
                 </Card>
               </Col>
               <Col lg={4} className="mt-4">
-                <Card className="card-food pt-3 d-flex justify-content-center">
+                <Card className="card-food py-3 center-grid">
                   <p className="text-center font-weight-500">
                     Spaghetti au maquereau grillé
                   </p>
                   <p className="text-center">$30.00</p>
-                  <div className="d-flex justify-content-center mb-4">
+                  <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
                       <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
+                  </div>{" "}
+                  <div className="center-grid">
+                    <CardImg
+                      alt="..."
+                      src={require("../../../assets/img/repas/food-dish-05.png")}
+                      top
+                      width={250}
+                      height={250}
+                      className="centered-and-covered-img"
+                    />
                   </div>
-                  <CardImg
-                    alt="..."
-                    src={require("../../../assets/img/repas/food-dish-05.png")}
-                    top
-                    width={250}
-                    height={250}
-                    className="centered-and-covered-img"
-                  />
                 </Card>
               </Col>
             </Row>
@@ -173,11 +175,7 @@ function Home() {
           </Col>
           <Col md={6} xs={12} className="my-6">
             <Row>
-              <Col
-                lg={6}
-                className="justify-content-center"
-                style={{ display: "grid" }}
-              >
+              <Col lg={6} className="center-grid">
                 <img
                   alt="..."
                   width={150}
@@ -189,11 +187,7 @@ function Home() {
                   Fondateur / Chef de cuisine
                 </p>
               </Col>
-              <Col
-                lg={6}
-                className="justify-content-center"
-                style={{ display: "grid" }}
-              >
+              <Col lg={6} className="center-grid">
                 <img
                   alt="..."
                   width={150}
@@ -203,11 +197,7 @@ function Home() {
                 <h1 className="text-center mt-2">Suzanne Grey</h1>
                 <p className="description text-center">Chef cuisinier</p>
               </Col>
-              <Col
-                lg={6}
-                className="justify-content-center"
-                style={{ display: "grid" }}
-              >
+              <Col lg={6} className="center-grid">
                 <img
                   alt="..."
                   width={150}
@@ -217,11 +207,7 @@ function Home() {
                 <h1 className="text-center mt-2">James Lee</h1>
                 <p className="description text-center">Co-fondateur / Chef</p>
               </Col>
-              <Col
-                lg={6}
-                className="justify-content-center"
-                style={{ display: "grid" }}
-              >
+              <Col lg={6} className="center-grid">
                 <img
                   alt="..."
                   width={150}

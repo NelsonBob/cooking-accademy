@@ -1,6 +1,6 @@
 .bg-img-home {
   position: relative;
-  background-image: url("./../img/header/home-header-1.jpeg");
+  background-image: url("./../img/header/home-header-1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -15,7 +15,7 @@
   width: 100%;
   height: 100%;
   background-color: #2b161b;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .bg-img-party {
@@ -83,4 +83,59 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.center-grid {
+  display: grid;
+  justify-content: center;
+}
+
+.btn-by {
+  border-radius: 100%;
+  color: white;
+  background-color: #4f200d;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-img-login {
+  position: relative;
+  background-image: url("./../img/header/login.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 100%;
+  height: 80vh;
+}
+.bg-img-login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #2b161b;
+  opacity: 0.3;
+}
+
+.bg-img-register {
+  position: relative;
+  background-image: url("./../img/header/register.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 100%;
+  height: 80vh;
+}
+.bg-img-register::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #2b161b;
+  opacity: 0.3;
 }

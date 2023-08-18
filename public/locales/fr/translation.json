@@ -17,10 +17,28 @@
     "chefcmmentaire": "Rencontrez les experts du goût",
     "chefcmmentaire1": "Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti."
   },
-  "Thanks": {
-    "1": "Merci"
-  },
-  "Why": {
-    "1": "Pour avoir regardé cette vidéo"
+  "Price": {
+    "row1": "COMPAREZ LES ABONNEMENTS",
+    "row2": "Ou commencez maintenant",
+    "free": "Gratuit",
+    "starter": "9,90€ / mois ou 113€/an",
+    "master": "19€ / mois ou 220€ / an",
+    "row3": "Présence de publicités dans le contenu",
+    "row4": "Commenter, publier des avis",
+    "row5": "Accès aux leçons",
+    "row6": "Accès au service de tchat avec un chef",
+    "row7": "Réduction permanente de 5% sur la boutique",
+    "row8": "Livraison offerte sur la boutique",
+    "row9": "Accès au service de location d’espace de cuisine",
+    "row10": "Invitation à des événements exclusifs (dégustations, rencontres avec des chefs, ventes privées…)",
+    "row11": "Récompense cooptation nouvel inscrit",
+    "row12": "Bonus renouvellement de l’abonnement",
+    "row13": "1 par jour ",
+    "row14": "5 par jour ",
+    "row15": "illimité",
+    "row16": "uniquement en point relai",
+    "row17": "Chèque cadeau de 5€ tous les 3 nouveaux inscrits (hors formule Free)",
+    "row18": "Chèque cadeau de 5€ pour chaque nouvel inscrit (hors formule Free) + bonus de 3% du montant sur le total de la première commande du nouvel inscrit",
+    "row19": "Réduction de 10% du montant de l’abonnement en cas de renouvellement, valable uniquement sur le tarif annuel."
   }
 }

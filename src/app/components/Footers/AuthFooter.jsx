@@ -5,7 +5,7 @@ const AuthFooter = () => {
     <>
       <footer className="py-5 bg-footer">
         <Container>
-          <Row className="align-items-center justify-content-xl-between">
+          <Row className="align-items-center">
             <Col xl="12">
               <div className="copyright text-center text-xl-left text-white">
                 © {new Date().getFullYear()}{" "}
