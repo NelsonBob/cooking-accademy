@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,12 +15,56 @@ import {
   InputGroupText,
   Row,
 } from "reactstrap";
+import { login } from "../../service/frontendService";
+import Swal from "sweetalert2";
 const Login = () => {
   const { t } = useTranslation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const validateForm = () => {
+    let formIsValid = true;
+    const newErrors = {};
+    if (!email) {
+      formIsValid = false;
+      newErrors.email = "Email is required";
+    }
+    if (!password) {
+      formIsValid = false;
+      newErrors.password = "Password is required";
+    }
 
-  const login = () => {
-    return navigate("/in/index");
+    setErrors(newErrors);
+    return formIsValid;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const user = await login(email, password);
+        if (user) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Connection reussi",
+            showConfirmButton: false,
+            timer: 1500,
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
+          return navigate("/in/index");
+        }
+      } catch (error) {
+        setErrorMessage(true);
+      }
+    }
   };
   return (
     <>
@@ -47,6 +91,11 @@ const Login = () => {
                   <h1 className="bold">{t("Menu.login")}</h1>
                 </div>
                 <Form role="form">
+                {errorMessage && (
+            <h3 className="text-danger text-center">
+              <strong>Password or Email incorrect</strong>
+            </h3>
+          )}
                   <FormGroup className="mb-3">
                     <InputGroup className="input-group-alternative">
                       <InputGroupAddon addonType="prepend">
@@ -58,8 +107,14 @@ const Login = () => {
                         placeholder="Email"
                         type="email"
                         autoComplete="new-email"
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </InputGroup>
+                    {errors.email && (
+              <span className="text-danger" style={{ fontSize: "13px" }}>
+                {errors.email}
+              </span>
+            )}
                   </FormGroup>
                   <FormGroup>
                     <InputGroup className="input-group-alternative">
@@ -72,8 +127,20 @@ const Login = () => {
                         placeholder="Password"
                         type="password"
                         autoComplete="new-password"
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </InputGroup>
+                    {errors.password && (
+              <span
+                className="text-danger"
+                style={{
+                  marginBottom: "10px",
+                  fontSize: "13px",
+                }}
+              >
+                {errors.password}
+              </span>
+            )}
                   </FormGroup>
 
                   <div className="text-center">
@@ -81,7 +148,7 @@ const Login = () => {
                       className="my-4"
                       color="primary"
                       type="button"
-                      onClick={login}
+                      onClick={handleSubmit}
                     >
                       Sign in
                     </Button>
@@ -91,12 +158,12 @@ const Login = () => {
             </Card>
             <Row className="mt-3">
               <Col xs="6">
-                <a href="#pablo">
+                <a href="/out/forgot-password">
                   <small>Forgot password?</small>
                 </a>
               </Col>
               <Col className="text-right" xs="6">
-                <a  href="/out/register">
+                <a href="/out/register">
                   <small>Create new account</small>
                 </a>
               </Col>
