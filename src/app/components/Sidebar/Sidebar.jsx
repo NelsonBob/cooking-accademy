@@ -8,11 +8,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Form,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Media,
   Nav,
   NavItem,
@@ -20,7 +15,7 @@ import {
   Navbar,
   NavbarBrand,
   Row,
-  UncontrolledDropdown,
+  UncontrolledDropdown
 } from "reactstrap";
 
 const Sidebar = (props) => {
@@ -35,20 +30,21 @@ const Sidebar = (props) => {
     setCollapseOpen(false);
   };
   // creates the links that appear in the left menu / Sidebar
-  const createLinks = (routes) => {
+  const createLinks = (routes, postion = 1) => {
     return routes.map((prop, key) => {
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={closeCollapse}
-          >
-            <i className={prop.icon} />
-            {prop.name}
-          </NavLink>
-        </NavItem>
-      );
+      if (prop.sidebar && prop.postion == postion)
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={closeCollapse}
+            >
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
+          </NavItem>
+        );
     });
   };
 
@@ -98,21 +94,6 @@ const Sidebar = (props) => {
         {/* User */}
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
-            <DropdownToggle nav className="nav-link-icon">
-              <i className="ni ni-bell-55" />
-            </DropdownToggle>
-            <DropdownMenu
-              aria-labelledby="navbar-default_dropdown_1"
-              className="dropdown-menu-arrow"
-              right
-            >
-              <DropdownItem>Action</DropdownItem>
-              <DropdownItem>Another action</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>Something else here</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-          <UncontrolledDropdown nav>
             <DropdownToggle nav>
               <Media className="align-items-center">
                 <span className="avatar avatar-sm rounded-circle">
@@ -130,18 +111,6 @@ const Sidebar = (props) => {
               <DropdownItem to="/in/user-profile" tag={Link}>
                 <i className="ni ni-single-02" />
                 <span>My profile</span>
-              </DropdownItem>
-              <DropdownItem to="/in/user-profile" tag={Link}>
-                <i className="ni ni-settings-gear-65" />
-                <span>Settings</span>
-              </DropdownItem>
-              <DropdownItem to="/in/user-profile" tag={Link}>
-                <i className="ni ni-calendar-grid-58" />
-                <span>Activity</span>
-              </DropdownItem>
-              <DropdownItem to="/in/user-profile" tag={Link}>
-                <i className="ni ni-support-16" />
-                <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem onClick={logout}>
@@ -181,36 +150,15 @@ const Sidebar = (props) => {
               </Col>
             </Row>
           </div>
-          {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
-            <InputGroup className="input-group-rounded input-group-merge">
-              <Input
-                aria-label="Search"
-                className="form-control-rounded form-control-prepended"
-                placeholder="Search"
-                type="search"
-              />
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <span className="fa fa-search" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Form>
           {/* Navigation */}
-          <Nav navbar>{createLinks(routes)}</Nav>
+          <Nav navbar>{createLinks(routes, 1)}</Nav>
           {/* Divider */}
           <hr className="my-3" />
           {/* Heading */}
           <h6 className="navbar-heading text-muted">Documentation</h6>
           {/* Navigation */}
           <Nav className="mb-md-3" navbar>
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                <i className="ni ni-spaceship" />
-                Getting started
-              </NavLink>
-            </NavItem>
+            {createLinks(routes, 2)}
           </Nav>
         </Collapse>
       </Container>

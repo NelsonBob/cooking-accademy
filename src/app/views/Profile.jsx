@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -11,9 +11,78 @@ import {
   Input,
   Row,
 } from "reactstrap";
+import Swal from "sweetalert2";
 import UserHeader from "../components/Headers/UserHeader";
+import {
+  updateProfilClient,
+  updateProfilIntern,
+} from "../service/frontendService";
 
 const Profile = () => {
+  const [name, setName] = useState(
+    JSON.parse(localStorage.getItem("auth")).token.name
+  );
+  const [email, setEmail] = useState(
+    JSON.parse(localStorage.getItem("auth")).token.sub
+  );
+  const [adress, setAdress] = useState(
+    JSON.parse(localStorage.getItem("auth")).token.adress
+  );
+  const [errors, setErrors] = useState({});
+  const [password_confirm, setPasswordConfirm] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validateForm = () => {
+    let formIsValid = true;
+    const newErrors = {};
+
+    if (!adress) {
+      formIsValid = false;
+      newErrors.adress = "Field is required";
+    }
+    if (!name) {
+      formIsValid = false;
+      newErrors.name = "Username is required";
+    }
+
+    setErrors(newErrors);
+    return formIsValid;
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let data = {
+        name,
+        fontion: adress,
+      };
+      try {
+        let user;
+        if (JSON.parse(localStorage.getItem("auth")).token.role == "Client")
+          user = await updateProfilClient(id, data);
+        if (JSON.parse(localStorage.getItem("auth")).token.role !== "Client")
+          user = await updateProfilIntern(id, data);
+        if (user) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Compte crée avec succès",
+            showConfirmButton: false,
+            timer: 1500,
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
+        }
+      } catch (error) {}
+    }
+  };
+  const handleSubmitPassword = async (e) => {
+    e.preventDefault();
+  };
   return (
     <>
       <UserHeader />
@@ -29,45 +98,20 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={require("../../assets/img/theme/team-4-800x800.jpg")}
+                        src={require("../../assets/img/brand/icon-4399701_1280.webp")}
                       />
                     </a>
                   </div>
                 </Col>
               </Row>
-              <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Connect
-                  </Button>
-                  <Button
-                    className="float-right"
-                    color="default"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Message
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardBody className="pt-0 pt-md-4">
+
+              <CardBody className="pt-0 pt-md-7">
                 <Row>
                   <div className="col">
                     <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                       <div>
                         <span className="heading">22</span>
                         <span className="description">Friends</span>
-                      </div>
-                      <div>
-                        <span className="heading">10</span>
-                        <span className="description">Photos</span>
                       </div>
                       <div>
                         <span className="heading">89</span>
@@ -77,31 +121,11 @@ const Profile = () => {
                   </div>
                 </Row>
                 <div className="text-center">
-                  <h3>
-                    Jessica Jones
-                    <span className="font-weight-light">, 27</span>
-                  </h3>
+                  <h3>{JSON.parse(localStorage.getItem("auth")).userName}</h3>
                   <div className="h5 font-weight-300">
                     <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
+                    {JSON.parse(localStorage.getItem("auth")).fonction}
                   </div>
-                  <div className="h5 mt-4">
-                    <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Cooking Accademy Officer
-                  </div>
-                  <div>
-                    <i className="ni education_hat mr-2" />
-                    University of Computer Science
-                  </div>
-                  <hr className="my-4" />
-                  <p>
-                    Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                    Nick Murphy — writes, performs and records all of his own
-                    music.
-                  </p>
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Show more
-                  </a>
                 </div>
               </CardBody>
             </Card>
@@ -110,26 +134,32 @@ const Profile = () => {
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
-                  <Col xs="8">
+                  <Col>
                     <h3 className="mb-0">My account</h3>
-                  </Col>
-                  <Col className="text-right" xs="4">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      Settings
-                    </Button>
                   </Col>
                 </Row>
               </CardHeader>
               <CardBody>
                 <Form>
-                  <h6 className="heading-small text-muted mb-4">
-                    User information
-                  </h6>
+                  <div>
+                    <Row className="align-items-center">
+                      <Col xs="8">
+                        <h6 className="heading-small text-muted mb-4">
+                          User information
+                        </h6>{" "}
+                      </Col>
+                      <Col className="text-right" xs="4">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={handleSubmit}
+                          size="sm"
+                        >
+                          Update profil
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
                   <div className="pl-lg-4">
                     <Row>
                       <Col lg="6">
@@ -138,15 +168,24 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-username"
                           >
-                            Username
+                            Name
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="lucky.jesse"
                             id="input-username"
-                            placeholder="Username"
+                            placeholder="Name"
+                            onChange={(e) => setName(e.target.value)}
                             type="text"
+                            value={name}
                           />
+                          {errors.name && (
+                            <span
+                              className="text-danger"
+                              style={{ fontSize: "13px" }}
+                            >
+                              {errors.name}
+                            </span>
+                          )}
                         </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -162,7 +201,17 @@ const Profile = () => {
                             id="input-email"
                             placeholder="jesse@example.com"
                             type="email"
+                            value={email}
+                            disabled
                           />
+                          {errors.email && (
+                            <span
+                              className="text-danger"
+                              style={{ fontSize: "13px" }}
+                            >
+                              {errors.email}
+                            </span>
+                          )}
                         </FormGroup>
                       </Col>
                     </Row>
@@ -173,129 +222,92 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-first-name"
                           >
-                            First name
+                            {JSON.parse(localStorage.getItem("auth")).token
+                              .role == "Client"
+                              ? "Adress"
+                              : "Fonction"}
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Lucky"
+                            value={adress}
                             id="input-first-name"
-                            placeholder="First name"
+                            placeholder={
+                              JSON.parse(localStorage.getItem("auth")).token
+                                .role == "Client"
+                                ? "Adress"
+                                : "Fonction"
+                            }
                             type="text"
+                            onChange={(e) => setAdress(e.target.value)}
                           />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-last-name"
-                          >
-                            Last name
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="Jesse"
-                            id="input-last-name"
-                            placeholder="Last name"
-                            type="text"
-                          />
+                          {errors.adress && (
+                            <span
+                              className="text-danger"
+                              style={{ fontSize: "13px" }}
+                            >
+                              {errors.adress}
+                            </span>
+                          )}
                         </FormGroup>
                       </Col>
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  {/* Address */}
-                  <h6 className="heading-small text-muted mb-4">
-                    Contact information
-                  </h6>
+                  <div>
+                    <Row className="align-items-center">
+                      <Col xs="8">
+                        <h6 className="heading-small text-muted mb-4">
+                          Change Password
+                        </h6>{" "}
+                      </Col>
+                      <Col className="text-right" xs="4">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={handleSubmitPassword}
+                          size="sm"
+                        >
+                          Save
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
                   <div className="pl-lg-4">
                     <Row>
                       <Col md="12">
                         <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-address"
+                          <label className="form-control-label">Password</label>
+                          <Input
+                            className="form-control-alternative"
+                            placeholder="Password"
+                            type="password"
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </FormGroup>
+                        {errors.password && (
+                          <span
+                            className="text-danger"
+                            style={{ fontSize: "13px" }}
                           >
-                            Address
+                            {errors.password}
+                          </span>
+                        )}
+                      </Col>
+                      <Col md="12">
+                        <FormGroup>
+                          <label className="form-control-label">
+                            Confirm Password
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
-                            type="text"
+                            placeholder="Confirm Password"
+                            type="password"
+                            autoComplete="new-password"
+                            onChange={(e) => setPasswordConfirm(e.target.value)}
                           />
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-city"
-                          >
-                            City
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Country
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Postal code
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
-                  <hr className="my-4" />
-                  {/* Description */}
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
-                  <div className="pl-lg-4">
-                    <FormGroup>
-                      <label>About Me</label>
-                      <Input
-                        className="form-control-alternative"
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                        Open Source."
-                        type="textarea"
-                      />
-                    </FormGroup>
                   </div>
                 </Form>
               </CardBody>
