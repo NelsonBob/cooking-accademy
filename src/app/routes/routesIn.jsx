@@ -13,6 +13,7 @@ var routes = [
     component: <Profile />,
     layout: "/in",
     sidebar: false,
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/index",
@@ -22,6 +23,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 1,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/user-client",
@@ -31,6 +33,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 2,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/user-intern",
@@ -40,6 +43,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 2,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/abonnement-service",
@@ -49,6 +53,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 3,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/abonnement-option",
@@ -58,6 +63,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 3,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/cour",
@@ -67,6 +73,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 4,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/categorie",
@@ -76,6 +83,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 5,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/materiel",
@@ -85,6 +93,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 5,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/salle",
@@ -94,15 +103,17 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 5,
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/repas",
     name: "Repas",
-    icon: "fa fa-cutlery", 
+    icon: "fa fa-cutlery",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
     postion: 6,
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/order",
@@ -112,6 +123,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 7,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
 ];
 export default routes;

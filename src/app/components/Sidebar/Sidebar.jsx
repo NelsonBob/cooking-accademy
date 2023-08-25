@@ -32,7 +32,10 @@ const Sidebar = (props) => {
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes, postion = 1) => {
     return routes.map((prop, key) => {
-      if (prop.sidebar && prop.postion == postion)
+      let autorization = prop.role.includes(
+        JSON.parse(localStorage.getItem("auth")).token.role
+      );
+      if (prop.sidebar && prop.postion == postion && autorization)
         return (
           <NavItem key={key}>
             <NavLink
