@@ -26,7 +26,7 @@ const Profile = () => {
     JSON.parse(localStorage.getItem("auth")).token.sub
   );
   const [adress, setAdress] = useState(
-    JSON.parse(localStorage.getItem("auth")).token.adress
+    JSON.parse(localStorage.getItem("auth")).token.fonction
   );
   const [errors, setErrors] = useState({});
   const [password_confirm, setPasswordConfirm] = useState("");
@@ -42,7 +42,7 @@ const Profile = () => {
     }
     if (!name) {
       formIsValid = false;
-      newErrors.name = "Username is required";
+      newErrors.name = "Name is required";
     }
 
     setErrors(newErrors);
@@ -108,7 +108,7 @@ const Profile = () => {
               <CardBody className="pt-0 pt-md-7">
                 <Row>
                   <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center mt-md-5">
+                    <div className="card-profile-stats d-flex justify-content-center mt-md-4">
                       <div>
                         <span className="heading">22</span>
                         <span className="description">Friends</span>

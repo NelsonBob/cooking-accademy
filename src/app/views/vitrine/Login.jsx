@@ -42,30 +42,29 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (validateForm()) {
-    //   try {
-    //     const user = await login(email, password);
-    //     if (user) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Connection reussi",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //         showClass: {
-    //           popup: "animate__animated animate__fadeInDown",
-    //         },
-    //         hideClass: {
-    //           popup: "animate__animated animate__fadeOutUp",
-    //         },
-    //       });
-    //       return navigate("/in/index");
-    //     }
-    //   } catch (error) {
-    //     setErrorMessage(true);
-    //   }
-    // }
-    return navigate("/in/index");
+    if (validateForm()) {
+      try {
+        const user = await login(email, password);
+        if (user) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Connection reussi",
+            showConfirmButton: false,
+            timer: 1500,
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
+          return navigate("/in/index");
+        }
+      } catch (error) {
+        setErrorMessage(true);
+      }
+    }
   };
   return (
     <>

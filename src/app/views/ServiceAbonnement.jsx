@@ -25,11 +25,13 @@ import {
 } from "reactstrap";
 import { getListClient } from "../service/frontendService";
 
-const Client = () => {
+const ServiceAbonnement = () => {
+  const handleAddModal = () => {};
   const [tableData, setTableData] = useState([]);
   const [tableDataCopy, setTableDataCopy] = useState([]);
   const [inputText, setInputText] = useState("");
   const [exampleModal, setExampleModal] = useState(false);
+  const [typeModal, setTypeModal] = useState("create");
   const [pg, setpg] = React.useState(0);
   const [rpg, setrpg] = React.useState(5);
 
@@ -40,6 +42,11 @@ const Client = () => {
   useEffect(() => {}, [tableData]);
 
   useEffect(() => {}, [exampleModal]);
+
+  const handleClickDesable = (id, status) => {
+    setExampleModal(true);
+    setTypeModal(status);
+  };
 
   const handleFilter = (text) => {
     setInputText(text);
@@ -97,6 +104,16 @@ const Client = () => {
                     <i class="fa fa-refresh" aria-hidden="true"></i> Actualiser
                   </Button>
                 </FormGroup>
+                <FormGroup md={6}>
+                  <Button
+                    color="success"
+                    type="button"
+                    onClick={handleAddModal}
+                  >
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
+                    un client
+                  </Button>
+                </FormGroup>
               </Col>
             </Row>
           </div>
@@ -131,6 +148,7 @@ const Client = () => {
                         <TableCell>Name</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Address</TableCell>
+                        <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -140,6 +158,19 @@ const Client = () => {
                             <TableCell>{row.name}</TableCell>
                             <TableCell>{row.email}</TableCell>
                             <TableCell>{row.adress}</TableCell>
+                            <TableCell>
+                              <Button
+                                variant="contained"
+                                color="warning"
+                                onClick={() => handleClickDesable(row.id, true)}
+                              >
+                                <i
+                                  class="fa fa-pencil mr-2"
+                                  aria-hidden="true"
+                                ></i>
+                                Modifier
+                              </Button>
+                            </TableCell>
                           </TableRow>
                         ))
                       ) : (
@@ -164,9 +195,45 @@ const Client = () => {
               </CardBody>
             </Card>
           </Col>
+          {/* Modal */}
+          <Modal
+            className="modal-dialog-centered"
+            isOpen={exampleModal}
+            toggle={toggleModal}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                {typeModal == "create" && "Ajouter un client "}
+                {typeModal == "update" && "Modifier un client "}
+              </h5>
+              <button
+                aria-label="Close"
+                className="close"
+                data-dismiss="modal"
+                type="button"
+                onClick={toggleModal}
+              >
+                <span aria-hidden={true}>×</span>
+              </button>
+            </div>
+            <div className="modal-body">...</div>
+            <div className="modal-footer">
+              <Button
+                color="secondary"
+                data-dismiss="modal"
+                type="button"
+                onClick={toggleModal}
+              >
+                Close
+              </Button>
+              <Button color="primary" type="button">
+                Save changes
+              </Button>
+            </div>
+          </Modal>
         </Row>
       </Container>
     </>
   );
 };
-export default Client;
+export default ServiceAbonnement;

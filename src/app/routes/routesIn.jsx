@@ -2,6 +2,8 @@ import React from "react";
 import Client from "../views/Client";
 import Dashboard from "../views/Dashboard";
 import Profile from "../views/Profile";
+import Intern from "../views/Intern";
+import ServiceAbonnement from "../views/ServiceAbonnement";
 
 var routes = [
   {
@@ -34,7 +36,7 @@ var routes = [
     path: "/user-intern",
     name: "Back office",
     icon: "fa fa-users",
-    component: <Profile />,
+    component: <Intern />,
     layout: "/in",
     sidebar: true,
     postion: 2,
@@ -43,7 +45,7 @@ var routes = [
     path: "/abonnement-service",
     name: "Service Abonnement",
     icon: "fa fa-compress",
-    component: <Profile />,
+    component: <ServiceAbonnement />,
     layout: "/in",
     sidebar: true,
     postion: 3,

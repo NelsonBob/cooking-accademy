@@ -46,7 +46,7 @@ const Register = () => {
     }
     if (!name) {
       formIsValid = false;
-      newErrors.name = "Username is required";
+      newErrors.name = "Name is required";
     }
     if (password && password !== password_confirm) {
       formIsValid = false;
