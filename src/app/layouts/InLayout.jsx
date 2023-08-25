@@ -31,10 +31,7 @@ const InLayout = (props) => {
 
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
-      if (
-        props?.location?.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
+      if (path == routes[i].layout + routes[i].path) {
         return routes[i].name;
       }
     }
@@ -53,10 +50,7 @@ const InLayout = (props) => {
         }}
       />
       <div className="main-content" ref={mainContent}>
-        <InNavbar
-          {...props}
-          brandText={getBrandText(props?.location?.pathname)}
-        />
+        <InNavbar {...props} brandText={getBrandText(location.pathname)} />
         <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/in/index" replace />} />

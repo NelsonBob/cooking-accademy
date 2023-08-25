@@ -16615,7 +16615,7 @@ textarea[resize="horizontal"] {
 @media (max-width: 767.98px) {
   .navbar-nav .nav-link {
     padding: 0.625rem 0;
-    color: #172b4d !important;
+    /* color: #172b4d !important; */
   }
   .navbar-nav .dropdown-menu {
     box-shadow: none;

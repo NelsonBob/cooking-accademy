@@ -1,8 +1,17 @@
 import React from "react";
+import Client from "../views/Client";
 import Dashboard from "../views/Dashboard";
 import Profile from "../views/Profile";
 
 var routes = [
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    icon: "ni ni-single-02",
+    component: <Profile />,
+    layout: "/in",
+    sidebar: false,
+  },
   {
     path: "/index",
     name: "Dashboard",
@@ -13,18 +22,10 @@ var routes = [
     postion: 1,
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02",
-    component: <Profile />,
-    layout: "/in",
-    sidebar: false,
-  },
-  {
     path: "/user-client",
     name: "Client",
     icon: "ni ni-single-02",
-    component: <Profile />,
+    component: <Client />,
     layout: "/in",
     sidebar: true,
     postion: 2,
@@ -32,7 +33,7 @@ var routes = [
   {
     path: "/user-intern",
     name: "Back office",
-    icon: "ni ni-single-02",
+    icon: "fa fa-users",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
@@ -41,7 +42,7 @@ var routes = [
   {
     path: "/abonnement-service",
     name: "Service Abonnement",
-    icon: "ni ni-single-02",
+    icon: "fa fa-compress",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
@@ -50,7 +51,7 @@ var routes = [
   {
     path: "/abonnement-option",
     name: "Option Abonnement",
-    icon: "ni ni-single-02",
+    icon: "fa fa-expand",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
@@ -59,7 +60,7 @@ var routes = [
   {
     path: "/cour",
     name: "Cour",
-    icon: "ni ni-single-02",
+    icon: "fa fa-book",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
@@ -68,7 +69,7 @@ var routes = [
   {
     path: "/categorie",
     name: "Categorie Materiel",
-    icon: "ni ni-single-02",
+    icon: "ni ni-box-2",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
@@ -77,7 +78,7 @@ var routes = [
   {
     path: "/materiel",
     name: "Materiel",
-    icon: "ni ni-single-02",
+    icon: "fa fa-cube",
     component: <Profile />,
     layout: "/in",
     sidebar: true,
@@ -95,11 +96,20 @@ var routes = [
   {
     path: "/repas",
     name: "Repas",
-    icon: "ni ni-single-02",
+    icon: "fa fa-cutlery", 
     component: <Profile />,
     layout: "/in",
     sidebar: true,
     postion: 6,
-  },   
+  },
+  {
+    path: "/order",
+    name: "Commande",
+    icon: "fa fa-shopping-cart",
+    component: <Profile />,
+    layout: "/in",
+    sidebar: true,
+    postion: 7,
+  },
 ];
 export default routes;

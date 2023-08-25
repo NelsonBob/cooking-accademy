@@ -15,7 +15,7 @@ import {
   Navbar,
   NavbarBrand,
   Row,
-  UncontrolledDropdown
+  UncontrolledDropdown,
 } from "reactstrap";
 
 const Sidebar = (props) => {
@@ -150,15 +150,31 @@ const Sidebar = (props) => {
               </Col>
             </Row>
           </div>
-          {/* Navigation */}
           <Nav navbar>{createLinks(routes, 1)}</Nav>
-          {/* Divider */}
           <hr className="my-3" />
-          {/* Heading */}
-          <h6 className="navbar-heading text-muted">Documentation</h6>
-          {/* Navigation */}
+          <h6 className="navbar-heading text-muted">User</h6>
           <Nav className="mb-md-3" navbar>
             {createLinks(routes, 2)}
+          </Nav>
+          <h6 className="navbar-heading text-muted">Abonnement</h6>
+          <Nav className="mb-md-3" navbar>
+            {createLinks(routes, 3)}
+          </Nav>
+          <h6 className="navbar-heading text-muted">Etude</h6>
+          <Nav className="mb-md-3" navbar>
+            {createLinks(routes, 4)}
+          </Nav>
+          <h6 className="navbar-heading text-muted">Boutique</h6>
+          <Nav className="mb-md-3" navbar>
+            {createLinks(routes, 5)}
+          </Nav>
+          <h6 className="navbar-heading text-muted">Nutrition</h6>
+          <Nav className="mb-md-3" navbar>
+            {createLinks(routes, 6)}
+          </Nav>
+          <h6 className="navbar-heading text-muted">Stock</h6>
+          <Nav className="mb-md-3" navbar>
+            {createLinks(routes, 7)}
           </Nav>
         </Collapse>
       </Container>

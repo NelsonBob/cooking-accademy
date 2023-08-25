@@ -42,29 +42,30 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        const user = await login(email, password);
-        if (user) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Connection reussi",
-            showConfirmButton: false,
-            timer: 1500,
-            showClass: {
-              popup: "animate__animated animate__fadeInDown",
-            },
-            hideClass: {
-              popup: "animate__animated animate__fadeOutUp",
-            },
-          });
-          return navigate("/in/index");
-        }
-      } catch (error) {
-        setErrorMessage(true);
-      }
-    }
+    // if (validateForm()) {
+    //   try {
+    //     const user = await login(email, password);
+    //     if (user) {
+    //       Swal.fire({
+    //         position: "top-end",
+    //         icon: "success",
+    //         title: "Connection reussi",
+    //         showConfirmButton: false,
+    //         timer: 1500,
+    //         showClass: {
+    //           popup: "animate__animated animate__fadeInDown",
+    //         },
+    //         hideClass: {
+    //           popup: "animate__animated animate__fadeOutUp",
+    //         },
+    //       });
+    //       return navigate("/in/index");
+    //     }
+    //   } catch (error) {
+    //     setErrorMessage(true);
+    //   }
+    // }
+    return navigate("/in/index");
   };
   return (
     <>
@@ -91,11 +92,11 @@ const Login = () => {
                   <h1 className="bold">{t("Menu.login")}</h1>
                 </div>
                 <Form role="form">
-                {errorMessage && (
-            <h3 className="text-danger text-center">
-              <strong>Password or Email incorrect</strong>
-            </h3>
-          )}
+                  {errorMessage && (
+                    <h3 className="text-danger text-center">
+                      <strong>Password or Email incorrect</strong>
+                    </h3>
+                  )}
                   <FormGroup className="mb-3">
                     <InputGroup className="input-group-alternative">
                       <InputGroupAddon addonType="prepend">
@@ -111,10 +112,13 @@ const Login = () => {
                       />
                     </InputGroup>
                     {errors.email && (
-              <span className="text-danger" style={{ fontSize: "13px" }}>
-                {errors.email}
-              </span>
-            )}
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: "13px" }}
+                      >
+                        {errors.email}
+                      </span>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <InputGroup className="input-group-alternative">
@@ -131,16 +135,16 @@ const Login = () => {
                       />
                     </InputGroup>
                     {errors.password && (
-              <span
-                className="text-danger"
-                style={{
-                  marginBottom: "10px",
-                  fontSize: "13px",
-                }}
-              >
-                {errors.password}
-              </span>
-            )}
+                      <span
+                        className="text-danger"
+                        style={{
+                          marginBottom: "10px",
+                          fontSize: "13px",
+                        }}
+                      >
+                        {errors.password}
+                      </span>
+                    )}
                   </FormGroup>
 
                   <div className="text-center">

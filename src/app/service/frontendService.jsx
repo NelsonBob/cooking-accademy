@@ -68,7 +68,18 @@ export const updateProfilClient = async (id, data) => {
       throw error.response?.data;
     }
   };
-
+  export const getListClient = async (id) => {
+    try {
+      const tokenString = localStorage.getItem("auth");
+      const userToken = JSON.parse(tokenString);
+      const response = await axios.get(`${baseURL}/client/list/${id}`, {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data;
+    }
+  };
 // repas
 export const getRepasAvailable = async (id) => {
   try {
