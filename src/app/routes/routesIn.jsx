@@ -4,6 +4,7 @@ import Dashboard from "../views/Dashboard";
 import Profile from "../views/Profile";
 import Intern from "../views/Intern";
 import ServiceAbonnement from "../views/ServiceAbonnement";
+import OptionAbonnement from "../views/OptionAbonnement";
 
 var routes = [
   {
@@ -59,7 +60,7 @@ var routes = [
     path: "/abonnement-option",
     name: "Option Abonnement",
     icon: "fa fa-expand",
-    component: <Profile />,
+    component: <OptionAbonnement />,
     layout: "/in",
     sidebar: true,
     postion: 3,
