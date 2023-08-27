@@ -85,7 +85,7 @@ const OutNavbar = () => {
               <Media className="align-items-center">
                 <Media className="ml-2 text-white d-flex justify-content-between">
                   <span>
-                    <i class="fa fa-language mr-2" aria-hidden="true"></i>
+                    <i className="fa fa-language mr-2" aria-hidden="true"></i>
                   </span>
                   {t("Langue.name")}
                 </Media>

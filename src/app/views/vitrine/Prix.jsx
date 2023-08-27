@@ -84,21 +84,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -115,21 +115,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -165,21 +165,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -196,21 +196,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -227,14 +227,14 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
                 <h3 className="text-center bold">{t("Price.row16")}</h3>
@@ -242,7 +242,7 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -259,21 +259,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -290,21 +290,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
@@ -321,14 +321,14 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
                 <h3 className="text-center bold">{t("Price.row17")}</h3>
@@ -336,7 +336,7 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
                 <h3 className="text-center bold">{t("Price.row18")}</h3>
@@ -354,21 +354,21 @@ function Prix() {
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-danger text-white">
-                    <i class="fa fa-times " aria-hidden="true"></i>
+                    <i className="fa fa-times " aria-hidden="true"></i>
                   </span>
                 </div>
               </Col>
               <Col md={3} className="center-grid">
                 <div className="d-flex justify-content-center mb-4">
                   <span className="badge-circle bg-success text-white">
-                    <i class="fa fa-check " aria-hidden="true"></i>
+                    <i className="fa fa-check " aria-hidden="true"></i>
                   </span>
                 </div>
                 <h3 className="text-center bold">{t("Price.row19")}</h3>

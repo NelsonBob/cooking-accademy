@@ -252,7 +252,7 @@ const Intern = () => {
               <Col md={12} className="d-flex justify-content-between mt-5">
                 <FormGroup md={6}>
                   <Button color="info" type="button" onClick={getList}>
-                    <i class="fa fa-refresh" aria-hidden="true"></i> Actualiser
+                    <i className="fa fa-refresh" aria-hidden="true"></i> Actualiser
                   </Button>
                 </FormGroup>
                 <FormGroup md={6}>
@@ -261,7 +261,7 @@ const Intern = () => {
                     type="button"
                     onClick={() => handleClickDesable(0, "create")}
                   >
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
+                    <i className="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
                     un intern
                   </Button>
                 </FormGroup>
@@ -320,7 +320,7 @@ const Intern = () => {
                                   }
                                 >
                                   <i
-                                    class="fa fa-pencil mr-2"
+                                    className="fa fa-pencil mr-2"
                                     aria-hidden="true"
                                   ></i>
                                   Modifier
@@ -424,7 +424,7 @@ const Intern = () => {
                       </InputGroupText>
                     </InputGroupAddon>
                     <select
-                      class="form-control"
+                      className="form-control"
                       onChange={(e) => setRole(e.target.value)}
                       value={role}
                     >

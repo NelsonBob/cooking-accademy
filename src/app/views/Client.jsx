@@ -19,9 +19,8 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Modal,
   Row,
-  Table,
+  Table
 } from "reactstrap";
 import { getListClient } from "../service/frontendService";
 
@@ -94,7 +93,7 @@ const Client = () => {
               <Col md={12} className="d-flex justify-content-between mt-5">
                 <FormGroup md={6}>
                   <Button color="info" type="button" onClick={getList}>
-                    <i class="fa fa-refresh" aria-hidden="true"></i> Actualiser
+                    <i className="fa fa-refresh" aria-hidden="true"></i> Actualiser
                   </Button>
                 </FormGroup>
               </Col>

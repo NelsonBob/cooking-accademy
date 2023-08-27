@@ -36,7 +36,7 @@ function Home() {
                   <p className="text-center">$20.00</p>
                   <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
-                      <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
                   <div className="center-grid">
@@ -59,7 +59,7 @@ function Home() {
                   <p className="text-center">$20.00</p>
                   <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
-                      <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
                   <div className="center-grid">
@@ -82,7 +82,7 @@ function Home() {
                   <p className="text-center">$18.00</p>
                   <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
-                      <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
                   <div className="center-grid">
@@ -105,7 +105,7 @@ function Home() {
                   <p className="text-center">$47.00</p>
                   <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
-                      <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
                   <div className="center-grid">
@@ -128,7 +128,7 @@ function Home() {
                   <p className="text-center">$25.00</p>
                   <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
-                      <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>
                   <div className="center-grid">
@@ -151,7 +151,7 @@ function Home() {
                   <p className="text-center">$30.00</p>
                   <div className="center-grid mb-4">
                     <a className="btn-by" href="#">
-                      <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                     </a>
                   </div>{" "}
                   <div className="center-grid">
