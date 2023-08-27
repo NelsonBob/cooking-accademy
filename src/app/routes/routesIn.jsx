@@ -1,10 +1,11 @@
 import React from "react";
+import CategorieMateriel from "../views/CategorieMateriel";
 import Client from "../views/Client";
 import Dashboard from "../views/Dashboard";
-import Profile from "../views/Profile";
 import Intern from "../views/Intern";
-import ServiceAbonnement from "../views/ServiceAbonnement";
 import OptionAbonnement from "../views/OptionAbonnement";
+import Profile from "../views/Profile";
+import ServiceAbonnement from "../views/ServiceAbonnement";
 
 var routes = [
   {
@@ -80,7 +81,7 @@ var routes = [
     path: "/categorie",
     name: "Categorie Materiel",
     icon: "ni ni-box-2",
-    component: <Profile />,
+    component: <CategorieMateriel />,
     layout: "/in",
     sidebar: true,
     postion: 5,
