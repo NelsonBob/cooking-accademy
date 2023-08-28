@@ -4,7 +4,14 @@
 
 
 // General styles
-
+.table td.truncated-cell,
+.table th.truncated-cell {
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}       
 .table {
     thead th {
         padding-top: $table-head-spacer-y;

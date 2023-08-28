@@ -6,6 +6,7 @@ import Intern from "../views/Intern";
 import OptionAbonnement from "../views/OptionAbonnement";
 import Profile from "../views/Profile";
 import ServiceAbonnement from "../views/ServiceAbonnement";
+import Cour from "../views/Cour";
 
 var routes = [
   {
@@ -71,7 +72,7 @@ var routes = [
     path: "/cour",
     name: "Cour",
     icon: "fa fa-book",
-    component: <Profile />,
+    component: <Cour />,
     layout: "/in",
     sidebar: true,
     postion: 4,

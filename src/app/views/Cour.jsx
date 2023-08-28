@@ -27,31 +27,39 @@ import Swal from "sweetalert2";
 import {
   UpdateFile,
   UploadFile,
-  createServiceAbonnement,
-  getListServiceAbonnement,
-  getServiceAbonnementById,
+  createCour,
+  getCourById,
+  getListCour,
   readFile,
+  removeCourById,
   removeFile,
-  removeServiceAbonnementById,
-  updateServiceAbonnement,
+  updateCour,
 } from "../service/frontendService";
 
-const ServiceAbonnement = () => {
+const Cour = () => {
   const [tableData, setTableData] = useState([]);
   const [tableDataCopy, setTableDataCopy] = useState([]);
   const [inputText, setInputText] = useState("");
   const [exampleModal, setExampleModal] = useState(false);
+  const [videoModal, setVideoModal] = useState(false);
   const [typeModal, setTypeModal] = useState("create");
   const [pg, setpg] = React.useState(0);
   const [rpg, setrpg] = React.useState(5);
+
+  const [name, setName] = useState("");
+  const [contentCour, setContentCour] = useState("");
+  const [description, setDescription] = useState("");
   const [imgPath, setImgPath] = useState("");
+  const [isVideoLocal, setIsVideoLocal] = useState(false);
+  const [videoLink, setVideoLink] = useState("");
   const [imgPathLast, setImgPathLast] = useState([]);
   const [imgContent, setImgContent] = useState(null);
   const [imageUrls, setImageUrls] = useState({});
+  const [videoPathLast, setVideoPathLast] = useState([]);
+  const [videoContent, setVideoContent] = useState(null);
+  const [videoUrl, setVideoUrl] = useState({});
+  const [status, setStatus] = useState(false);
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
   useEffect(() => {
@@ -59,7 +67,7 @@ const ServiceAbonnement = () => {
   }, []);
 
   useEffect(() => {}, [tableData]);
-
+  useEffect(() => {}, [videoModal]);
   useEffect(() => {}, [exampleModal]);
 
   const handleClickDesable = (id = 0, status) => {
@@ -71,8 +79,13 @@ const ServiceAbonnement = () => {
       setName("");
       setImgPath("");
       setImgContent(null);
+      setVideoContent(null);
+      setContentCour("");
       setDescription("");
-      setStatus("");
+      setVideoLink("");
+      setIsVideoLocal(false);
+      setStatus(false);
+
       setExampleModal(true);
     }
     setTypeModal(status);
@@ -80,14 +93,30 @@ const ServiceAbonnement = () => {
   const getById = async (intern) => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getServiceAbonnementById(id, intern);
+      const res = await getCourById(id, intern);
       setName(res.name);
       setDescription(res.description);
       setImgPath(res.imgPath);
-      await getFile(res.imgPath);
+      setIsVideoLocal(res.isVideoLocal);
       setStatus(res.status);
+      setContentCour(res.contentCour);
+      setVideoLink(res.videoLink);
+      let imgfile = await getFile(res.imgPath);
+      let videofile = await getFile(res.videoLink);
+      setImgContent(imgfile);
+      setVideoContent(videofile);
     } catch (error) {}
   };
+  const getFile = async (url) => {
+    try {
+      const response = await readFile(url);
+      const imgUrl = URL.createObjectURL(response);
+      return imgUrl;
+    } catch (error) {
+      console.error("Error displaying file:", error);
+    }
+  };
+
   const handleFilter = (text) => {
     setInputText(text);
     if (text) {
@@ -110,13 +139,15 @@ const ServiceAbonnement = () => {
     setTableDataCopy([]);
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getListServiceAbonnement(id);
+      const res = await getListCour(id);
       const urls = {};
+      const urlVideos = {};
       for (const row of res) {
-        const imgUrl = await getFileContent(row.imgPath);
+        const imgUrl = await getFile(row.imgPath);
         urls[row.id] = imgUrl;
       }
       setImageUrls(urls);
+
       setTableData(res);
       setTableDataCopy(res);
       setInputText("");
@@ -125,9 +156,8 @@ const ServiceAbonnement = () => {
   const handleChangePage = (event, newpage) => {
     setpg(newpage);
   };
-  const toggleModal = () => {
-    setExampleModal(!exampleModal);
-  };
+  const toggleModal = () => setExampleModal(!exampleModal);
+  const handleClose = () => setVideoModal(!videoModal);
   const handleChangeRowsPerPage = (event) => {
     setrpg(parseInt(event.target.value, 10));
     setpg(0);
@@ -135,19 +165,30 @@ const ServiceAbonnement = () => {
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = {};
-    if (!description) {
-      formIsValid = false;
-      newErrors.description = "Description is required";
-    }
+
     if (!name) {
       formIsValid = false;
       newErrors.name = "Name is required";
     }
-    if (!imgPath) {
+
+    if (!contentCour) {
       formIsValid = false;
-      newErrors.name = "Image is required";
+      newErrors.contentCour = "Content cour is required";
     }
 
+    if (!description) {
+      formIsValid = false;
+      newErrors.description = "Description is required";
+    }
+    if (!imgPath) {
+      formIsValid = false;
+      newErrors.imgPath = "Image Header is required";
+    }
+
+    if (!videoLink) {
+      formIsValid = false;
+      newErrors.videoLink = "Video Link is required";
+    }
     setErrors(newErrors);
     return formIsValid;
   };
@@ -164,22 +205,37 @@ const ServiceAbonnement = () => {
   const creatMethod = async () => {
     let data = {
       name,
+      contentCour,
       description,
       imgPath,
+      isVideoLocal,
+      videoLink,
     };
     try {
-      const user = await createServiceAbonnement(
+      const user = await createCour(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
       imgPathLast.forEach(async (el) => {
         if (el != imgPath) await removeFileUpload(el);
       });
+      videoPathLast.forEach(async (el) => {
+        if (el != imgPath) await removeFileUpload(el);
+      });
       setImgPathLast([]);
+      setVideoPathLast([]);
       setName("");
-      setDescription("");
       setImgPath("");
       setImgContent(null);
+      setVideoContent(null);
+      setContentCour("");
+      setDescription("");
+      setVideoLink("");
+      setIsVideoLocal(false);
+      setImgContent(null);
+      setVideoContent(null);
+      setStatus(false);
+
       setExampleModal(false);
       getList();
       Swal.fire({
@@ -199,14 +255,21 @@ const ServiceAbonnement = () => {
   };
   const removMethod = async () => {
     try {
-      const user = await removeServiceAbonnementById(
+      const user = await removeCourById(
         JSON.parse(localStorage.getItem("auth")).userid,
         idUser
       );
       setName("");
-      setDescription("");
       setImgPath("");
       setImgContent(null);
+      setVideoContent(null);
+      setContentCour("");
+      setDescription("");
+      setVideoLink("");
+      setIsVideoLocal(false);
+      setImgContent(null);
+      setVideoContent(null);
+
       setExampleModal(false);
       getList();
       Swal.fire({
@@ -228,24 +291,31 @@ const ServiceAbonnement = () => {
     let data = {
       id: idUser,
       name,
+      contentCour,
       description,
       imgPath,
+      isVideoLocal,
+      videoLink,
       status,
     };
     try {
-      const user = await updateServiceAbonnement(
+      const user = await updateCour(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
-      imgPathLast.forEach(async (el) => {
-        if (el != imgPath) await removeFileUpload(el);
-      });
-      setName("");
-      setDescription("");
-      setStatus("");
-      setImgPath("");
       setImgPathLast([]);
+      setVideoPathLast([]);
+      setName("");
+      setImgPath("");
       setImgContent(null);
+      setVideoContent(null);
+      setContentCour("");
+      setDescription("");
+      setVideoLink("");
+      setIsVideoLocal(false);
+      setImgContent(null);
+      setVideoContent(null);
+      setStatus(false);
       setExampleModal(false);
       getList();
 
@@ -283,14 +353,25 @@ const ServiceAbonnement = () => {
       });
     }
   };
-  const uploadImg = async (contentFile) => {
+  const uploadImg = async (contentFile, typeAction) => {
     const formData = new FormData();
     formData.append("file", contentFile);
     if (typeModal == "create") {
       try {
-        const response = await UpdateFile(imgPath, formData);
-        setImgPath(response);
-        await getFile(response);
+        const response = await UpdateFile(
+          typeAction == "image" ? imgPath : videoLink,
+          formData
+        );
+        if (typeAction == "image") {
+          setImgPath(response);
+          let imgUrl = await getFile(response);
+          setImgContent(imgUrl);
+        }
+        if (typeAction == "video") {
+          setVideoLink(response);
+          let videoUrl = await getFile(response);
+          setVideoContent(videoUrl);
+        }
       } catch (error) {
         console.error("Error uploading file:", error);
         Swal.fire({
@@ -311,10 +392,20 @@ const ServiceAbonnement = () => {
       try {
         let tabUrl = [];
         const response = await UploadFile(formData);
-        tabUrl.push(response);
-        setImgPath(response);
-        setImgPathLast([...imgPathLast, tabUrl]);
-        await getFile(response);
+        if (typeAction == "image") {
+          tabUrl.push(response);
+          setImgPath(response);
+          setImgPathLast([...imgPathLast, tabUrl]);
+          let imgUrl = await getFile(response);
+          setImgContent(imgUrl);
+        }
+        if (typeAction == "video") {
+          tabUrl.push(response);
+          setVideoLink(response);
+          setVideoPathLast([...videoPathLast, tabUrl]);
+          let videoUrl = await getFile(response);
+          setVideoContent(videoUrl);
+        }
       } catch (error) {
         console.error("Error uploading file:", error);
         Swal.fire({
@@ -332,38 +423,10 @@ const ServiceAbonnement = () => {
         });
       }
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      setImgContent(imgUrl);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "Error while displaying file",
-        showConfirmButton: false,
-        timer: 2000,
-        showClass: {
-          popup: "animate__animated animate__fadeInDown",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOutUp",
-        },
-      });
-    }
-  };
-  const getFileContent = async (imgPath) => {
-    try {
-      const response = await readFile(imgPath);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-      // Handle the error
-    }
+  const previewVideo = async (video) => {
+    const videoUrl = await getFile(video);
+    setVideoUrl(videoUrl);
+    setVideoModal(true);
   };
   return (
     <>
@@ -373,7 +436,7 @@ const ServiceAbonnement = () => {
             <Row>
               <Col md={12}>
                 <h5 className="text-uppercase text-white mb-0">
-                  Liste des services abonnements
+                  Liste des cours
                 </h5>
               </Col>
               <Col md={12} className="d-flex justify-content-between mt-5">
@@ -390,7 +453,7 @@ const ServiceAbonnement = () => {
                     onClick={() => handleClickDesable(0, "create")}
                   >
                     <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
-                    Ajouter un service abonnement
+                    Ajouter un cour
                   </Button>
                 </FormGroup>
               </Col>
@@ -427,7 +490,8 @@ const ServiceAbonnement = () => {
                         <TableCell>Image</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Descritpion</TableCell>
-                        <TableCell>Status</TableCell>
+                        <TableCell>Contenu</TableCell>
+                        <TableCell>Video</TableCell>
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
@@ -443,19 +507,30 @@ const ServiceAbonnement = () => {
                                 height={50}
                               />
                             </TableCell>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.description}</TableCell>
+                            <TableCell className="truncated-cell">
+                              {row.name}
+                            </TableCell>
+                            <TableCell className="truncated-cell">
+                              {row.description}
+                            </TableCell>
+                            <TableCell className="truncated-cell">
+                              {row.contentCour}
+                            </TableCell>
                             <TableCell>
-                              {row.status ? (
-                                <i
-                                  className="fa fa-map-pin mr-2 text-success"
-                                  aria-hidden="true"
-                                ></i>
+                              {row.isVideoLocal ? (
+                                <span
+                                  onClick={() => previewVideo(row.videoLink)}
+                                >
+                                  {row.videoLink}
+                                </span>
                               ) : (
-                                <i
-                                  className="fa fa-map-pin mr-2"
-                                  aria-hidden="true"
-                                ></i>
+                                <a
+                                  href={row.videoLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {row.videoLink}
+                                </a>
                               )}
                             </TableCell>
                             <TableCell>
@@ -491,7 +566,7 @@ const ServiceAbonnement = () => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={4} className="text-center">
-                            Aucun service abonnement trouvé
+                            Aucune categorie materielle trouvé
                           </TableCell>
                         </TableRow>
                       )}
@@ -518,9 +593,9 @@ const ServiceAbonnement = () => {
           >
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                {typeModal == "create" && "Ajouter un service abonnement "}
-                {typeModal == "update" && "Modifier un service abonnement "}
-                {typeModal == "delete" && "Supprimer un service abonnement "}
+                {typeModal == "create" && "Ajouter un cour "}
+                {typeModal == "update" && "Modifier un cour "}
+                {typeModal == "delete" && "Supprimer un cour "}
               </h5>
               <button
                 aria-label="Close"
@@ -538,11 +613,11 @@ const ServiceAbonnement = () => {
                   <FormGroup>
                     <div className="d-flex text-muted align-items-center">
                       <i className="ni ni-image mr-2"></i>
-                      <span className="text-muted">Image</span>
+                      <span className="text-muted">Image d'acceuil</span>
                     </div>
                     <Input
                       type="file"
-                      onChange={(e) => uploadImg(e.target.files[0])}
+                      onChange={(e) => uploadImg(e.target.files[0], "image")}
                       accept="image/*"
                     />
                     {errors.imgPath && (
@@ -604,7 +679,106 @@ const ServiceAbonnement = () => {
                       </span>
                     )}
                   </FormGroup>
-
+                  <FormGroup>
+                    <InputGroup className="input-group-alternative mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="fa fa-list-ul" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Objectif et Chapitre"
+                        type="textarea"
+                        value={contentCour}
+                        onChange={(e) => setContentCour(e.target.value)}
+                      />
+                    </InputGroup>
+                    {errors.description && (
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: "13px" }}
+                      >
+                        {errors.contentCour}
+                      </span>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <div className="form-check">
+                      <Input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="flexCheckDefault1"
+                        checked={isVideoLocal == true}
+                        value={isVideoLocal}
+                        onChange={(e) =>
+                          setIsVideoLocal(e.target.checked ? true : false)
+                        }
+                      />
+                      <label
+                        className="form-check-label"
+                        for="flexCheckDefault1"
+                      >
+                        Le cour est une video?
+                      </label>
+                    </div>
+                  </FormGroup>
+                  {!isVideoLocal ? (
+                    <FormGroup>
+                      <InputGroup className="input-group-alternative mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="fa fa-list-ul" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Url de la video"
+                          type="url"
+                          value={videoLink}
+                          onChange={(e) => setVideoLink(e.target.value)}
+                        />
+                      </InputGroup>
+                      {errors.videoLink && (
+                        <span
+                          className="text-danger"
+                          style={{ fontSize: "13px" }}
+                        >
+                          {errors.videoLink}
+                        </span>
+                      )}
+                    </FormGroup>
+                  ) : (
+                    <FormGroup>
+                      <div className="d-flex text-muted align-items-center">
+                        <i className="ni ni-image mr-2"></i>
+                        <span className="text-muted">Charger votre video</span>
+                      </div>
+                      <Input
+                        type="file"
+                        onChange={(e) => uploadImg(e.target.files[0], "video")}
+                        accept="image/*"
+                      />
+                      {errors.videoLink && (
+                        <span
+                          className="text-danger"
+                          style={{ fontSize: "13px" }}
+                        >
+                          {errors.videoLink}
+                        </span>
+                      )}
+                      {videoContent && (
+                        <div
+                          className="embed-responsive embed-responsive-16by9"
+                          style={{ width: "80px", height: "80px" }}
+                        >
+                          <iframe
+                            className="embed-responsive-item"
+                            src={videoContent}
+                            title="Video"
+                          ></iframe>
+                        </div>
+                      )}
+                    </FormGroup>
+                  )}
                   {typeModal == "update" && (
                     <FormGroup>
                       <div className="form-check">
@@ -625,15 +799,6 @@ const ServiceAbonnement = () => {
                           Status
                         </label>
                       </div>
-
-                      {errors.status && (
-                        <span
-                          className="text-danger"
-                          style={{ fontSize: "13px" }}
-                        >
-                          {errors.status}
-                        </span>
-                      )}
                     </FormGroup>
                   )}
                 </Form>
@@ -655,9 +820,44 @@ const ServiceAbonnement = () => {
               </Button>
             </div>
           </Modal>
+
+          {/* Video Modal */}
+          <Modal
+            className="modal-dialog-centered"
+            isOpen={videoModal}
+            toggle={handleClose}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title">{name} </h5>
+              <button
+                aria-label="Close"
+                className="close"
+                data-dismiss="modal"
+                type="button"
+                onClick={handleClose}
+              >
+                <span aria-hidden={true}>×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="embed-responsive embed-responsive-16by9">
+                <iframe
+                  className="embed-responsive-item"
+                  src={videoUrl}
+                  title="Video"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={handleClose}>
+                Close
+              </button>
+            </div>
+          </Modal>
         </Row>
       </Container>
     </>
   );
 };
-export default ServiceAbonnement;
+export default Cour;
