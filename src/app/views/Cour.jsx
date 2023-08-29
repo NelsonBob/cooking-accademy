@@ -423,9 +423,11 @@ const Cour = () => {
         });
       }
   };
-  const previewVideo = async (video) => {
+  const previewVideo = async (video, title, content) => {
     const videoUrl = await getFile(video);
     setVideoUrl(videoUrl);
+    setName(title);
+    setContentCour(content);
     setVideoModal(true);
   };
   return (
@@ -488,10 +490,9 @@ const Cour = () => {
                     <TableHead>
                       <TableRow>
                         <TableCell>Image</TableCell>
+                        <TableCell>Video</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Descritpion</TableCell>
-                        <TableCell>Contenu</TableCell>
-                        <TableCell>Video</TableCell>
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
@@ -507,19 +508,18 @@ const Cour = () => {
                                 height={50}
                               />
                             </TableCell>
-                            <TableCell className="truncated-cell">
-                              {row.name}
-                            </TableCell>
-                            <TableCell className="truncated-cell">
-                              {row.description}
-                            </TableCell>
-                            <TableCell className="truncated-cell">
-                              {row.contentCour}
-                            </TableCell>
                             <TableCell>
                               {row.isVideoLocal ? (
                                 <span
-                                  onClick={() => previewVideo(row.videoLink)}
+                                  className="text-primary"
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    previewVideo(
+                                      row.videoLink,
+                                      row.name,
+                                      row.contentCour
+                                    )
+                                  }
                                 >
                                   {row.videoLink}
                                 </span>
@@ -533,6 +533,13 @@ const Cour = () => {
                                 </a>
                               )}
                             </TableCell>
+                            <TableCell className="truncated-cell">
+                              {row.name}
+                            </TableCell>
+                            <TableCell className="truncated-cell">
+                              {row.description}
+                            </TableCell>
+
                             <TableCell>
                               <Button
                                 variant="contained"
@@ -755,7 +762,7 @@ const Cour = () => {
                       <Input
                         type="file"
                         onChange={(e) => uploadImg(e.target.files[0], "video")}
-                        accept="image/*"
+                        accept="video/*"
                       />
                       {errors.videoLink && (
                         <span
@@ -848,6 +855,8 @@ const Cour = () => {
                   allowFullScreen
                 ></iframe>
               </div>
+              <h3 className="mt-4 mb-2">Contenu</h3>
+              <p>{contentCour}</p>
             </div>
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={handleClose}>
