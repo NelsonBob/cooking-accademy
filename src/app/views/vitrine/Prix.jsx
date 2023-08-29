@@ -1,10 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Col, Container, Row } from "reactstrap";
+import {
+  getListOptionAbonnementActif,
+  getListServiceAbonnementActif,
+  readFile,
+} from "../../service/frontendService";
 
 function Prix() {
   const { t } = useTranslation();
+  const [tableData, setTableData] = useState([]);
+  const [tableData1, setTableData1] = useState([]);
+  const [imageUrls, setImageUrls] = useState({});
 
+  useEffect(() => {
+    getList();
+    getListService();
+  }, []);
+  const getList = async () => {
+    setTableData([]);
+    try {
+      const res = await getListServiceAbonnementActif();
+      const urls = {};
+      for (const row of res) {
+        const imgUrl = await getFile(row.imgPath);
+        urls[row.id] = imgUrl;
+      }
+      setImageUrls(urls);
+      setTableData(res);
+    } catch (error) {}
+  };
+  const getListService = async () => {
+    setTableData1([]);
+    try {
+      const res = await getListOptionAbonnementActif();
+      res.sort(compareByServiceAbonnementId)
+      setTableData1(res);
+    } catch (error) {}
+  };
+  const compareByServiceAbonnementId  = (a, b) => {
+    const idA = a.optionServiceAbonnement[0]?.serviceAbonnement.id || 0;
+    const idB = b.optionServiceAbonnement[0]?.serviceAbonnement.id || 0;
+
+    return idA - idB;
+  };
+  const getFile = async (url) => {
+    try {
+      const response = await readFile(url);
+      const imgUrl = URL.createObjectURL(response);
+      return imgUrl;
+    } catch (error) {
+      console.error("Error displaying file:", error);
+    }
+  };
   return (
     <>
       <div className="header bg-img-prix py-7 py-lg-8">
@@ -29,352 +77,77 @@ function Prix() {
                 <h1 className="bold">{t("Price.row1")}</h1>
                 <span className="bold">{t("Price.row2")}</span>
               </Col>
-              <Col md={3} className="center-grid">
-                <img
-                  alt="..."
-                  width={80}
-                  height={100}
-                  src={require("../../../assets/img/abonnement/free.png")}
-                />
-                <p
-                  className="text-center font-italic mt-2"
-                  style={{ width: "6rem" }}
-                >
-                  {t("Price.free")}
-                </p>
-              </Col>
-              <Col md={3} className="center-grid">
-                <img
-                  alt="..."
-                  width={80}
-                  height={100}
-                  src={require("../../../assets/img/abonnement/starter.png")}
-                />
-                <p
-                  className="text-center font-italic mt-2"
-                  style={{ width: "6rem" }}
-                >
-                  {t("Price.starter")}
-                </p>
-              </Col>
-              <Col md={3} className="center-grid">
-                <img
-                  alt="..."
-                  width={80}
-                  height={100}
-                  src={require("../../../assets/img/abonnement/master.png")}
-                />
-                <p
-                  className="text-center font-italic mt-2"
-                  style={{ width: "6rem" }}
-                >
-                  {t("Price.master")}
-                </p>
-              </Col>
+              {tableData && tableData.length > 0 ? (
+                tableData.map((row, i) => (
+                  <Col md={3} key={i} className="center-grid">
+                    <img
+                      alt="..."
+                      width={80}
+                      height={100}
+                      src={imageUrls[row.id]}
+                    />
+                    <h2 className="text-center">{row.name}</h2>
+                    <p
+                      className="text-center font-italic"
+                      style={{ width: "6rem" }}
+                    >
+                      {row.description}
+                    </p>
+                  </Col>
+                ))
+              ) : (
+                <Col lg={12}>
+                  <h2 className="text-center">Aucune service trouvé</h2>
+                </Col>
+              )}
             </Row>
           </Col>
           <Col xs={12}>
             <hr />
           </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row3")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row4")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row5")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <h3 className="text-center bold">{t("Price.row13")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <h3 className="text-center bold">{t("Price.row14")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <h3 className="text-center bold">{t("Price.row15")}</h3>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row6")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row7")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row8")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-                <h3 className="text-center bold">{t("Price.row16")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row9")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row10")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row11")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-                <h3 className="text-center bold">{t("Price.row17")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-                <h3 className="text-center bold">{t("Price.row18")}</h3>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <hr />
-          </Col>
-          <Col xs={12}>
-            <Row className="justify-content-center bg-white">
-              <Col md={3}>
-                <h3 className="bold">{t("Price.row3")}</h3>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-danger text-white">
-                    <i className="fa fa-times " aria-hidden="true"></i>
-                  </span>
-                </div>
-              </Col>
-              <Col md={3} className="center-grid">
-                <div className="d-flex justify-content-center mb-4">
-                  <span className="badge-circle bg-success text-white">
-                    <i className="fa fa-check " aria-hidden="true"></i>
-                  </span>
-                </div>
-                <h3 className="text-center bold">{t("Price.row19")}</h3>
-              </Col>
-            </Row>
-          </Col>
+          {tableData1 && tableData1.length > 0 ? (
+            tableData1.map((row, i) => (
+              <>
+                <Col md={3}>
+                  <h3 className="bold">{row.name}</h3>
+                </Col>
+                {row.optionServiceAbonnement.map((row1, inde) => (
+                  <Col md={3} className="center-grid" key={inde}>
+                    <div className={row1.icon && row1.description?"mb-4":"d-flex justify-content-center mb-4"}>
+                      {row1.icon && (
+                        <span
+                          className={
+                            row1.isValueicon
+                              ? "badge-circle bg-success text-white"
+                              : "badge-circle bg-danger text-white"
+                          }
+                        >
+                          <i
+                            className={
+                              row1.isValueicon ? "fa fa-check" : "fa fa-times"
+                            }
+                            aria-hidden="true"
+                          ></i>
+                        </span>
+                      )}
+                      {row1.description && (
+                        <h3 className="text-center bold">
+                          {row1.descriptionvalue}
+                        </h3>
+                      )}
+                    </div>
+                  </Col>
+                ))}
+                <Col xs={12}>
+                  <hr />
+                </Col>
+              </>
+            ))
+          ) : (
+            <Col lg={12}>
+              <h2 className="text-center">Aucune option trouvé</h2>
+            </Col>
+          )}
         </Row>
       </Container>
     </>

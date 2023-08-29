@@ -572,7 +572,7 @@ const Cour = () => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={4} className="text-center">
-                            Aucune categorie materielle trouvé
+                            Aucune cour trouvé
                           </TableCell>
                         </TableRow>
                       )}
