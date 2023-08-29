@@ -76,7 +76,7 @@ const CourCollectif = () => {
                 ))
               ) : (
                 <Col lg={12}>
-                  <h2 className="text-center">Aucune cour trouvé</h2>
+                  <h2 className="text-center">Aucun cour trouvé</h2>
                 </Col>
               )}
             </Row>
