@@ -22,21 +22,22 @@ import {
   Modal,
   Row,
   Table,
+  UncontrolledCarousel,
 } from "reactstrap";
 import Swal from "sweetalert2";
 import {
   UpdateFile,
   UploadFile,
-  createServiceAbonnement,
-  getListServiceAbonnement,
-  getServiceAbonnementById,
+  createSalle,
+  getListSalle,
+  getSalleById,
   readFile,
   removeFile,
-  removeServiceAbonnementById,
-  updateServiceAbonnement,
+  removeSalleById,
+  updateSalle,
 } from "../service/frontendService";
 
-const ServiceAbonnement = () => {
+const Salle = () => {
   const [tableData, setTableData] = useState([]);
   const [tableDataCopy, setTableDataCopy] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -51,6 +52,11 @@ const ServiceAbonnement = () => {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [gallerie, setGallerie] = useState([]);
+  const [gallerieUrls, setGallerieUrls] = useState([]);
+  const [galleriePathLast, setGalleriePathLast] = useState([]);
+  const [videoModal, setVideoModal] = useState(false);
+
   const [status, setStatus] = useState("");
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
@@ -59,10 +65,12 @@ const ServiceAbonnement = () => {
   }, []);
 
   useEffect(() => {}, [tableData]);
-
   useEffect(() => {}, [exampleModal]);
+  useEffect(() => {}, [videoModal]);
 
   const handleClickDesable = (id = 0, status) => {
+    setGallerie([]);
+
     if (id != 0) {
       if (status != "delete") getById(id);
       setIsUser(id);
@@ -71,22 +79,40 @@ const ServiceAbonnement = () => {
       setName("");
       setImgPath("");
       setImgContent(null);
+      setGallerie([]);
       setDescription("");
       setStatus("");
       setExampleModal(true);
     }
     setTypeModal(status);
   };
+  useEffect(() => {
+    console.log("rrrrrrrrrrrrrrrrr gallerie gallerie ", gallerie.length);
+  }, [gallerie]);
+
   const getById = async (intern) => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getServiceAbonnementById(id, intern);
+      const res = await getSalleById(id, intern);
       setName(res.name);
       setDescription(res.description);
       setImgPath(res.imgPath);
-      await getFile(res.imgPath);
+      let contimg = await getFile(res.imgPath);
+      setImgContent(contimg);
+      let newgal = await callGal(res.gallerie);
+      setGallerie(newgal);
       setStatus(res.status);
     } catch (error) {}
+  };
+  const callGal = (galleries) => {
+    let res = [];
+    galleries.forEach(async (el) => {
+      let el1 = await getFile(el);
+      res.push({ fileName: el, content: el1 });
+    });
+
+    console.log("rrrrrrrrrrrrrrrrr  ", res);
+    return res;
   };
   const handleFilter = (text) => {
     setInputText(text);
@@ -110,10 +136,10 @@ const ServiceAbonnement = () => {
     setTableDataCopy([]);
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getListServiceAbonnement(id);
+      const res = await getListSalle(id);
       const urls = {};
       for (const row of res) {
-        const imgUrl = await getFileContent(row.imgPath);
+        const imgUrl = await getFile(row.imgPath);
         urls[row.id] = imgUrl;
       }
       setImageUrls(urls);
@@ -125,9 +151,8 @@ const ServiceAbonnement = () => {
   const handleChangePage = (event, newpage) => {
     setpg(newpage);
   };
-  const toggleModal = () => {
-    setExampleModal(!exampleModal);
-  };
+  const toggleModal = () => setExampleModal(!exampleModal);
+  const handleClose = () => setVideoModal(!videoModal);
   const handleChangeRowsPerPage = (event) => {
     setrpg(parseInt(event.target.value, 10));
     setpg(0);
@@ -145,9 +170,21 @@ const ServiceAbonnement = () => {
     }
     if (!imgPath) {
       formIsValid = false;
-      newErrors.name = "Image is required";
+      newErrors.imgPath = "Image is required";
     }
-
+    if (gallerie && gallerie.length == 0) {
+      formIsValid = false;
+      newErrors.gallerie = "Gallerie is required";
+    }
+    if (gallerie.length > 0) {
+      gallerie.forEach((el) => {
+        if (!el.fileName || el.fileName == "") {
+          formIsValid = false;
+          newErrors.gallerie = "Gallerie is required";
+          return;
+        }
+      });
+    }
     setErrors(newErrors);
     return formIsValid;
   };
@@ -166,19 +203,25 @@ const ServiceAbonnement = () => {
       name,
       description,
       imgPath,
+      gallerie,
     };
     try {
-      const user = await createServiceAbonnement(
+      const user = await createSalle(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
       imgPathLast.forEach(async (el) => {
         if (el != imgPath) await removeFileUpload(el);
       });
+      galleriePathLast.forEach(async (el) => {
+        if (el != gallerie) await removeFileUpload(el);
+      });
       setImgPathLast([]);
+      setGalleriePathLast([]);
       setName("");
       setDescription("");
       setImgPath("");
+      setGallerie([]);
       setImgContent(null);
       setExampleModal(false);
       getList();
@@ -199,7 +242,7 @@ const ServiceAbonnement = () => {
   };
   const removMethod = async () => {
     try {
-      const user = await removeServiceAbonnementById(
+      const user = await removeSalleById(
         JSON.parse(localStorage.getItem("auth")).userid,
         idUser
       );
@@ -207,6 +250,7 @@ const ServiceAbonnement = () => {
       setDescription("");
       setImgPath("");
       setImgContent(null);
+      setGallerie([]);
       setExampleModal(false);
       getList();
       Swal.fire({
@@ -229,11 +273,12 @@ const ServiceAbonnement = () => {
       id: idUser,
       name,
       description,
+      gallerie,
       imgPath,
       status,
     };
     try {
-      const user = await updateServiceAbonnement(
+      const user = await updateSalle(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
@@ -246,7 +291,10 @@ const ServiceAbonnement = () => {
       setImgPath("");
       setImgPathLast([]);
       setImgContent(null);
+      setGallerie([]);
       setExampleModal(false);
+      setGalleriePathLast([]);
+
       getList();
 
       Swal.fire({
@@ -283,15 +331,30 @@ const ServiceAbonnement = () => {
       });
     }
   };
-  const uploadImg = async (contentFile) => {
+  const uploadImg = async (contentFile, typeaction, fileNa = "", index = 0) => {
     const formData = new FormData();
     formData.append("file", contentFile);
     if (contentFile)
       if (typeModal == "create") {
         try {
-          const response = await UpdateFile(imgPath, formData);
-          setImgPath(response);
-          await getFile(response);
+          if (typeaction == "image") {
+            const response = await UpdateFile(imgPath, formData);
+            setImgPath(response);
+            let contimg = await getFile(response);
+            setImgContent(contimg);
+          }
+          if (typeaction == "gallerie") {
+            const response = await UpdateFile(fileNa, formData);
+            let content = await getFile(response);
+            // setGallerieContent([...gallerieContent, contimgs]);
+            let newgallerie = [...gallerie];
+            newgallerie[index].fileName = response;
+            newgallerie[index].content = content;
+
+            console.log("rrrrrrrrrrrrrrr ", index, " ffffff ", newgallerie);
+
+            setGallerie(newgallerie);
+          }
         } catch (error) {
           console.error("Error uploading file:", error);
           Swal.fire({
@@ -313,9 +376,18 @@ const ServiceAbonnement = () => {
           let tabUrl = [];
           const response = await UploadFile(formData);
           tabUrl.push(response);
-          setImgPath(response);
-          setImgPathLast([...imgPathLast, tabUrl]);
-          await getFile(response);
+          if (typeaction == "image") {
+            setImgPath(response);
+            setImgPathLast([...imgPathLast, tabUrl]);
+            let contimg = await getFile(response);
+            setImgContent(contimg);
+          }
+          if (typeaction == "gallerie") {
+            let content = await getFile(response);
+            setGallerie([...gallerie, { fileName: response, content }]);
+            setGalleriePathLast([...imgPathLast, response]);
+            // setGallerieContent(contimg);
+          }
         } catch (error) {
           console.error("Error uploading file:", error);
           Swal.fire({
@@ -333,11 +405,17 @@ const ServiceAbonnement = () => {
           });
         }
   };
+  const handleRemoveGallerieItem = async (gal, index) => {
+    const updatedGallerie = [...gallerie];
+    if (gal.fileName != "") await removeFileUpload(gal.fileName);
+    updatedGallerie.splice(index, 1);
+    setGallerie(updatedGallerie);
+  };
+
   const getFile = async (url) => {
     try {
       const response = await readFile(url);
       const imgUrl = URL.createObjectURL(response);
-      setImgContent(imgUrl);
       return imgUrl;
     } catch (error) {
       console.error("Error displaying file:", error);
@@ -356,15 +434,16 @@ const ServiceAbonnement = () => {
       });
     }
   };
-  const getFileContent = async (imgPath) => {
-    try {
-      const response = await readFile(imgPath);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-      // Handle the error
-    }
+  const previewGallerie = async (galle = [], title, content) => {
+    let lienurl = [];
+    galle.forEach(async (el, index) => {
+      const elUrl = await getFile(el);
+      lienurl.push({ src: elUrl, key: index });
+    });
+    setGallerieUrls(lienurl);
+    setName(title);
+    setDescription(content);
+    setVideoModal(true);
   };
   return (
     <>
@@ -374,7 +453,7 @@ const ServiceAbonnement = () => {
             <Row>
               <Col md={12}>
                 <h5 className="text-uppercase text-white mb-0">
-                  Liste des services abonnements
+                  Liste des salles
                 </h5>
               </Col>
               <Col md={12} className="d-flex justify-content-between mt-5">
@@ -391,7 +470,7 @@ const ServiceAbonnement = () => {
                     onClick={() => handleClickDesable(0, "create")}
                   >
                     <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
-                    Ajouter un service abonnement
+                    Ajouter une salle
                   </Button>
                 </FormGroup>
               </Col>
@@ -427,7 +506,7 @@ const ServiceAbonnement = () => {
                       <TableRow>
                         <TableCell>Image</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Descritpion</TableCell>
+                        <TableCell>Gallerie</TableCell>
                         <TableCell>Status</TableCell>
                         <TableCell>Action</TableCell>
                       </TableRow>
@@ -445,7 +524,22 @@ const ServiceAbonnement = () => {
                               />
                             </TableCell>
                             <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.description}</TableCell>
+                            <TableCell>
+                              {" "}
+                              <span
+                                className="text-primary"
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  previewGallerie(
+                                    row.gallerie,
+                                    row.name,
+                                    row.description
+                                  )
+                                }
+                              >
+                                Voir plus
+                              </span>
+                            </TableCell>
                             <TableCell>
                               {row.status ? (
                                 <i
@@ -492,7 +586,7 @@ const ServiceAbonnement = () => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={4} className="text-center">
-                            Aucun service abonnement trouvé
+                            Aucune salle trouvé
                           </TableCell>
                         </TableRow>
                       )}
@@ -519,9 +613,9 @@ const ServiceAbonnement = () => {
           >
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                {typeModal == "create" && "Ajouter un service abonnement "}
-                {typeModal == "update" && "Modifier un service abonnement "}
-                {typeModal == "delete" && "Supprimer un service abonnement "}
+                {typeModal == "create" && "Ajouter une salle "}
+                {typeModal == "update" && "Modifier une salle "}
+                {typeModal == "delete" && "Supprimer une salle "}
               </h5>
               <button
                 aria-label="Close"
@@ -544,12 +638,11 @@ const ServiceAbonnement = () => {
                     <Input
                       type="file"
                       className="btn btn-secondary"
-                      onChange={(e) => uploadImg(e.target.files[0])}
+                      onChange={(e) => uploadImg(e.target.files[0], "image")}
                       accept="image/*"
                     />
                     {!imgPath && (
                       <>
-                        {" "}
                         {errors.imgPath && (
                           <span
                             className="text-danger"
@@ -557,7 +650,7 @@ const ServiceAbonnement = () => {
                           >
                             {errors.imgPath}
                           </span>
-                        )}{" "}
+                        )}
                       </>
                     )}
                     {imgContent && (
@@ -579,13 +672,18 @@ const ServiceAbonnement = () => {
                         onChange={(e) => setName(e.target.value)}
                       />
                     </InputGroup>
-                    {errors.name && (
-                      <span
-                        className="text-danger"
-                        style={{ fontSize: "13px" }}
-                      >
-                        {errors.name}
-                      </span>
+                    {!name && (
+                      <>
+                        {" "}
+                        {errors.name && (
+                          <span
+                            className="text-danger"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {errors.name}
+                          </span>
+                        )}
+                      </>
                     )}
                   </FormGroup>
                   <FormGroup>
@@ -597,21 +695,95 @@ const ServiceAbonnement = () => {
                       </InputGroupAddon>
                       <Input
                         placeholder="Description"
-                        type="text"
+                        type="textarea"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                       />
                     </InputGroup>
-                    {errors.description && (
-                      <span
-                        className="text-danger"
-                        style={{ fontSize: "13px" }}
-                      >
-                        {errors.description}
-                      </span>
+                    {!description && (
+                      <>
+                        {" "}
+                        {errors.description && (
+                          <span
+                            className="text-danger"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {errors.description}
+                          </span>
+                        )}{" "}
+                      </>
                     )}
                   </FormGroup>
-
+                  <FormGroup>
+                    <div className="d-flex text-muted align-items-center mb-2">
+                      <i className="ni ni-image mr-2"></i>
+                      <span className="text-muted">Gallerie</span>
+                    </div>
+                    {gallerie &&
+                      gallerie.length > 0 &&
+                      gallerie.map((gal, index) => (
+                        <div key={index}>
+                          <Input
+                            type="file"
+                            className="btn btn-secondary"
+                            onChange={(e) =>
+                              uploadImg(
+                                e.target.files[0],
+                                "gallerie",
+                                gal.fileName,
+                                index
+                              )
+                            }
+                            accept="image/*"
+                          />
+                          <div className="mt-2 d-flex justify-content-between">
+                            {gal.content && (
+                              <img
+                                alt="..."
+                                src={gal.content}
+                                width={50}
+                                height={50}
+                              />
+                            )}
+                            <div
+                              className="badge-circle mt-1 bg-danger"
+                              onClick={() =>
+                                handleRemoveGallerieItem(gal, index)
+                              }
+                            >
+                              <i className="fa fa-times" aria-hidden="true"></i>
+                            </div>
+                          </div>
+                          <hr className="my-4" />
+                        </div>
+                      ))}
+                    <Button
+                      color="facebook"
+                      type="button"
+                      className="mt-2"
+                      onClick={() =>
+                        setGallerie([
+                          ...gallerie,
+                          { fileName: "", content: "" },
+                        ])
+                      }
+                    >
+                      Ajouter une photo
+                    </Button>
+                    {!gallerie && (
+                      <>
+                        {" "}
+                        {errors.gallerie && (
+                          <p
+                            className="text-danger mt-2"
+                            style={{ fontSize: "13px" }}
+                          >
+                            {errors.gallerie}
+                          </p>
+                        )}{" "}
+                      </>
+                    )}
+                  </FormGroup>
                   {typeModal == "update" && (
                     <FormGroup>
                       <div className="form-check">
@@ -632,15 +804,6 @@ const ServiceAbonnement = () => {
                           Status
                         </label>
                       </div>
-
-                      {errors.status && (
-                        <span
-                          className="text-danger"
-                          style={{ fontSize: "13px" }}
-                        >
-                          {errors.status}
-                        </span>
-                      )}
                     </FormGroup>
                   )}
                 </Form>
@@ -662,9 +825,38 @@ const ServiceAbonnement = () => {
               </Button>
             </div>
           </Modal>
+          {/* Gallerie Modal */}
+          <Modal
+            className="modal-dialog-centered"
+            isOpen={videoModal}
+            toggle={handleClose}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title">{name} </h5>
+              <button
+                aria-label="Close"
+                className="close"
+                data-dismiss="modal"
+                type="button"
+                onClick={handleClose}
+              >
+                <span aria-hidden={true}>×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <UncontrolledCarousel items={gallerieUrls} />
+              <h3 className="mt-4 mb-2">Descritpion</h3>
+              <p>{description}</p>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={handleClose}>
+                Close
+              </button>
+            </div>
+          </Modal>
         </Row>
       </Container>
     </>
   );
 };
-export default ServiceAbonnement;
+export default Salle;

@@ -49,7 +49,7 @@ const Cour = () => {
   const [name, setName] = useState("");
   const [contentCour, setContentCour] = useState("");
   const [description, setDescription] = useState("");
-  const [imgPath, setImgPath] = useState("");
+  const [imgPath, setImgPath] = useState(null);
   const [isVideoLocal, setIsVideoLocal] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [imgPathLast, setImgPathLast] = useState([]);
@@ -116,7 +116,6 @@ const Cour = () => {
       console.error("Error displaying file:", error);
     }
   };
-
   const handleFilter = (text) => {
     setInputText(text);
     if (text) {
@@ -133,7 +132,6 @@ const Cour = () => {
       setTableData(tableDataCopy);
     }
   };
-
   const getList = async () => {
     setTableData([]);
     setTableDataCopy([]);
@@ -356,72 +354,73 @@ const Cour = () => {
   const uploadImg = async (contentFile, typeAction) => {
     const formData = new FormData();
     formData.append("file", contentFile);
-    if (typeModal == "create") {
-      try {
-        const response = await UpdateFile(
-          typeAction == "image" ? imgPath : videoLink,
-          formData
-        );
-        if (typeAction == "image") {
-          setImgPath(response);
-          let imgUrl = await getFile(response);
-          setImgContent(imgUrl);
+    if (contentFile)
+      if (typeModal == "create") {
+        try {
+          const response = await UpdateFile(
+            typeAction == "image" ? imgPath : videoLink,
+            formData
+          );
+          if (typeAction == "image") {
+            setImgPath(response);
+            let imgUrl = await getFile(response);
+            setImgContent(imgUrl);
+          }
+          if (typeAction == "video") {
+            setVideoLink(response);
+            let videoUrl = await getFile(response);
+            setVideoContent(videoUrl);
+          }
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Error uploading file",
+            showConfirmButton: false,
+            timer: 2000,
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
         }
-        if (typeAction == "video") {
-          setVideoLink(response);
-          let videoUrl = await getFile(response);
-          setVideoContent(videoUrl);
+      } else
+        try {
+          let tabUrl = [];
+          const response = await UploadFile(formData);
+          if (typeAction == "image") {
+            tabUrl.push(response);
+            setImgPath(response);
+            setImgPathLast([...imgPathLast, tabUrl]);
+            let imgUrl = await getFile(response);
+            setImgContent(imgUrl);
+          }
+          if (typeAction == "video") {
+            tabUrl.push(response);
+            setVideoLink(response);
+            setVideoPathLast([...videoPathLast, tabUrl]);
+            let videoUrl = await getFile(response);
+            setVideoContent(videoUrl);
+          }
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Error uploading file",
+            showConfirmButton: false,
+            timer: 2000,
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
         }
-      } catch (error) {
-        console.error("Error uploading file:", error);
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Error uploading file",
-          showConfirmButton: false,
-          timer: 2000,
-          showClass: {
-            popup: "animate__animated animate__fadeInDown",
-          },
-          hideClass: {
-            popup: "animate__animated animate__fadeOutUp",
-          },
-        });
-      }
-    } else
-      try {
-        let tabUrl = [];
-        const response = await UploadFile(formData);
-        if (typeAction == "image") {
-          tabUrl.push(response);
-          setImgPath(response);
-          setImgPathLast([...imgPathLast, tabUrl]);
-          let imgUrl = await getFile(response);
-          setImgContent(imgUrl);
-        }
-        if (typeAction == "video") {
-          tabUrl.push(response);
-          setVideoLink(response);
-          setVideoPathLast([...videoPathLast, tabUrl]);
-          let videoUrl = await getFile(response);
-          setVideoContent(videoUrl);
-        }
-      } catch (error) {
-        console.error("Error uploading file:", error);
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Error uploading file",
-          showConfirmButton: false,
-          timer: 2000,
-          showClass: {
-            popup: "animate__animated animate__fadeInDown",
-          },
-          hideClass: {
-            popup: "animate__animated animate__fadeOutUp",
-          },
-        });
-      }
   };
   const previewVideo = async (video, title, content) => {
     const videoUrl = await getFile(video);
@@ -624,6 +623,7 @@ const Cour = () => {
                     </div>
                     <Input
                       type="file"
+                      className="btn btn-secondary"
                       onChange={(e) => uploadImg(e.target.files[0], "image")}
                       accept="image/*"
                     />
@@ -761,6 +761,7 @@ const Cour = () => {
                       </div>
                       <Input
                         type="file"
+                        className="btn btn-secondary"
                         onChange={(e) => uploadImg(e.target.files[0], "video")}
                         accept="video/*"
                       />
@@ -827,7 +828,6 @@ const Cour = () => {
               </Button>
             </div>
           </Modal>
-
           {/* Video Modal */}
           <Modal
             className="modal-dialog-centered"

@@ -7,6 +7,7 @@ import OptionAbonnement from "../views/OptionAbonnement";
 import Profile from "../views/Profile";
 import ServiceAbonnement from "../views/ServiceAbonnement";
 import Cour from "../views/Cour";
+import Salle from "../views/Salle";
 
 var routes = [
   {
@@ -102,7 +103,7 @@ var routes = [
     path: "/salle",
     name: "Salle",
     icon: "ni ni-single-02",
-    component: <Profile />,
+    component: <Salle />,
     layout: "/in",
     sidebar: true,
     postion: 5,
