@@ -228,14 +228,14 @@ const CategorieMateriel = () => {
                   Liste des categories materielles
                 </h5>
               </Col>
-              <Col md={12} className="d-flex justify-content-between mt-5">
-                <FormGroup md={6}>
+              <Col md={12} className="d-md-flex justify-content-between mt-5">
+                <FormGroup >
                   <Button color="info" type="button" onClick={getList}>
                     <i className="fa fa-refresh" aria-hidden="true"></i>{" "}
                     Actualiser
                   </Button>
                 </FormGroup>
-                <FormGroup md={6}>
+                <FormGroup >
                   <Button
                     color="success"
                     type="button"

@@ -289,7 +289,7 @@ const OptionAbonnement = () => {
                   Liste des options abonnements
                 </h5>
               </Col>
-              <Col md={12} className="d-flex justify-content-between mt-5">
+              <Col md={12} className="d-md-flex justify-content-between mt-5">
                 <FormGroup md={6}>
                   <Button color="info" type="button" onClick={getList}>
                     <i className="fa fa-refresh" aria-hidden="true"></i>{" "}
@@ -593,7 +593,7 @@ const OptionAbonnement = () => {
                         />
                         <label
                           className="form-check-label"
-                          for="flexCheckDefault"
+                          htmlFor="flexCheckDefault"
                         >
                           Status
                         </label>

@@ -65,42 +65,42 @@ const Salle = () => {
   }, []);
 
   useEffect(() => {}, [tableData]);
-  useEffect(() => {}, [exampleModal]);
+  useEffect(() => {
+    if (!exampleModal)
+      imgPathLast.forEach(async (el) => {
+        if (el != imgPath) await removeFileUpload(el);
+      });
+  }, [exampleModal]);
   useEffect(() => {}, [videoModal]);
 
   const handleClickDesable = (id = 0, status) => {
-    setGallerie([]);
-
     if (id != 0) {
       if (status != "delete") getById(id);
       setIsUser(id);
-      setExampleModal(true);
     } else {
       setName("");
       setImgPath("");
       setImgContent(null);
-      setGallerie([]);
       setDescription("");
       setStatus("");
-      setExampleModal(true);
     }
     setTypeModal(status);
+    setGallerie([]);
+    setExampleModal(true);
   };
-  useEffect(() => {
-    console.log("rrrrrrrrrrrrrrrrr gallerie gallerie ", gallerie.length);
-  }, [gallerie]);
+  useEffect(() => {}, [gallerie]);
 
   const getById = async (intern) => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await getSalleById(id, intern);
+      let newgal = await callGal(res.gallerie);
+      setGallerie(newgal);
       setName(res.name);
       setDescription(res.description);
       setImgPath(res.imgPath);
       let contimg = await getFile(res.imgPath);
       setImgContent(contimg);
-      let newgal = await callGal(res.gallerie);
-      setGallerie(newgal);
       setStatus(res.status);
     } catch (error) {}
   };
@@ -110,8 +110,6 @@ const Salle = () => {
       let el1 = await getFile(el);
       res.push({ fileName: el, content: el1 });
     });
-
-    console.log("rrrrrrrrrrrrrrrrr  ", res);
     return res;
   };
   const handleFilter = (text) => {
@@ -350,9 +348,6 @@ const Salle = () => {
             let newgallerie = [...gallerie];
             newgallerie[index].fileName = response;
             newgallerie[index].content = content;
-
-            console.log("rrrrrrrrrrrrrrr ", index, " ffffff ", newgallerie);
-
             setGallerie(newgallerie);
           }
         } catch (error) {
@@ -384,9 +379,11 @@ const Salle = () => {
           }
           if (typeaction == "gallerie") {
             let content = await getFile(response);
-            setGallerie([...gallerie, { fileName: response, content }]);
-            setGalleriePathLast([...imgPathLast, response]);
-            // setGallerieContent(contimg);
+            let newgallerie = [...gallerie];
+            newgallerie[index].fileName = response;
+            newgallerie[index].content = content;
+            setGallerie(newgallerie);
+            setGalleriePathLast([...galleriePathLast, response]);
           }
         } catch (error) {
           console.error("Error uploading file:", error);
@@ -438,7 +435,7 @@ const Salle = () => {
     let lienurl = [];
     galle.forEach(async (el, index) => {
       const elUrl = await getFile(el);
-      lienurl.push({ src: elUrl, key: index });
+      lienurl.push({ src: elUrl, key: index, caption: "" });
     });
     setGallerieUrls(lienurl);
     setName(title);
@@ -456,7 +453,7 @@ const Salle = () => {
                   Liste des salles
                 </h5>
               </Col>
-              <Col md={12} className="d-flex justify-content-between mt-5">
+              <Col md={12} className="d-md-flex justify-content-between mt-5">
                 <FormGroup md={6}>
                   <Button color="info" type="button" onClick={getList}>
                     <i className="fa fa-refresh" aria-hidden="true"></i>{" "}
@@ -719,44 +716,47 @@ const Salle = () => {
                       <i className="ni ni-image mr-2"></i>
                       <span className="text-muted">Gallerie</span>
                     </div>
-                    {gallerie &&
-                      gallerie.length > 0 &&
-                      gallerie.map((gal, index) => (
-                        <div key={index}>
-                          <Input
-                            type="file"
-                            className="btn btn-secondary"
-                            onChange={(e) =>
-                              uploadImg(
-                                e.target.files[0],
-                                "gallerie",
-                                gal.fileName,
-                                index
-                              )
-                            }
-                            accept="image/*"
-                          />
-                          <div className="mt-2 d-flex justify-content-between">
-                            {gal.content && (
-                              <img
-                                alt="..."
-                                src={gal.content}
-                                width={50}
-                                height={50}
-                              />
-                            )}
-                            <div
-                              className="badge-circle mt-1 bg-danger"
-                              onClick={() =>
-                                handleRemoveGallerieItem(gal, index)
+                    {gallerie.length === 0
+                      ? typeModal != "create" && <p>Loading gallerie...</p>
+                      : gallerie.map((gal, index) => (
+                          <div key={index}>
+                            <Input
+                              type="file"
+                              className="btn btn-secondary"
+                              onChange={(e) =>
+                                uploadImg(
+                                  e.target.files[0],
+                                  "gallerie",
+                                  gal.fileName,
+                                  index
+                                )
                               }
-                            >
-                              <i className="fa fa-times" aria-hidden="true"></i>
+                              accept="image/*"
+                            />
+                            <div className="mt-2 d-flex justify-content-between">
+                              {gal.content && (
+                                <img
+                                  alt="..."
+                                  src={gal.content}
+                                  width={50}
+                                  height={50}
+                                />
+                              )}
+                              <div
+                                className="badge-circle mt-1 bg-danger"
+                                onClick={() =>
+                                  handleRemoveGallerieItem(gal, index)
+                                }
+                              >
+                                <i
+                                  className="fa fa-times"
+                                  aria-hidden="true"
+                                ></i>
+                              </div>
                             </div>
+                            <hr className="my-4" />
                           </div>
-                          <hr className="my-4" />
-                        </div>
-                      ))}
+                        ))}
                     <Button
                       color="facebook"
                       type="button"
@@ -799,7 +799,7 @@ const Salle = () => {
                         />
                         <label
                           className="form-check-label"
-                          for="flexCheckDefault"
+                          htmlFor="flexCheckDefault"
                         >
                           Status
                         </label>
@@ -844,7 +844,9 @@ const Salle = () => {
               </button>
             </div>
             <div className="modal-body">
-              <UncontrolledCarousel items={gallerieUrls} />
+              <div className="image-container">
+                <UncontrolledCarousel items={gallerieUrls} />
+              </div>{" "}
               <h3 className="mt-4 mb-2">Descritpion</h3>
               <p>{description}</p>
             </div>

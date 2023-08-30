@@ -194,13 +194,9 @@ export const getListServiceAbonnement = async (id) => {
 };
 export const getListServiceAbonnementActif = async () => {
   try {
-    const response = await axios.get(
-      `${baseURL}/v2/services`
-    );
+    const response = await axios.get(`${baseURL}/v2/services`);
     return response.data;
-  } catch (error) {
-   
-  }
+  } catch (error) {}
 };
 export const getServiceAbonnementById = async (id, data) => {
   try {
@@ -770,29 +766,11 @@ export const getListRepas = async (id) => {
     });
   }
 };
-export const getListRepasActif = async (id) => {
+export const getListRepasActif = async () => {
   try {
-    const tokenString = localStorage.getItem("auth");
-    const userToken = JSON.parse(tokenString);
-    const response = await axios.get(`${baseURL}/repas/actif/${id}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
+    const response = await axios.get(`${baseURL}/v2/repas`);
     return response.data;
-  } catch (error) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
-      title: error.response?.data.errors.message,
-      showConfirmButton: false,
-      timer: 2000,
-      showClass: {
-        popup: "animate__animated animate__fadeInDown",
-      },
-      hideClass: {
-        popup: "animate__animated animate__fadeOutUp",
-      },
-    });
-  }
+  } catch (error) {}
 };
 export const getRepasById = async (id, data) => {
   try {
@@ -847,6 +825,110 @@ export const removeRepasById = async (id, data) => {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
     const response = await axios.delete(`${baseURL}/repas/${id}/id/${data}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+  }
+};
+
+// materiel
+export const getListMateriel = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/materiel/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+  }
+};
+export const getListMaterielActif = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/v2/materiel`);
+    return response.data;
+  } catch (error) {}
+};
+export const getMaterielById = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/materiel/${id}/id/${data}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+  }
+};
+export const createMateriel = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/materiel/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const updateMateriel = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.put(`${baseURL}/materiel/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const removeMaterielById = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.delete(`${baseURL}/materiel/${id}/id/${data}`, {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;

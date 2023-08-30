@@ -1,13 +1,14 @@
 import React from "react";
 import CategorieMateriel from "../views/CategorieMateriel";
 import Client from "../views/Client";
+import Cour from "../views/Cour";
 import Dashboard from "../views/Dashboard";
 import Intern from "../views/Intern";
 import OptionAbonnement from "../views/OptionAbonnement";
 import Profile from "../views/Profile";
-import ServiceAbonnement from "../views/ServiceAbonnement";
-import Cour from "../views/Cour";
 import Salle from "../views/Salle";
+import ServiceAbonnement from "../views/ServiceAbonnement";
+import Materiel from "../views/Materiel";
 
 var routes = [
   {
@@ -93,7 +94,7 @@ var routes = [
     path: "/materiel",
     name: "Materiel",
     icon: "fa fa-cube",
-    component: <Profile />,
+    component: <Materiel />,
     layout: "/in",
     sidebar: true,
     postion: 5,

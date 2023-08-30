@@ -68,7 +68,10 @@ const CourInter = () => {
 
   useEffect(() => {}, [tableData]);
   useEffect(() => {}, [videoModal]);
-  useEffect(() => {}, [exampleModal]);
+  useEffect(() => {  if (!exampleModal)
+    imgPathLast.forEach(async (el) => {
+      if (el != imgPath) await removeFileUpload(el);
+    });}, [exampleModal]);
 
   const handleClickDesable = (id = 0, status) => {
     if (id != 0) {
@@ -440,7 +443,7 @@ const CourInter = () => {
                   Liste des cours
                 </h5>
               </Col>
-              <Col md={12} className="d-flex justify-content-between mt-5">
+              <Col md={12} className="d-md-flex justify-content-between mt-5">
                 <FormGroup md={6}>
                   <Button color="info" type="button" onClick={getList}>
                     <i className="fa fa-refresh" aria-hidden="true"></i>{" "}
@@ -723,7 +726,7 @@ const CourInter = () => {
                       />
                       <label
                         className="form-check-label"
-                        for="flexCheckDefault1"
+                        htmlFor="flexCheckDefault1"
                       >
                         Le cour est une video?
                       </label>
@@ -802,7 +805,7 @@ const CourInter = () => {
                         />
                         <label
                           className="form-check-label"
-                          for="flexCheckDefault"
+                          htmlFor="flexCheckDefault"
                         >
                           Status
                         </label>
