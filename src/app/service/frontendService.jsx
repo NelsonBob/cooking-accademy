@@ -872,7 +872,7 @@ export const getListMateriel = async (id) => {
 };
 export const getListMaterielActif = async () => {
   try {
-    const response = await axios.get(`${baseURL}/v2/materiel`);
+    const response = await axios.get(`${baseURL}/v2/materiels`);
     return response.data;
   } catch (error) {}
 };
