@@ -38,7 +38,11 @@ function Home() {
       const res = await getListInternChef();
       const urls = {};
       for (const row of res) {
-        const imgUrl = await getFile(row.imgPath);
+        let imgUrl;
+        if (row.imgPath) imgUrl = await getFile(row.imgPath);
+        else
+          imgUrl = require("../../../assets/img/brand/icon-4399701_1280.webp");
+
         urls[row.id] = imgUrl;
       }
       setImageUrls1(urls);
