@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardImg, Col, Container, Row } from "reactstrap";
-import { getListRepasActif, readFile } from "../../service/frontendService";
+import {
+  getListInternChef,
+  getListRepasActif,
+  readFile,
+} from "../../service/frontendService";
 
 function Home() {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
+  const [tableData1, setTableData1] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
+  const [imageUrls1, setImageUrls1] = useState({});
 
   useEffect(() => {
     getList();
+    getListChefs();
   }, []);
 
   const getList = async () => {
@@ -23,6 +30,19 @@ function Home() {
       }
       setImageUrls(urls);
       setTableData(res);
+    } catch (error) {}
+  };
+  const getListChefs = async () => {
+    setTableData1([]);
+    try {
+      const res = await getListInternChef();
+      const urls = {};
+      for (const row of res) {
+        const imgUrl = await getFile(row.imgPath);
+        urls[row.id] = imgUrl;
+      }
+      setImageUrls1(urls);
+      setTableData1(res);
     } catch (error) {}
   };
   const getFile = async (url) => {
@@ -98,50 +118,69 @@ function Home() {
           </Col>
           <Col md={6} xs={12} className="my-6">
             <Row>
-              <Col lg={6} className="center-grid">
-                <img
-                  alt="..."
-                  width={150}
-                  height={150}
-                  src={require("../../../assets/img/chefs/chef1-free-img.png")}
-                />
-                <h1 className="text-center mt-2">Arthur Lee</h1>
-                <p className="description text-center">
-                  Fondateur / Chef de cuisine
-                </p>
-              </Col>
-              <Col lg={6} className="center-grid">
-                <img
-                  alt="..."
-                  width={150}
-                  height={150}
-                  src={require("../../../assets/img/chefs/chef3-free-img.png")}
-                />
-                <h1 className="text-center mt-2">Suzanne Grey</h1>
-                <p className="description text-center">Chef cuisinier</p>
-              </Col>
-              <Col lg={6} className="center-grid">
-                <img
-                  alt="..."
-                  width={150}
-                  height={150}
-                  src={require("../../../assets/img/chefs/chef2-free-img.png")}
-                />
-                <h1 className="text-center mt-2">James Lee</h1>
-                <p className="description text-center">Co-fondateur / Chef</p>
-              </Col>
-              <Col lg={6} className="center-grid">
-                <img
-                  alt="..."
-                  width={150}
-                  height={150}
-                  src={require("../../../assets/img/chefs/chef4-free-img.png")}
-                />
-                <h1 className="text-center mt-2">Max Broody</h1>
-                <p className="description text-center">
-                  Chef du petit-déjeuner
-                </p>
-              </Col>
+              {tableData1 && tableData1.length == 4 ? (
+                tableData1.map((row, i) => (
+                  <Col lg={6} className="center-grid" key={i}>
+                    <img
+                      alt="..."
+                      width={150}
+                      height={150}
+                      src={imageUrls1[row.id]}
+                    />
+                    <h1 className="text-center mt-2">{row.name}</h1>
+                    <p className="description text-center">{row.fonction}</p>
+                  </Col>
+                ))
+              ) : (
+                <>
+                  <Col lg={6} className="center-grid">
+                    <img
+                      alt="..."
+                      width={150}
+                      height={150}
+                      src={require("../../../assets/img/chefs/chef1-free-img.png")}
+                    />
+                    <h1 className="text-center mt-2">Arthur Lee</h1>
+                    <p className="description text-center">
+                      Fondateur / Chef de cuisine
+                    </p>
+                  </Col>
+                  <Col lg={6} className="center-grid">
+                    <img
+                      alt="..."
+                      width={150}
+                      height={150}
+                      src={require("../../../assets/img/chefs/chef3-free-img.png")}
+                    />
+                    <h1 className="text-center mt-2">Suzanne Grey</h1>
+                    <p className="description text-center">Chef cuisinier</p>
+                  </Col>
+                  <Col lg={6} className="center-grid">
+                    <img
+                      alt="..."
+                      width={150}
+                      height={150}
+                      src={require("../../../assets/img/chefs/chef2-free-img.png")}
+                    />
+                    <h1 className="text-center mt-2">James Lee</h1>
+                    <p className="description text-center">
+                      Co-fondateur / Chef
+                    </p>
+                  </Col>
+                  <Col lg={6} className="center-grid">
+                    <img
+                      alt="..."
+                      width={150}
+                      height={150}
+                      src={require("../../../assets/img/chefs/chef4-free-img.png")}
+                    />
+                    <h1 className="text-center mt-2">Max Broody</h1>
+                    <p className="description text-center">
+                      Chef du petit-déjeuner
+                    </p>
+                  </Col>
+                </>
+              )}
             </Row>
           </Col>
         </Row>

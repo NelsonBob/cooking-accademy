@@ -92,6 +92,12 @@ export const getListIntern = async (id) => {
     });
   }
 };
+export const getListInternChef = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/v2/chefs`);
+    return response.data;
+  } catch (error) {}
+};
 export const getInternById = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -940,9 +946,12 @@ export const removeMaterielById = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
-    const response = await axios.delete(`${baseURL}/materiel/${id}/id/${data}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
+    const response = await axios.delete(
+      `${baseURL}/materiel/${id}/id/${data}`,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
     return response.data;
   } catch (error) {
     Swal.fire({
