@@ -72,10 +72,10 @@ function Prix() {
       <Container className="mt--8 pb-5 position-relative">
         <Row className="justify-content-center bg-white p-4">
           <Col xs={12}>
-            <Row className="justify-content-center bg-white pt-4">
+            <Row className="justify-content-center bg-white pt-4 align-items-center">
               <Col md={3}>
-                <h1 className="bold">{t("Price.row1")}</h1>
-                <span className="bold">{t("Price.row2")}</span>
+                <h3 className="bold">{t("Price.row1")}</h3>
+                <span className="bold">{t("Price.row2")}</span> 
               </Col>
               {tableData && tableData.length > 0 ? (
                 tableData.map((row, i) => (
@@ -108,12 +108,12 @@ function Prix() {
           {tableData1 && tableData1.length > 0 ? (
             tableData1.map((row, i) => (
               <>
-                <Col md={3}>
+                <Col md={3} className="d-flex align-items-center">
                   <h3 className="bold">{row.name}</h3>
                 </Col>
                 {row.optionServiceAbonnement.map((row1, inde) => (
                   <Col md={3} className="center-grid" key={inde}>
-                    <div className={row1.icon && row1.description?"mb-4":"d-flex justify-content-center mb-4"}>
+                    <div className={row1.icon && row1.description?"text-center":"d-flex justify-content-center align-items-center "}>
                       {row1.icon && (
                         <span
                           className={

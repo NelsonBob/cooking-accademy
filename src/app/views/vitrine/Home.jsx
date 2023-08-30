@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardImg, Col, Container, Row } from "reactstrap";
+import { getListRepasActif, readFile } from "../../service/frontendService";
 
 function Home() {
   const { t } = useTranslation();
+  const [tableData, setTableData] = useState([]);
+  const [imageUrls, setImageUrls] = useState({});
 
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const getList = async () => {
+    setTableData([]);
+    try {
+      const res = await getListRepasActif();
+      const urls = {};
+      for (const row of res) {
+        const imgUrl = await getFile(row.imgPath);
+        urls[row.id] = imgUrl;
+      }
+      setImageUrls(urls);
+      setTableData(res);
+    } catch (error) {}
+  };
+  const getFile = async (url) => {
+    try {
+      const response = await readFile(url);
+      const imgUrl = URL.createObjectURL(response);
+      return imgUrl;
+    } catch (error) {
+      console.error("Error displaying file:", error);
+    }
+  };
   return (
     <>
       <div className="header bg-img-home py-7 py-lg-8">
@@ -28,144 +57,38 @@ function Home() {
           </Col>
           <Col md={12} className="mt-5">
             <Row className="row-grid">
-              <Col lg={4}>
-                <Card className="card-food py-3 center-grid">
-                  <p className="text-center font-weight-500">
-                    Poulet grillé et frit
-                  </p>
-                  <p className="text-center">$20.00</p>
-                  <div className="center-grid mb-4">
-                    <a className="btn-by" href="#">
-                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                  <div className="center-grid">
-                    <CardImg
-                      alt="..."
-                      src={require("../../../assets/img/repas/food6-free-img.png")}
-                      top
-                      width={250}
-                      height={250}
-                      className="centered-and-covered-img"
-                    />
-                  </div>
-                </Card>
-              </Col>
-              <Col lg={4}>
-                <Card className="card-food py-3 center-grid">
-                  <p className="text-center font-weight-500">
-                    Filet de saumon grillé avec salade
-                  </p>
-                  <p className="text-center">$20.00</p>
-                  <div className="center-grid mb-4">
-                    <a className="btn-by" href="#">
-                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                  <div className="center-grid">
-                    <CardImg
-                      alt="..."
-                      src={require("../../../assets/img/repas/food5-free-img.png")}
-                      top
-                      width={250}
-                      height={250}
-                      className="centered-and-covered-img"
-                    />
-                  </div>
-                </Card>
-              </Col>
-              <Col lg={4}>
-                <Card className="card-food py-3 center-grid">
-                  <p className="text-center font-weight-500">
-                    Steak de maquereau grillé
-                  </p>
-                  <p className="text-center">$18.00</p>
-                  <div className="center-grid mb-4">
-                    <a className="btn-by" href="#">
-                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                  <div className="center-grid">
-                    <CardImg
-                      alt="..."
-                      src={require("../../../assets/img/repas/food3-free-img.png")}
-                      top
-                      width={250}
-                      height={250}
-                      className="centered-and-covered-img"
-                    />
-                  </div>
-                </Card>
-              </Col>
-              <Col lg={4} className="mt-4">
-                <Card className="card-food py-3 center-grid">
-                  <p className="text-center font-weight-500">
-                    Poulet à la sauce Teriyaki
-                  </p>
-                  <p className="text-center">$47.00</p>
-                  <div className="center-grid mb-4">
-                    <a className="btn-by" href="#">
-                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                  <div className="center-grid">
-                    <CardImg
-                      alt="..."
-                      src={require("../../../assets/img/repas/food4-free-img.png")}
-                      top
-                      width={250}
-                      height={250}
-                      className="centered-and-covered-img"
-                    />
-                  </div>
-                </Card>
-              </Col>
-              <Col lg={4} className="mt-4">
-                <Card className="card-food py-3 center-grid">
-                  <p className="text-center font-weight-500">
-                    Nuggets de poulet avec pommes de terre
-                  </p>
-                  <p className="text-center">$25.00</p>
-                  <div className="center-grid mb-4">
-                    <a className="btn-by" href="#">
-                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                  <div className="center-grid">
-                    <CardImg
-                      alt="..."
-                      src={require("../../../assets/img/repas/food-dish-06.png")}
-                      top
-                      width={250}
-                      height={250}
-                      className="centered-and-covered-img"
-                    />
-                  </div>
-                </Card>
-              </Col>
-              <Col lg={4} className="mt-4">
-                <Card className="card-food py-3 center-grid">
-                  <p className="text-center font-weight-500">
-                    Spaghetti au maquereau grillé
-                  </p>
-                  <p className="text-center">$30.00</p>
-                  <div className="center-grid mb-4">
-                    <a className="btn-by" href="#">
-                      <i className="fa fa-shopping-basket" aria-hidden="true"></i>
-                    </a>
-                  </div>{" "}
-                  <div className="center-grid">
-                    <CardImg
-                      alt="..."
-                      src={require("../../../assets/img/repas/food-dish-05.png")}
-                      top
-                      width={250}
-                      height={250}
-                      className="centered-and-covered-img"
-                    />
-                  </div>
-                </Card>
-              </Col>
+              {tableData && tableData.length > 0 ? (
+                tableData.map((row, i) => (
+                  <Col lg={4} key={i}>
+                    <Card className="card-food py-3 center-grid">
+                      <p className="text-center font-weight-500">{row.name}</p>
+                      <p className="text-center"> €{row.price}</p>
+                      <div className="center-grid mb-4">
+                        <a className="btn-by" href="#">
+                          <i
+                            className="fa fa-shopping-basket"
+                            aria-hidden="true"
+                          ></i>
+                        </a>
+                      </div>
+                      <div className="center-grid">
+                        <CardImg
+                          alt="..."
+                          src={imageUrls[row.id]}
+                          top
+                          width={250}
+                          height={250}
+                          className="centered-and-covered-img"
+                        />
+                      </div>
+                    </Card>
+                  </Col>
+                ))
+              ) : (
+                <Col lg={12}>
+                  <h2 className="text-center">Aucun repas disponible</h2>
+                </Col>
+              )}
             </Row>
           </Col>
           <Col md={6} xs={12} className="my-6">

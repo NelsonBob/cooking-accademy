@@ -58,8 +58,8 @@ const CourCollectif = () => {
           <Col md={12} className="mt-5">
             <Row className="row-grid">
               {tableData && tableData.length > 0 ? (
-                tableData.map((row) => (
-                  <Col lg={4}  style={{ cursor: "pointer" }}>
+                tableData.map((row, i) => (
+                  <Col lg={4} key={i} style={{ cursor: "pointer" }}>
                     <Card>
                       <CardImg
                         alt="..."
