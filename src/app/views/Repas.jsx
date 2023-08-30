@@ -22,23 +22,21 @@ import {
   Modal,
   Row,
   Table,
-  UncontrolledCarousel,
 } from "reactstrap";
 import Swal from "sweetalert2";
 import {
   UpdateFile,
   UploadFile,
-  createMateriel,
-  getListCategorieMateriel,
-  getListMateriel,
-  getMaterielById,
+  createRepas,
+  getListRepas,
+  getRepasById,
   readFile,
   removeFile,
-  removeMaterielById,
-  updateMateriel,
+  removeRepasById,
+  updateRepas,
 } from "../service/frontendService";
 
-const Materiel = () => {
+const Repas = () => {
   const [tableData, setTableData] = useState([]);
   const [tableDataCopy, setTableDataCopy] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -52,21 +50,15 @@ const Materiel = () => {
   const [imageUrls, setImageUrls] = useState({});
 
   const [name, setName] = useState("");
-  const [categorieMateriel, setCategorieMateriel] = useState("");
-  const [categorieMateriels, setCategorieMateriels] = useState([]);
-  const [price, setPrice] = useState(null);
-  const [quantity, setQuantity] = useState(null);
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
-  const [gallerie, setGallerie] = useState([]);
-  const [gallerieUrls, setGallerieUrls] = useState([]);
-  const [galleriePathLast, setGalleriePathLast] = useState([]);
   const [videoModal, setVideoModal] = useState(false);
 
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
   useEffect(() => {
     getList();
-    getListCateories();
   }, []);
 
   useEffect(() => {}, [tableData]);
@@ -86,40 +78,26 @@ const Materiel = () => {
       setName("");
       setImgPath("");
       setImgContent(null);
-      setCategorieMateriel("");
-      setPrice(null);
-      setQuantity(null);
+      setPrice("");
+      setQuantity("");
       setDescription("");
     }
     setTypeModal(status);
-    setGallerie([]);
     setExampleModal(true);
   };
-  useEffect(() => {}, [gallerie]);
 
   const getById = async (intern) => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getMaterielById(id, intern);
-      let newgal = await callGal(res.gallerie);
-      setGallerie(newgal);
+      const res = await getRepasById(id, intern);
       setName(res.name);
       setDescription(res.description);
-      setCategorieMateriel(res.categorieMateriel.id);
       setQuantity(res.quantity);
       setPrice(res.price);
       setImgPath(res.imgPath);
       let contimg = await getFile(res.imgPath);
       setImgContent(contimg);
     } catch (error) {}
-  };
-  const callGal = (galleries) => {
-    let res = [];
-    galleries.forEach(async (el) => {
-      let el1 = await getFile(el);
-      res.push({ fileName: el, content: el1 });
-    });
-    return res;
   };
   const handleFilter = (text) => {
     setInputText(text);
@@ -143,7 +121,7 @@ const Materiel = () => {
     setTableDataCopy([]);
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getListMateriel(id);
+      const res = await getListRepas(id);
       const urls = {};
       for (const row of res) {
         const imgUrl = await getFile(row.imgPath);
@@ -153,14 +131,6 @@ const Materiel = () => {
       setTableData(res);
       setTableDataCopy(res);
       setInputText("");
-    } catch (error) {}
-  };
-  const getListCateories = async () => {
-    setCategorieMateriels([]);
-    try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
-      const res = await getListCategorieMateriel(id);
-      setCategorieMateriels(res);
     } catch (error) {}
   };
   const handleChangePage = (event, newpage) => {
@@ -187,10 +157,6 @@ const Materiel = () => {
       formIsValid = false;
       newErrors.price = "Price must be a positive value";
     }
-    if (!categorieMateriel || categorieMateriel == "") {
-      formIsValid = false;
-      newErrors.categorieMateriel = "Categorie Materiel is required";
-    }
     if (!quantity || parseInt(quantity) <= 0) {
       formIsValid = false;
       newErrors.quantity = "Quantity must be a positive value";
@@ -198,19 +164,6 @@ const Materiel = () => {
     if (!imgPath) {
       formIsValid = false;
       newErrors.imgPath = "Image is required";
-    }
-    if (gallerie && gallerie.length == 0) {
-      formIsValid = false;
-      newErrors.gallerie = "Gallerie is required";
-    }
-    if (gallerie.length > 0) {
-      gallerie.forEach((el) => {
-        if (!el.fileName || el.fileName == "") {
-          formIsValid = false;
-          newErrors.gallerie = "Gallerie is required";
-          return;
-        }
-      });
     }
     setErrors(newErrors);
     return formIsValid;
@@ -230,31 +183,24 @@ const Materiel = () => {
       name,
       description,
       imgPath,
-      gallerie,
-      categorieMateriel,
       price,
       quantity,
     };
     try {
-      const user = await createMateriel(
+      const user = await createRepas(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
       imgPathLast.forEach(async (el) => {
         if (el != imgPath) await removeFileUpload(el);
       });
-      galleriePathLast.forEach(async (el) => {
-        if (el != gallerie) await removeFileUpload(el);
-      });
+
       setImgPathLast([]);
-      setGalleriePathLast([]);
       setName("");
       setDescription("");
       setImgPath("");
-      setCategorieMateriel(null);
-      setPrice(null);
-      setQuantity(null);
-      setGallerie([]);
+      setPrice("");
+      setQuantity("");
       setImgContent(null);
       setExampleModal(false);
       getList();
@@ -275,18 +221,16 @@ const Materiel = () => {
   };
   const removMethod = async () => {
     try {
-      const user = await removeMaterielById(
+      const user = await removeRepasById(
         JSON.parse(localStorage.getItem("auth")).userid,
         idUser
       );
       setName("");
       setDescription("");
       setImgPath("");
-      setCategorieMateriel(null);
-      setPrice(null);
-      setQuantity(null);
+      setPrice("");
+      setQuantity("");
       setImgContent(null);
-      setGallerie([]);
       setExampleModal(false);
       getList();
       Swal.fire({
@@ -309,14 +253,12 @@ const Materiel = () => {
       id: idUser,
       name,
       description,
-      gallerie,
       imgPath,
-      categorieMateriel,
       price,
       quantity,
     };
     try {
-      const user = await updateMateriel(
+      const user = await updateRepas(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
@@ -325,15 +267,12 @@ const Materiel = () => {
       });
       setName("");
       setDescription("");
-      setCategorieMateriel(null);
-      setPrice(null);
-      setQuantity(null);
+      setPrice("");
+      setQuantity("");
       setImgPath("");
       setImgPathLast([]);
       setImgContent(null);
-      setGallerie([]);
       setExampleModal(false);
-      setGalleriePathLast([]);
 
       getList();
 
@@ -377,20 +316,10 @@ const Materiel = () => {
     if (contentFile)
       if (typeModal == "create") {
         try {
-          if (typeaction == "image") {
-            const response = await UpdateFile(imgPath, formData);
-            setImgPath(response);
-            let contimg = await getFile(response);
-            setImgContent(contimg);
-          }
-          if (typeaction == "gallerie") {
-            const response = await UpdateFile(fileNa, formData);
-            let content = await getFile(response);
-            let newgallerie = [...gallerie];
-            newgallerie[index].fileName = response;
-            newgallerie[index].content = content;
-            setGallerie(newgallerie);
-          }
+          const response = await UpdateFile(imgPath, formData);
+          setImgPath(response);
+          let contimg = await getFile(response);
+          setImgContent(contimg);
         } catch (error) {
           console.error("Error uploading file:", error);
           Swal.fire({
@@ -412,20 +341,10 @@ const Materiel = () => {
           let tabUrl = [];
           const response = await UploadFile(formData);
           tabUrl.push(response);
-          if (typeaction == "image") {
-            setImgPath(response);
-            setImgPathLast([...imgPathLast, tabUrl]);
-            let contimg = await getFile(response);
-            setImgContent(contimg);
-          }
-          if (typeaction == "gallerie") {
-            let content = await getFile(response);
-            let newgallerie = [...gallerie];
-            newgallerie[index].fileName = response;
-            newgallerie[index].content = content;
-            setGallerie(newgallerie);
-            setGalleriePathLast([...galleriePathLast, response]);
-          }
+          setImgPath(response);
+          setImgPathLast([...imgPathLast, tabUrl]);
+          let contimg = await getFile(response);
+          setImgContent(contimg);
         } catch (error) {
           console.error("Error uploading file:", error);
           Swal.fire({
@@ -442,12 +361,6 @@ const Materiel = () => {
             },
           });
         }
-  };
-  const handleRemoveGallerieItem = async (gal, index) => {
-    const updatedGallerie = [...gallerie];
-    if (gal.fileName != "") await removeFileUpload(gal.fileName);
-    updatedGallerie.splice(index, 1);
-    setGallerie(updatedGallerie);
   };
 
   const getFile = async (url) => {
@@ -472,13 +385,7 @@ const Materiel = () => {
       });
     }
   };
-  const previewGallerie = async (galle = [], title, content) => {
-    let lienurl = [];
-    galle.forEach(async (el, index) => {
-      const elUrl = await getFile(el);
-      lienurl.push({ src: elUrl, key: index, caption: "" });
-    });
-    setGallerieUrls(lienurl);
+  const previewGallerie = async (title, content) => {
     setName(title);
     setDescription(content);
     setVideoModal(true);
@@ -491,7 +398,7 @@ const Materiel = () => {
             <Row>
               <Col md={12}>
                 <h5 className="text-uppercase text-white mb-0">
-                  Liste des materiels
+                  Liste des repas
                 </h5>
               </Col>
               <Col md={12} className="d-md-flex justify-content-between mt-5">
@@ -508,7 +415,7 @@ const Materiel = () => {
                     onClick={() => handleClickDesable(0, "create")}
                   >
                     <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
-                    Ajouter un materiel
+                    Ajouter un repas
                   </Button>
                 </FormGroup>
               </Col>
@@ -542,12 +449,11 @@ const Materiel = () => {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Category</TableCell>
                         <TableCell>Image</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Gallerie</TableCell>
                         <TableCell>Unit price</TableCell>
                         <TableCell>Quantity</TableCell>
+                        <TableCell>Description</TableCell>
                         <TableCell>Status</TableCell>
                         <TableCell>Action</TableCell>
                       </TableRow>
@@ -556,7 +462,6 @@ const Materiel = () => {
                       {tableData && tableData.length > 0 ? (
                         tableData.map((row) => (
                           <TableRow key={row.id}>
-                            <TableCell>{row.categorieMateriel.name}</TableCell>
                             <TableCell>
                               <img
                                 alt="..."
@@ -566,24 +471,20 @@ const Materiel = () => {
                               />
                             </TableCell>
                             <TableCell>{row.name}</TableCell>
+                            <TableCell>{row.price}€</TableCell>
+                            <TableCell>{row.quantity}</TableCell>
                             <TableCell>
                               {" "}
                               <span
                                 className="text-primary"
                                 style={{ cursor: "pointer" }}
                                 onClick={() =>
-                                  previewGallerie(
-                                    row.gallerie,
-                                    row.name,
-                                    row.description
-                                  )
+                                  previewGallerie(row.name, row.description)
                                 }
                               >
-                                Voir plus
+                                Voir description
                               </span>
-                            </TableCell>
-                            <TableCell>{row.price}€</TableCell>
-                            <TableCell>{row.quantity}</TableCell>
+                            </TableCell>{" "}
                             <TableCell>
                               {row.status ? (
                                 <i
@@ -630,7 +531,7 @@ const Materiel = () => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={4} className="text-center">
-                            Aucun materiel trouvé
+                            Aucun repas trouvé
                           </TableCell>
                         </TableRow>
                       )}
@@ -657,9 +558,9 @@ const Materiel = () => {
           >
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                {typeModal == "create" && "Ajouter un materiel "}
-                {typeModal == "update" && "Modifier un materiel "}
-                {typeModal == "delete" && "Supprimer un materiel "}
+                {typeModal == "create" && "Ajouter un repas "}
+                {typeModal == "update" && "Modifier un repas "}
+                {typeModal == "delete" && "Supprimer un repas "}
               </h5>
               <button
                 aria-label="Close"
@@ -788,42 +689,7 @@ const Materiel = () => {
                       </>
                     )}
                   </FormGroup>
-                  <FormGroup>
-                    <InputGroup className="input-group-alternative mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="ni ni-settings" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <select
-                        className="form-control"
-                        onChange={(e) => setCategorieMateriel(e.target.value)}
-                        value={categorieMateriel}
-                      >
-                        <option value="" disabled>
-                          Categorie du materiel
-                        </option>
-                        {categorieMateriels.map((el, i) => (
-                          <option value={el.id} key={i}>
-                            {el.name}
-                          </option>
-                        ))}
-                      </select>
-                    </InputGroup>
-                    {!categorieMateriel && (
-                      <>
-                        {" "}
-                        {errors.categorieMateriel && (
-                          <span
-                            className="text-danger"
-                            style={{ fontSize: "13px" }}
-                          >
-                            {errors.categorieMateriel}
-                          </span>
-                        )}{" "}
-                      </>
-                    )}
-                  </FormGroup>
+
                   <FormGroup>
                     <InputGroup className="input-group-alternative mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -848,79 +714,6 @@ const Materiel = () => {
                           >
                             {errors.description}
                           </span>
-                        )}{" "}
-                      </>
-                    )}
-                  </FormGroup>
-                  <FormGroup>
-                    <div className="d-flex text-muted align-items-center mb-2">
-                      <i className="ni ni-image mr-2"></i>
-                      <span className="text-muted">Gallerie</span>
-                    </div>
-                    {gallerie.length === 0
-                      ? typeModal != "create" && <p>Loading gallerie...</p>
-                      : gallerie.map((gal, index) => (
-                          <div key={index}>
-                            <Input
-                              type="file"
-                              className="btn btn-secondary"
-                              onChange={(e) =>
-                                uploadImg(
-                                  e.target.files[0],
-                                  "gallerie",
-                                  gal.fileName,
-                                  index
-                                )
-                              }
-                              accept="image/*"
-                            />
-                            <div className="mt-2 d-flex justify-content-between">
-                              {gal.content && (
-                                <img
-                                  alt="..."
-                                  src={gal.content}
-                                  width={50}
-                                  height={50}
-                                />
-                              )}
-                              <div
-                                className="badge-circle mt-1 bg-danger"
-                                onClick={() =>
-                                  handleRemoveGallerieItem(gal, index)
-                                }
-                              >
-                                <i
-                                  className="fa fa-times"
-                                  aria-hidden="true"
-                                ></i>
-                              </div>
-                            </div>
-                            <hr className="my-4" />
-                          </div>
-                        ))}
-                    <Button
-                      color="facebook"
-                      type="button"
-                      className="mt-2"
-                      onClick={() =>
-                        setGallerie([
-                          ...gallerie,
-                          { fileName: "", content: "" },
-                        ])
-                      }
-                    >
-                      Ajouter une photo
-                    </Button>
-                    {!gallerie && (
-                      <>
-                        {" "}
-                        {errors.gallerie && (
-                          <p
-                            className="text-danger mt-2"
-                            style={{ fontSize: "13px" }}
-                          >
-                            {errors.gallerie}
-                          </p>
                         )}{" "}
                       </>
                     )}
@@ -963,10 +756,7 @@ const Materiel = () => {
               </button>
             </div>
             <div className="modal-body">
-              <div className="image-container">
-                <UncontrolledCarousel items={gallerieUrls} />
-              </div>
-              <h3 className="mt-4 mb-2">Descritpion</h3>
+              <h3>Descritpion</h3>
               <p>{description}</p>
             </div>
             <div className="modal-footer">
@@ -980,4 +770,4 @@ const Materiel = () => {
     </>
   );
 };
-export default Materiel;
+export default Repas;

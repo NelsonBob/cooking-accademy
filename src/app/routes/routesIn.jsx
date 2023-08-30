@@ -4,11 +4,12 @@ import Client from "../views/Client";
 import Cour from "../views/Cour";
 import Dashboard from "../views/Dashboard";
 import Intern from "../views/Intern";
+import Materiel from "../views/Materiel";
 import OptionAbonnement from "../views/OptionAbonnement";
 import Profile from "../views/Profile";
+import Repas from "../views/Repas";
 import Salle from "../views/Salle";
 import ServiceAbonnement from "../views/ServiceAbonnement";
-import Materiel from "../views/Materiel";
 
 var routes = [
   {
@@ -114,7 +115,7 @@ var routes = [
     path: "/repas",
     name: "Repas",
     icon: "fa fa-cutlery",
-    component: <Profile />,
+    component: <Repas />,
     layout: "/in",
     sidebar: true,
     postion: 6,
