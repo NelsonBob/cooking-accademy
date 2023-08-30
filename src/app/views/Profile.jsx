@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -14,6 +14,11 @@ import {
 import Swal from "sweetalert2";
 import UserHeader from "../components/Headers/UserHeader";
 import {
+  UpdateFile,
+  UploadFile,
+  readFile,
+  removeFile,
+  updatePicture,
   updateProfilClient,
   updateProfilIntern,
 } from "../service/frontendService";
@@ -31,7 +36,30 @@ const Profile = () => {
   const [errors, setErrors] = useState({});
   const [password_confirm, setPasswordConfirm] = useState("");
   const [password, setPassword] = useState("");
-
+  const fileInputRef = useRef(null);
+  const [imgPath, setImgPath] = useState(null);
+  const [imgPathLast, setImgPathLast] = useState([]);
+  const [imgContent, setImgContent] = useState(null);
+  useEffect(() => {
+    getPicture();
+  }, []);
+  const getPicture = async () => {
+    if (JSON.parse(localStorage.getItem("auth")).token.picture) {
+      let imgUrl = await getFile(
+        JSON.parse(localStorage.getItem("auth")).token.picture
+      );
+      setImgContent(imgUrl);
+    }
+  };
+  const getFile = async (url) => {
+    try {
+      const response = await readFile(url);
+      const imgUrl = URL.createObjectURL(response);
+      return imgUrl;
+    } catch (error) {
+      console.error("Error displaying file:", error);
+    }
+  };
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = {};
@@ -83,24 +111,98 @@ const Profile = () => {
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
   };
+
+  const handleFileChange = async (event) => {
+    const contentFile = event.target.files[0];
+    const formData = new FormData();
+    formData.append("file", contentFile);
+    if (contentFile)
+      if (!imgPath || imgPath == "") {
+        let tabUrl = [];
+        const response = await UploadFile(formData);
+        tabUrl.push(response);
+        updateMethod(response);
+        setImgPath(response);
+        setImgPathLast([...imgPathLast, tabUrl]);
+        let imgUrl = await getFile(response);
+        setImgContent(imgUrl);
+      } else {
+        const response = await UpdateFile(imgPath, formData);
+        updateMethod(response);
+        let imgUrl = await getFile(response);
+        setImgContent(imgUrl);
+        setImgPath(response);
+      }
+  };
+ 
+  const handleImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const updateMethod = async (img) => {
+    let data = {
+      imgPath: img,
+    };
+    try {
+      const user = await updatePicture(
+        JSON.parse(localStorage.getItem("auth")).userid,
+        data
+      );
+      imgPathLast.forEach(async (el) => {
+        if (el != img) await removeFileUpload(el);
+      });
+
+      setImgPathLast([]);
+      setImgPath("");
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Mise à jour avec succès",
+        showConfirmButton: false,
+        timer: 1500,
+        showClass: {
+          popup: "animate__animated animate__fadeInDown",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp",
+        },
+      });
+    } catch (error) {}
+  };
+  const removeFileUpload = async (img) => {
+    try {
+      const response = await removeFile(img);
+    } catch (error) {}
+  };
   return (
     <>
       <UserHeader />
       {/* Page content */}
-      <Container className="mt--7" fluid>
+      <Container className="mt--9" fluid>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
               <Row className="justify-content-center">
                 <Col className="order-lg-2" lg="3">
                   <div className="card-profile-image">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                    <a href="#pablo" onClick={handleImageClick}>
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={require("../../assets/img/brand/icon-4399701_1280.webp")}
+                        src={
+                          imgContent
+                            ? imgContent
+                            : require("../../assets/img/brand/icon-4399701_1280.webp")
+                        }
                       />
                     </a>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
                   </div>
                 </Col>
               </Row>

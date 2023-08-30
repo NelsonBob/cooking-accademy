@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -10,9 +10,30 @@ import {
   Navbar,
   UncontrolledDropdown,
 } from "reactstrap";
+import { readFile } from "../../service/frontendService";
 const InNavbar = (props) => {
   const navigate = useNavigate();
-
+  const [imgContent, setImgContent] = useState(null);
+  useEffect(() => {
+    getPicture();
+  }, []);
+  const getPicture = async () => {
+    if (JSON.parse(localStorage.getItem("auth")).token.picture) {
+      let imgUrl = await getFile(
+        JSON.parse(localStorage.getItem("auth")).token.picture
+      );
+      setImgContent(imgUrl);
+    }
+  };
+  const getFile = async (url) => {
+    try {
+      const response = await readFile(url);
+      const imgUrl = URL.createObjectURL(response);
+      return imgUrl;
+    } catch (error) {
+      console.error("Error displaying file:", error);
+    }
+  };
   const logout = () => {
     return navigate("/out/index");
   };
@@ -30,7 +51,11 @@ const InNavbar = (props) => {
                   <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
-                      src={require("../../../assets/img/brand/icon-4399701_1280.webp")}
+                      src={
+                        imgContent
+                          ? imgContent
+                          : require("../../../assets/img/brand/icon-4399701_1280.webp")
+                      }
                     />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">

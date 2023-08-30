@@ -42,7 +42,19 @@ export const signup = async (data) => {
     throw error.response?.data;
   }
 };
-
+// user
+export const updatePicture = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.put(`${baseURL}/user/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
 // intern
 export const updateProfilIntern = async (id, data) => {
   try {

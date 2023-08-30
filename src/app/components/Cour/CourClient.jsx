@@ -133,8 +133,8 @@ const CourClient = () => {
                     row.id,
                     row.videoLink,
                     row.name,
-                    row.description,
                     row.contentCour,
+                    row.description,
                     "previsualiser"
                   )
                 }
