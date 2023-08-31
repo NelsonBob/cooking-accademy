@@ -299,6 +299,7 @@ const Intern = () => {
                         <TableCell>Name</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Fonction</TableCell>
+                        <TableCell>Role</TableCell>
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
@@ -309,6 +310,7 @@ const Intern = () => {
                             <TableCell>{row.name}</TableCell>
                             <TableCell>{row.email}</TableCell>
                             <TableCell>{row.fonction}</TableCell>
+                            <TableCell>{row.role}</TableCell>
                             <TableCell>
                               {JSON.parse(localStorage.getItem("auth"))
                                 .userid != row.id && (

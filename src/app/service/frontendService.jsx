@@ -662,29 +662,11 @@ export const getListSalle = async (id) => {
     });
   }
 };
-export const getListSalleActif = async (id) => {
+export const getListSalleActif = async () => {
   try {
-    const tokenString = localStorage.getItem("auth");
-    const userToken = JSON.parse(tokenString);
-    const response = await axios.get(`${baseURL}/salle/actif/${id}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
+    const response = await axios.get(`${baseURL}/v2/salles`);
     return response.data;
-  } catch (error) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
-      title: error.response?.data.errors.message,
-      showConfirmButton: false,
-      timer: 2000,
-      showClass: {
-        popup: "animate__animated animate__fadeInDown",
-      },
-      hideClass: {
-        popup: "animate__animated animate__fadeOutUp",
-      },
-    });
-  }
+  } catch (error) {}
 };
 export const getSalleById = async (id, data) => {
   try {
@@ -984,10 +966,7 @@ export const UploadFile = async (data) => {
 };
 export const readFile = async (fileName) => {
   try {
-    const tokenString = localStorage.getItem("auth");
-    const userToken = JSON.parse(tokenString);
     const response = await axios.get(`${baseURL}/files/download/${fileName}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
       responseType: "blob",
     });
     return response.data;

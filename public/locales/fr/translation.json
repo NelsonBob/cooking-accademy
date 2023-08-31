@@ -11,7 +11,8 @@
     "groupLessons": "Cours",
     "login": "Se connecter",
     "register": "S'enregistrer",
-    "calender": "Evenement"
+    "calender": "Evenement",
+    "location":"Location"
   },
   "Home": {
     "title1": "Nos délices à l'honneur",
@@ -46,8 +47,11 @@
   "Cour": {
     "title": "Nos cours"
   },
+  "Location": {
+    "title": "Nos locations"
+  },
   "Event": {
-    "title": "Nos evenement"
+    "title": "Nos evenements"
   },
   "Market": {
     "title": "Boutique"

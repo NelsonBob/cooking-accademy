@@ -27,8 +27,8 @@ const CourClient = () => {
   const [typeAction, setTypeAction] = useState(null);
   const [description, setDescription] = useState(null);
   const [videoUrl, setVideoUrl] = useState({});
+  const [isVideoLocal, setIsVideoLocal] = useState(false);
 
-  const [idUser, setIsUser] = useState("");
   useEffect(() => {
     getList();
   }, []);
@@ -79,15 +79,19 @@ const CourClient = () => {
     } catch (error) {}
   };
   const handleClose = () => setVideoModal(!videoModal);
-  const previewVideo = async (idu, video, title, content, desc, typeActi) => {
-    setIsUser(idu);
-    const videoUrl = await getFile(video);
-    setVideoUrl(videoUrl);
+  const previewVideo = async (video, title, content, desc, isloc, typeActi) => {
+    if (isloc) {
+      const videoUrl = await getFile(video);
+      setVideoUrl(videoUrl);
+    } else {
+      setVideoUrl(video);
+    }
     setName(title);
     setContentCour(content);
     setDescription(desc);
     setVideoModal(true);
     setTypeAction(typeActi);
+    setIsVideoLocal(isloc);
   };
   return (
     <>
@@ -130,11 +134,11 @@ const CourClient = () => {
                 style={{ cursor: "pointer" }}
                 onClick={() =>
                   previewVideo(
-                    row.id,
                     row.videoLink,
                     row.name,
                     row.contentCour,
                     row.description,
+                    row.isVideoLocal,
                     "previsualiser"
                   )
                 }
@@ -181,8 +185,10 @@ const CourClient = () => {
                   <iframe
                     className="embed-responsive-item"
                     src={videoUrl}
-                    title="Video"
-                    allowFullScreen
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
                   ></iframe>
                 </div>
               ) : (
