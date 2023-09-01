@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useCart } from "react-use-cart";
 import { Card, CardImg, Col, Container, Row } from "reactstrap";
 import {
   getListInternChef,
@@ -11,7 +12,6 @@ function Home() {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [tableData1, setTableData1] = useState([]);
-  const [imageUrls, setImageUrls] = useState({});
   const [imageUrls1, setImageUrls1] = useState({});
 
   useEffect(() => {
@@ -23,13 +23,18 @@ function Home() {
     setTableData([]);
     try {
       const res = await getListRepasActif();
-      const urls = {};
+      const tab = [];
       for (const row of res) {
         const imgUrl = await getFile(row.imgPath);
-        urls[row.id] = imgUrl;
+        tab.push({
+          price: row.price,
+          id: row.id,
+          name: row.name,
+          imgUrl,
+          type: "repas",
+        });
       }
-      setImageUrls(urls);
-      setTableData(res);
+      setTableData(tab);
     } catch (error) {}
   };
   const getListChefs = async () => {
@@ -57,6 +62,10 @@ function Home() {
     } catch (error) {
       console.error("Error displaying file:", error);
     }
+  };
+  const { addItem } = useCart();
+  const handleAddToCart = (row) => {
+    addItem(row);
   };
   return (
     <>
@@ -87,7 +96,10 @@ function Home() {
                     <Card className="card-food py-3 center-grid">
                       <p className="text-center font-weight-500">{row.name}</p>
                       <p className="text-center"> €{row.price}</p>
-                      <div className="center-grid mb-4">
+                      <div
+                        className="center-grid mb-4"
+                        onClick={() => handleAddToCart(row)}
+                      >
                         <a className="btn-by" href="#">
                           <i
                             className="fa fa-shopping-basket"
@@ -98,7 +110,7 @@ function Home() {
                       <div className="center-grid">
                         <CardImg
                           alt="..."
-                          src={imageUrls[row.id]}
+                          src={row.imgUrl}
                           top
                           width={250}
                           height={250}

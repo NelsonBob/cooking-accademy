@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { CartProvider } from "react-use-cart";
 import AuthFooter from "../components/Footers/AuthFooter";
 import OutNavbar from "../components/Navbars/OutNavbar";
 import routes from "../routes/routesOut";
-import Register from "../views/vitrine/Register";
 
 const OutLayout = (props) => {
   const mainContent = React.useRef(null);
@@ -35,7 +35,7 @@ const OutLayout = (props) => {
   };
 
   return (
-    <>
+    <CartProvider>
       <div className="main-content" ref={mainContent}>
         <OutNavbar />
         <Routes>
@@ -44,7 +44,7 @@ const OutLayout = (props) => {
         </Routes>
       </div>
       <AuthFooter />
-    </>
+    </CartProvider>
   );
 };
 

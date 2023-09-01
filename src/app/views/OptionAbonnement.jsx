@@ -351,11 +351,11 @@ const OptionAbonnement = () => {
                             <TableCell>
                               {row.optionServiceAbonnement.map((el, index) => (
                                 <ol
-                                  class="list-group list-group-numbered"
+                                  className="list-group list-group-numbered"
                                   key={el.id}
                                 >
-                                  <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <div class="ms-2 me-auto" style={{display:"grid"}}>
+                                  <li className="list-group-item d-flex justify-content-between align-items-start">
+                                    <div className="ms-2 me-auto" style={{display:"grid"}}>
                                       <div>
                                         {index +
                                           1 +

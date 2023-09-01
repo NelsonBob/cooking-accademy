@@ -12,15 +12,16 @@ import {
   UncontrolledCarousel,
 } from "reactstrap";
 import { getListMaterielActif, readFile } from "../../service/frontendService";
+import { useCart } from "react-use-cart";
 
 function Boutique() {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
-  const [imageUrls, setImageUrls] = useState({});
   const [gallerieUrls, setGallerieUrls] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [videoModal, setVideoModal] = useState(false);
+  const { addItem } = useCart();
 
   useEffect(() => {
     getList();
@@ -32,13 +33,21 @@ function Boutique() {
     setTableData([]);
     try {
       const res = await getListMaterielActif();
-      const urls = {};
+      const tab = [];
+
       for (const row of res) {
         const imgUrl = await getFile(row.imgPath);
-        urls[row.id] = imgUrl;
+        tab.push({
+          gallerie: row.gallerie,
+          id: row.id,
+          name: row.name,
+          description: row.description,
+          price: row.price,
+          imgUrl,
+          type: "materiel",
+        });
       }
-      setImageUrls(urls);
-      setTableData(res);
+      setTableData(tab);
     } catch (error) {}
   };
   const getFile = async (url) => {
@@ -60,6 +69,9 @@ function Boutique() {
     setName(title);
     setDescription(content);
     setVideoModal(true);
+  };
+  const handleAddToCart = (row) => {
+    addItem(row);
   };
   return (
     <>
@@ -90,7 +102,7 @@ function Boutique() {
                     <Card>
                       <CardImg
                         alt="..."
-                        src={imageUrls[row.id]}
+                        src={row.imgUrl}
                         top
                         height={300}
                         className="centered-and-covered-img "
@@ -113,8 +125,9 @@ function Boutique() {
                         <button
                           className="btn btn-primary btn-block"
                           type="button"
+                        onClick={() => handleAddToCart(row)}
                         >
-                          Commander
+                          Ajouter au panier
                         </button>
                       </div>
                     </Card>

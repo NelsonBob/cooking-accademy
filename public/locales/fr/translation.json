@@ -12,7 +12,7 @@
     "login": "Se connecter",
     "register": "S'enregistrer",
     "calender": "Evenement",
-    "location":"Location"
+    "location": "Réservation"
   },
   "Home": {
     "title1": "Nos délices à l'honneur",
@@ -48,7 +48,8 @@
     "title": "Nos cours"
   },
   "Location": {
-    "title": "Nos locations"
+    "title": "Nos réservation",
+    "cart": "Panier"
   },
   "Event": {
     "title": "Nos evenements"
