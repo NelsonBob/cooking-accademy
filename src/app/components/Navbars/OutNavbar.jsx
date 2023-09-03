@@ -24,16 +24,7 @@ import routesOut from "../../routes/routesOut";
 
 const OutNavbar = () => {
   const { t } = useTranslation();
-  const {
-    isEmpty,
-    totalUniqueItems,
-    items,
-    totalItems,
-    cartTotal,
-    updateItemQuantity,
-    removeItem,
-    emptyCart,
-  } = useCart();
+  const { isEmpty, items, totalItems, cartTotal, removeItem } = useCart();
   function handleClick(lang) {
     i18next.changeLanguage(lang);
   }
@@ -96,9 +87,9 @@ const OutNavbar = () => {
           <UncontrolledDropdown nav>
             <DropdownToggle className="pr-0" nav>
               <Media className="align-items-center">
-                <Media className="ml-2 text-white d-flex justify-content-between">
+                <Media className="mr-2 text-white d-flex justify-content-between">
                   {!isEmpty ? (
-                    <p className="position-relative">
+                    <span className="position-relative">
                       <i
                         className="fa fa-shopping-cart text-warning mt-2"
                         style={{ fontSize: "1.3em" }}
@@ -106,7 +97,7 @@ const OutNavbar = () => {
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {totalItems}
                       </span>
-                    </p>
+                    </span>
                   ) : (
                     <i
                       className="fa fa-shopping-cart text-warning "
