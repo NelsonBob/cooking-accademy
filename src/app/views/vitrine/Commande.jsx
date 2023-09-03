@@ -270,20 +270,17 @@ const Commande = () => {
                           })}
                           <TableRow>
                             <TableCell colSpan={2} className="my-3">
-                              Carte de paiement (Stripe)
+                              <h4> Carte de paiement (Stripe)</h4>
                             </TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell colSpan={2}>
-                              <p>
-                                Payez avec votre carte bancaire avec Stripe.
-                                MODE TEST ACTIVÉ. En mode TEST, vous pouvez
-                                utiliser le numéro de carte 4242424242424242
-                                avec n’importe quel cryptogramme visuel et une
-                                date d’expiration valide ou consulter la
-                                documentation Test Stripe pour obtenir plus de
-                                numéros de carte.
-                              </p>
+                              Payez avec votre carte bancaire avec Stripe. MODE
+                              TEST ACTIVÉ. En mode TEST, vous pouvez utiliser le
+                              numéro de carte 4242424242424242 avec n’importe
+                              quel cryptogramme visuel et une date d’expiration
+                              valide ou consulter la documentation Test Stripe
+                              pour obtenir plus de numéros de carte.
                             </TableCell>
                           </TableRow>
                           <TableRow>
