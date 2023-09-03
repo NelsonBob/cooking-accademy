@@ -7,6 +7,7 @@ import Location from "../views/vitrine/Location";
 import Login from "../views/vitrine/Login";
 import Prix from "../views/vitrine/Prix";
 import Register from "../views/vitrine/Register";
+import Panier from "../views/vitrine/Panier";
 
 var routesOut = [
   {
@@ -68,7 +69,7 @@ var routesOut = [
   },
   {
     path: "/cart",
-    component: <Location />,
+    component: <Panier />,
     class: "nav-link-icon",
     icon:"fa fa-shopping-cart text-warning",
     layout: "/out",

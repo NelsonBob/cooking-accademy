@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Card,
-  CardImg,
-  CardText,
-  Col,
-  Container,
-  Row,
-} from "reactstrap";
-import {
-  getListCourActif,
-  getListSalleActif,
-  readFile,
-} from "../../service/frontendService";
+import { Button, Card, CardImg, Col, Container, Row } from "reactstrap";
+import { getListSalleActif, readFile } from "../../service/frontendService";
 
 const Location = () => {
   const { t } = useTranslation();

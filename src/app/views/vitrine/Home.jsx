@@ -100,12 +100,12 @@ function Home() {
                         className="center-grid mb-4"
                         onClick={() => handleAddToCart(row)}
                       >
-                        <a className="btn-by" href="#">
+                        <button className="btn-by" type="button">
                           <i
                             className="fa fa-shopping-basket"
                             aria-hidden="true"
                           ></i>
-                        </a>
+                        </button>
                       </div>
                       <div className="center-grid">
                         <CardImg
