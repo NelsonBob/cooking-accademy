@@ -75,7 +75,8 @@ const OutNavbar = () => {
               {routesOut.map(
                 (el, index) =>
                   el.path != "/register" &&
-                  el.path != "/cart" && (
+                  el.path != "/cart" &&
+                  el.path != "/order" && (
                     <NavItem key={index}>
                       <NavLink
                         className={el.class}
@@ -157,7 +158,7 @@ const OutNavbar = () => {
                               className="rounded-circle text-muted ml-2"
                               style={{
                                 border: "1px solid #8898aa",
-                                cursor:"pointer",
+                                cursor: "pointer",
                                 padding: "2px",
                               }}
                               onClick={() => removeItem(item.id)}
@@ -198,7 +199,7 @@ const OutNavbar = () => {
                       type="button"
                       color="warning"
                       className="rounded-pill btn-block ml-0"
-                      onClick={() => navigate("/out/commander")}
+                      onClick={() => navigate("/out/order")}
                     >
                       Commander
                     </Button>
