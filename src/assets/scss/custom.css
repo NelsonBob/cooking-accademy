@@ -165,3 +165,7 @@ button.btn-by:hover {
   max-height: 100%;
   object-fit: cover;
 }
+img.d-block.w-100 {
+  height: 260px !important;
+  object-fit: cover !important;
+}

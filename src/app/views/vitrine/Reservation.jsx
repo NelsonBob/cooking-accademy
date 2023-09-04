@@ -3,45 +3,40 @@ import { useTranslation } from "react-i18next";
 import {
   Button,
   Card,
-  CardImg,
   Col,
   Container,
   Row,
   UncontrolledCarousel,
 } from "reactstrap";
-import { getListSalleActif, readFile } from "../../service/frontendService";
-import { useNavigate } from "react-router-dom";
+import { getSalleById, readFile } from "../../service/frontendService";
 
-const Location = () => {
+const Reservation = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
-
+  const [idSalle, setIdSalle] = useState(localStorage.getItem("idSalle"));
   useEffect(() => {
-    localStorage.removeItem("idSalle");
-    getList();
+    getSalle();
   }, []);
 
-  const getList = async () => {
+  const getSalle = async () => {
     setTableData([]);
     try {
-      const res = await getListSalleActif();
+      const res = await getSalleById(idSalle);
       const urls = {};
-      for (const row of res) {
-        let newgal = await callGal(row.gallerie);
-        urls[row.id] = newgal;
-      }
+      let newgal = await callGal(res.gallerie);
+      urls[res.id] = newgal;
       setImageUrls(urls);
       setTableData(res);
     } catch (error) {}
   };
   const callGal = (galleries) => {
-    let lienurl = [];
-    galleries.forEach(async (el, index) => {
-      const elUrl = await getFile(el);
-      lienurl.push({ src: elUrl, key: index, caption: "" });
+    let res = [];
+    galleries.forEach(async (el) => {
+      let el1 = await getFile(el);
+      res.push({ fileName: el, content: el1 });
     });
-    return lienurl;
+    return res;
   };
   const getFile = async (url) => {
     try {
@@ -52,16 +47,9 @@ const Location = () => {
       console.error("Error displaying file:", error);
     }
   };
-  const reserve = (id) => {
-    console.log("salle id", id);
-    localStorage.setItem("idSalle", id);
-    return navigate("/out/reservation");
-  };
-  const navigate = useNavigate();
-
   return (
     <>
-      <div className="header bg-img-location py-7 py-lg-8">
+      <div className="header bg-info py-7 py-lg-8">
         <div className="separator separator-bottom separator-skew zindex-100">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +66,7 @@ const Location = () => {
       <Container className="mt--8 pb-5 position-relative">
         <Row className="justify-content-center">
           <Col md={12} className="my-4">
-            <h1 className="text-white text-center">{t("Location.title")}</h1>
+            <h1 className="text-white text-center">{t("Reservation.title")}</h1>
           </Col>
           <Col md={12} className="mt-5">
             <Row>
@@ -88,13 +76,15 @@ const Location = () => {
                     <Card className="p-2">
                       <Row>
                         <Col lg={4}>
-                          {imageUrls[row.id]}
-                          {imageUrls && imageUrls[row.id] && (
-                            <UncontrolledCarousel
-                              height={300}
-                              items={imageUrls[row.id]}
-                            />
-                          )}
+                          <UncontrolledCarousel items={imageUrls[row.id]} />
+
+                          {/* <CardImg
+                            alt="..."
+                            src={imageUrls[row.id]}
+                            top
+                            height={300}
+                            className="centered-and-covered-img "
+                          /> */}
                         </Col>
                         <Col
                           lg={8}
@@ -109,11 +99,7 @@ const Location = () => {
                           </p>
                           <a href="#">Lire les avis Google</a>
                           <br />
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => reserve(row.id)}
-                          >
+                          <Button variant="contained" color="primary">
                             Réserver
                           </Button>
                         </Col>
@@ -134,4 +120,4 @@ const Location = () => {
   );
 };
 
-export default Location;
+export default Reservation;

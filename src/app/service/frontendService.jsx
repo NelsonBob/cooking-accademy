@@ -668,14 +668,10 @@ export const getListSalleActif = async () => {
     return response.data;
   } catch (error) {}
 };
-export const getSalleById = async (id, data) => {
+export const getSalleById = async (id) => {
   try {
-    const tokenString = localStorage.getItem("auth");
-    const userToken = JSON.parse(tokenString);
-    const response = await axios.get(`${baseURL}/salle/${id}/id/${data}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
-    return response.data;
+    const response = await axios.get(`${baseURL}/v2/salles/${id}`);
+    return response.data; 
   } catch (error) {
     Swal.fire({
       position: "top-end",

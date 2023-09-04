@@ -9,19 +9,20 @@ import Prix from "../views/vitrine/Prix";
 import Register from "../views/vitrine/Register";
 import Panier from "../views/vitrine/Panier";
 import Commande from "../views/vitrine/Commande";
+import Reservation from "../views/vitrine/Reservation";
 
 var routesOut = [
   {
     path: "/index",
     name: "Menu.home",
     component: <Home />,
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     layout: "/out",
   },
   {
     path: "/market",
     name: "Menu.market",
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     component: <Boutique />,
     layout: "/out",
   },
@@ -29,28 +30,35 @@ var routesOut = [
   {
     path: "/group-lessons",
     name: "Menu.groupLessons",
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     component: <CourCollectif />,
     layout: "/out",
   },
   {
     path: "/evenement",
     name: "Menu.calender",
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     component: <Evenement />,
     layout: "/out",
   },
   {
     path: "/price",
     name: "Menu.prices",
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     component: <Prix />,
+    layout: "/out",
+  },
+  {
+    path: "/reservation",
+    name: "Menu.prices",
+    class: "nav-link-icon",
+    component: <Reservation />,
     layout: "/out",
   },
   {
     path: "/login",
     name: "Menu.login",
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     component: <Login />,
     layout: "/out",
   },
@@ -64,7 +72,7 @@ var routesOut = [
   {
     path: "/register",
     name: "Menu.register",
-    class:"nav-link-icon",
+    class: "nav-link-icon",
     component: <Register />,
     layout: "/out",
   },
@@ -72,14 +80,14 @@ var routesOut = [
     path: "/cart",
     component: <Panier />,
     class: "nav-link-icon",
-    icon:"fa fa-shopping-cart text-warning",
+    icon: "fa fa-shopping-cart text-warning",
     layout: "/out",
   },
   {
     path: "/order",
     component: <Commande />,
     class: "nav-link-icon",
-    icon:"fa fa-shopping-cart text-warning",
+    icon: "fa fa-shopping-cart text-warning",
     layout: "/out",
   },
 ];

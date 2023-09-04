@@ -67,6 +67,7 @@ const OutNavbar = () => {
                 (el, index) =>
                   el.path != "/register" &&
                   el.path != "/cart" &&
+                  el.path != "/reservation" &&
                   el.path != "/order" && (
                     <NavItem key={index}>
                       <NavLink
