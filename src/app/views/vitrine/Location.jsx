@@ -88,7 +88,6 @@ const Location = () => {
                     <Card className="p-2">
                       <Row>
                         <Col lg={4}>
-                          {imageUrls[row.id]}
                           {imageUrls && imageUrls[row.id] && (
                             <UncontrolledCarousel
                               height={300}

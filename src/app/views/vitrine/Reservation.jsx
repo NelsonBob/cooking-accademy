@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  UncontrolledCarousel,
 } from "reactstrap";
 import { getSalleById, readFile } from "../../service/frontendService";
 
@@ -20,7 +21,7 @@ const Reservation = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const navigate = useNavigate();
-
+  useEffect(() => {}, [imageUrls]);
   useEffect(() => {
     getSalle();
   }, []);
@@ -42,12 +43,12 @@ const Reservation = () => {
     } catch (error) {}
   };
   const callGal = (galleries) => {
-    let res = [];
-    galleries.forEach(async (el) => {
-      let el1 = await getFile(el);
-      res.push({ fileName: el, content: el1 });
+    let lienurl = [];
+    galleries.forEach(async (el, index) => {
+      const elUrl = await getFile(el);
+      lienurl.push({ src: elUrl, key: index, caption: "" });
     });
-    return res;
+    return lienurl;
   };
   const getFile = async (url) => {
     try {
@@ -103,18 +104,7 @@ const Reservation = () => {
                   <Button color="primary">Réserver maintenant</Button>{" "}
                 </Col>
                 <Col md={12}>
-                  <Row>
-                    {imageUrls.map((imag, index) => (
-                      <Col key={index} xs={6} md={4} lg={3}>
-                        <img
-                          src={imag}
-                          alt="..."
-                          onClick={() => openModal(imag)}
-                          style={{ cursor: "pointer" }}
-                        />
-                      </Col>
-                    ))}
-                  </Row>
+                  <UncontrolledCarousel items={imageUrls} />
                 </Col>
                 <Col md={12}>
                   <h2>Description</h2>

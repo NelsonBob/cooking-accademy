@@ -142,13 +142,11 @@ const CourInter = () => {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await getListCour(id);
       const urls = {};
-      const urlVideos = {};
       for (const row of res) {
         const imgUrl = await getFile(row.imgPath);
         urls[row.id] = imgUrl;
       }
       setImageUrls(urls);
-
       setTableData(res);
       setTableDataCopy(res);
       setInputText("");
