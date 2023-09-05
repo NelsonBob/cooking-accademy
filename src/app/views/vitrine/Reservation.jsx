@@ -2,31 +2,41 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
-  Card,
   Col,
   Container,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Row,
-  UncontrolledCarousel,
 } from "reactstrap";
 import { getSalleById, readFile } from "../../service/frontendService";
 
 const Reservation = () => {
   const { t } = useTranslation();
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState({});
   const [imageUrls, setImageUrls] = useState({});
   const [idSalle, setIdSalle] = useState(localStorage.getItem("idSalle"));
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   useEffect(() => {
     getSalle();
   }, []);
+  const openModal = (imag) => {
+    setSelectedImage(imag);
+    setModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setSelectedImage(null);
+    setModalOpen(false);
+  };
   const getSalle = async () => {
     setTableData([]);
     try {
       const res = await getSalleById(idSalle);
-      const urls = {};
       let newgal = await callGal(res.gallerie);
-      urls[res.id] = newgal;
-      setImageUrls(urls);
+      setImageUrls(newgal);
       setTableData(res);
     } catch (error) {}
   };
@@ -64,57 +74,50 @@ const Reservation = () => {
         </div>
       </div>
       <Container className="mt--8 pb-5 position-relative">
-        <Row className="justify-content-center">
-          <Col md={12} className="my-4">
-            <h1 className="text-white text-center">{t("Reservation.title")}</h1>
+        <Row className="d-flex justify-content-center space-between">
+          <Col md={6} className="my-4">
+            <h1 className="text-white">{t("Reservation.title")}</h1>
+            <p>
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+              {tableData.adress}
+            </p>
           </Col>
-          <Col md={12} className="mt-5">
+          <Col md={6} className="my-4">
+            <Button color="primary">Réserver maintenant</Button>{" "}
+          </Col>
+          <Col md={12}>
             <Row>
-              {tableData && tableData.length > 0 ? (
-                tableData.map((row, i) => (
-                  <Col lg={12} key={i}>
-                    <Card className="p-2">
-                      <Row>
-                        <Col lg={4}>
-                          <UncontrolledCarousel items={imageUrls[row.id]} />
-
-                          {/* <CardImg
-                            alt="..."
-                            src={imageUrls[row.id]}
-                            top
-                            height={300}
-                            className="centered-and-covered-img "
-                          /> */}
-                        </Col>
-                        <Col
-                          lg={8}
-                          className="d-flex align-items-start flex-column"
-                        >
-                          <h2>{row.name}</h2>
-                          <p>{row.description}</p>
-                          <p>
-                            <i className="fa fa-star text-warning"></i>
-                            <i className="fa fa-star text-warning"></i>
-                            <i className="fa fa-star text-warning"></i>
-                          </p>
-                          <a href="#">Lire les avis Google</a>
-                          <br />
-                          <Button variant="contained" color="primary">
-                            Réserver
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Col>
-                ))
-              ) : (
-                <Col lg={12}>
-                  <h2 className="text-center">Aucune location trouvée</h2>
+              {imageUrls.map((imag, index) => (
+                <Col key={index} xs={6} md={4} lg={3}>
+                  <img
+                    src={imag}
+                    onClick={() => openModal(imag)}
+                    style={{ cursor: "pointer" }}
+                  />
                 </Col>
-              )}
+              ))}
             </Row>
           </Col>
+          <Col md={12}>
+            <h2>Description</h2>
+            <p>{tableData.description}</p>
+          </Col>
         </Row>
+        <Modal isOpen={modalOpen} toggle={closeModal}>
+          <ModalHeader toggle={closeModal}>Image Preview</ModalHeader>
+          <ModalBody>
+            {selectedImage && (
+              <img
+                src={selectedImage}
+                alt="Selected Image"
+                style={{ maxWidth: "100%" }}
+              />
+            )}
+          </ModalBody>
+          <Button color="secondary" onClick={closeModal}>
+            Close
+          </Button>
+        </Modal>
       </Container>
     </>
   );
