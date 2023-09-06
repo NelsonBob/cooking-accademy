@@ -671,7 +671,7 @@ export const getListSalleActif = async () => {
 export const getSalleById = async (id) => {
   try {
     const response = await axios.get(`${baseURL}/v2/salles/${id}`);
-    return response.data; 
+    return response.data;
   } catch (error) {
     Swal.fire({
       position: "top-end",
@@ -994,6 +994,24 @@ export const removeFile = async (fileName) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
       responseType: "blob",
     });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
+//stripe
+export const checkpaiementStripe = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(
+      `${baseURL}/payment/create-payment-intent/${id}`,
+      data,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error.response?.data;

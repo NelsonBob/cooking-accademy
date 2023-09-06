@@ -11,11 +11,16 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { Button, Col, Container, Row } from "reactstrap";
+
 const Panier = () => {
   const { t } = useTranslation();
   const { isEmpty, items, cartTotal, updateItemQuantity, removeItem } =
     useCart();
   const navigate = useNavigate();
+
+  const handleValidateOder = async () => {
+    navigate("/out/order");
+  };
 
   return (
     <>
@@ -85,7 +90,7 @@ const Panier = () => {
                             <TableCell>{item.name}</TableCell>
                             <TableCell>{"€" + item.price}</TableCell>
                             <TableCell>{item.quantity}</TableCell>
-                            <TableCell>{"€" +item.itemTotal}</TableCell>
+                            <TableCell>{"€" + item.itemTotal}</TableCell>
                             <TableCell>
                               {" "}
                               <Button
@@ -137,7 +142,7 @@ const Panier = () => {
                           <Button
                             color="warning"
                             className="rounded-pill btn-block"
-                            onClick={() => navigate("/out/order")}
+                            onClick={() => handleValidateOder()}
                           >
                             Valider la commande
                           </Button>

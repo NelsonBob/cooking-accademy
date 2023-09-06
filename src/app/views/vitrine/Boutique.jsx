@@ -44,7 +44,7 @@ function Boutique() {
           description: row.description,
           price: row.price,
           imgUrl,
-          type: "materiel",
+          type: "Materiel",
         });
       }
       setTableData(tab);

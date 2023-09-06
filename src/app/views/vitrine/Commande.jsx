@@ -7,24 +7,19 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React, { useState } from "react";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Row,
-} from "reactstrap";
+import { Col, Container, Form, Input, Row } from "reactstrap";
+import { checkpaiementStripe } from "../../service/frontendService";
+import CheckoutForm from "../CheckoutForm";
+
 const Commande = () => {
   const { t } = useTranslation();
-  const { isEmpty, items } = useCart();
+  const { isEmpty, cartTotal, items, emptyCart } = useCart();
   const [name, setName] = useState("");
   const [numero, setNumero] = useState("");
   const [numero1, setNumero1] = useState("");
@@ -38,7 +33,11 @@ const Commande = () => {
   const [cvc, setCvc] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [clientSecret, setClientSecret] = useState("");
 
+  const stripePromise = loadStripe(
+    "pk_test_51NnKDQGdfs9w59yh0SXgMNpJHgtzNmzUVqcYDob1bkx0IZh7h5xVEcYedRIHsRaVzjyRDcn93kbjvMBzXxTrL4t500UIKjkZA0"
+  );
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = {};
@@ -86,6 +85,36 @@ const Commande = () => {
     if (validateForm()) {
     }
   };
+
+  const clearCartclick = () => {
+    emptyCart();
+  };
+  const appearance = {
+    theme: "stripe",
+    variables: {
+      colorPrimary: "#fb6340",
+    },
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
+  useEffect(() => {
+    handleValidateOder();
+  }, []);
+  const handleValidateOder = async () => {
+    try {
+      const data = { items, amount: cartTotal, token: "eee" };
+      const response = await checkpaiementStripe(
+        JSON.parse(localStorage.getItem("auth")).userid,
+        data
+      );
+      if (response) {
+        setClientSecret(response.clientSecret);
+      }
+    } catch (error) {}
+  };
+
   return (
     <>
       <div className="header bg-primary py-7 py-lg-8">
@@ -270,129 +299,23 @@ const Commande = () => {
                           })}
                           <TableRow>
                             <TableCell colSpan={2} className="my-3">
-                              <h4> Carte de paiement (Stripe)</h4>
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={2}>
-                              Payez avec votre carte bancaire avec Stripe. MODE
-                              TEST ACTIVÉ. En mode TEST, vous pouvez utiliser le
-                              numéro de carte 4242424242424242 avec n’importe
-                              quel cryptogramme visuel et une date d’expiration
-                              valide ou consulter la documentation Test Stripe
-                              pour obtenir plus de numéros de carte.
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={2} className="bg-white">
-                              <Form role="form">
-                                <FormGroup>
-                                  <label for="numero-carte" className="mb-0">
-                                    Numéro de carte*
-                                  </label>
-                                  <InputGroup className="input-group-alternative">
-                                    <Input
-                                      type="number"
-                                      id="numero-carte"
-                                      name="numero-carte"
-                                      placeholder="1234 5678 9012 3456"
-                                      min="0"
-                                      value={numeroCode}
-                                      onChange={(e) =>
-                                        setNumeroCode(e.target.value)
-                                      }
-                                      step="1"
-                                      pattern="[0-9]*"
-                                      inputmode="numeric"
-                                      required
-                                    />
-                                    <InputGroupAddon addonType="prepend">
-                                      <InputGroupText>
-                                        <i className="ni ni-credit-card" />
-                                      </InputGroupText>
-                                    </InputGroupAddon>
-                                  </InputGroup>
-
-                                  {errors.numeroCode && (
-                                    <span
-                                      className="text-danger"
-                                      style={{ fontSize: "13px" }}
-                                    >
-                                      {errors.numeroCode}
-                                    </span>
-                                  )}
-                                </FormGroup>
-                                <div className="mt-2 d-flex space-between">
-                                  <FormGroup>
-                                    <label for="expiry-date" className="mb-0">
-                                      Date d'expiration*
-                                    </label>
-                                    <Input
-                                      type="text"
-                                      id="expiry-date"
-                                      name="expiry-date"
-                                      value={dateExp}
-                                      onChange={(e) =>
-                                        setDateExp(e.target.value)
-                                      }
-                                      pattern="^(0[1-9]|1[0-2])\/\d{2}$"
-                                      placeholder="MM/YY"
-                                      required
-                                    />
-                                    {errors.dateExp && (
-                                      <span
-                                        className="text-danger"
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        {errors.dateExp}
-                                      </span>
-                                    )}
-                                  </FormGroup>
-                                  <FormGroup className="ml-2">
-                                    <label for="cvc" className="mb-0">
-                                      Cryptogramme visuel*
-                                    </label>
-                                    <Input
-                                      type="tel"
-                                      id="cvc"
-                                      name="cvc"
-                                      placeholder="123"
-                                      maxlength="4"
-                                      required
-                                      value={cvc}
-                                      onChange={(e) => setCvc(e.target.value)}
-                                    />
-                                    {errors.cvc && (
-                                      <span
-                                        className="text-danger"
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        {errors.cvc}
-                                      </span>
-                                    )}
-                                  </FormGroup>
+                              {clientSecret ? (
+                                <Elements
+                                  options={options}
+                                  stripe={stripePromise}
+                                >
+                                  <CheckoutForm
+                                    clearCartclick={() => clearCartclick()}
+                                  />
+                                </Elements>
+                              ) : (
+                                <div
+                                  className="spinner-grow text-warning"
+                                  role="status"
+                                >
+                                  <span className="sr-only">Loading...</span>
                                 </div>
-                              </Form>
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={2}>
-                              Vos données personnelles seront utilisées pour le
-                              traitement de votre commande, vous accompagner au
-                              cours de votre visite du site web, et pour
-                              d’autres raisons décrites dans notre politique de
-                              confidentialité.
-                            </TableCell>{" "}
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={2}>
-                              <Button
-                                color="warning"
-                                className="rounded-pill btn-block"
-                                onClick={handleSubmit}
-                              >
-                                Commander
-                              </Button>
+                              )}
                             </TableCell>
                           </TableRow>
                         </TableBody>

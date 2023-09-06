@@ -31,7 +31,7 @@ function Home() {
           id: row.id,
           name: row.name,
           imgUrl,
-          type: "repas",
+          type: "Repas",
         });
       }
       setTableData(tab);
