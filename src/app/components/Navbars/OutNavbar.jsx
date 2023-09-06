@@ -176,7 +176,7 @@ const OutNavbar = () => {
                     className="d-flex m-3"
                     style={{ justifyContent: "space-between" }}
                   >
-                    <spaqn>Total (tous frais compris) </spaqn>
+                    <span>Total (tous frais compris) </span>
                     <span className="bold ml-4">{"€" + cartTotal}</span>
                   </div>
                   <div className="m-3">

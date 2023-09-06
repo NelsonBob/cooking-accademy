@@ -62,7 +62,8 @@ const Reservation = () => {
       end: new Date(2023, 9, 1),
     },
   ]);
-
+  const minTime = new Date().setHours(8, 0, 0); // 8:00 AM
+  const maxTime = new Date().setHours(18, 0, 0); // 6:00 PM
   const { defaultDate } = useMemo(
     () => ({
       defaultDate: new Date(),
@@ -195,8 +196,11 @@ const Reservation = () => {
                 </Col>
                 {!reserve ? (
                   <>
-                    <Col md={12}>
-                      <UncontrolledCarousel items={imageUrls} className="reservation" />
+                    <Col md={12} className="mb-2">
+                      <UncontrolledCarousel
+                        items={imageUrls}
+                        className="reservation"
+                      />
                     </Col>
                     <Col md={12}>
                       <h2>Description</h2>
@@ -216,6 +220,8 @@ const Reservation = () => {
                           onSelectEvent={handleSelectEvent}
                           onSelectSlot={handleSelectSlot}
                           views={["day"]}
+                          min={minTime}
+                          max={maxTime}
                           selectable
                         />
                       </Card>

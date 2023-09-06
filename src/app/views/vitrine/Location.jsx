@@ -90,8 +90,8 @@ const Location = () => {
                         <Col lg={4}>
                           {imageUrls && imageUrls[row.id] && (
                             <UncontrolledCarousel
-                              height={300}
                               items={imageUrls[row.id]}
+                              className="location" 
                             />
                           )}
                         </Col>
