@@ -53,7 +53,6 @@ const Location = () => {
     }
   };
   const reserve = (id) => {
-    console.log("salle id", id);
     localStorage.setItem("idSalle", id);
     return navigate("/out/reservation");
   };

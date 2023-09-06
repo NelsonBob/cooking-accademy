@@ -10,6 +10,7 @@ import Register from "../views/vitrine/Register";
 import Panier from "../views/vitrine/Panier";
 import Commande from "../views/vitrine/Commande";
 import Reservation from "../views/vitrine/Reservation";
+import Dashboard from "../views/Dashboard";
 
 var routesOut = [
   {
@@ -62,6 +63,7 @@ var routesOut = [
     component: <Login />,
     layout: "/out",
   },
+
   {
     path: "/location",
     name: "Menu.location",
@@ -75,6 +77,13 @@ var routesOut = [
     class: "nav-link-icon",
     component: <Register />,
     layout: "/out",
+  },
+  {
+    path: "/index",
+    name: "Menu.dashboard",
+    class: "btn btn-danger rounded-pill mt-2 p-2",
+    component: <Dashboard />,
+    layout: "/in",
   },
   {
     path: "/cart",

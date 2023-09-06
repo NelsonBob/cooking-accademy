@@ -35,6 +35,7 @@ const InNavbar = (props) => {
     }
   };
   const logout = () => {
+    localStorage.clear();
     return navigate("/out/index");
   };
   return (

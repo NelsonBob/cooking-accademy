@@ -68,7 +68,12 @@ const OutNavbar = () => {
                   el.path != "/register" &&
                   el.path != "/cart" &&
                   el.path != "/reservation" &&
-                  el.path != "/order" && (
+                  el.path != "/order" &&
+                  ((JSON.parse(localStorage.getItem("auth"))?.userid &&
+                    el.path != "/login") ||
+                    (!JSON.parse(localStorage.getItem("auth"))?.userid &&
+                      el.path != "/index" &&
+                      el.layout != "in")) && (
                     <NavItem key={index}>
                       <NavLink
                         className={el.class}

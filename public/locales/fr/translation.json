@@ -6,6 +6,7 @@
   },
   "Menu": {
     "home": "Accueil",
+    "dashboard": "Dashboard",
     "prices": "Prix",
     "market": "Boutique",
     "groupLessons": "Cours",

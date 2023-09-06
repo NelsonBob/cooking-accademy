@@ -44,7 +44,7 @@ const InLayout = (props) => {
         {...props}
         routes={routes}
         logo={{
-          innerLink: "/in/index",
+          innerLink: "/out/index",
           imgSrc: require("../../assets/img/brand/argon-react.png"),
           imgAlt: "...",
         }}

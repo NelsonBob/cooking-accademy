@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,11 @@ import {
   Card,
   Col,
   Container,
-  Modal,
   Row,
   UncontrolledCarousel,
 } from "reactstrap";
-import { getSalleById, readFile } from "../../service/frontendService";
 import Swal from "sweetalert2";
+import { getSalleById, readFile } from "../../service/frontendService";
 const localizer = momentLocalizer(moment);
 
 const Reservation = () => {
@@ -64,12 +63,7 @@ const Reservation = () => {
   ]);
   const minTime = new Date().setHours(8, 0, 0); // 8:00 AM
   const maxTime = new Date().setHours(18, 0, 0); // 6:00 PM
-  const { defaultDate } = useMemo(
-    () => ({
-      defaultDate: new Date(),
-    }),
-    []
-  );
+
   const handleSelectEvent = useCallback(
     (event) => {
       const formattedStartTime = moment(event.start).format("LT");
@@ -99,6 +93,23 @@ const Reservation = () => {
     },
     [myEvents, setEvents]
   );
+  const handleReserve = () => {
+    if (JSON.parse(localStorage.getItem("auth"))?.userid) setReserve(!reserve);
+    else {
+      Swal.fire({
+        position: "top-end",
+        icon: "info",
+        html: `
+        <p>
+          Veuillez vous connecter avant d'effectuer une reservation
+        </p>
+      `,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      navigate("/out/login");
+    }
+  };
 
   const handleSelectSlot = useCallback(
     ({ start, end }) => {
@@ -152,7 +163,7 @@ const Reservation = () => {
   else
     return (
       <>
-        <div className="header bg-info py-7 py-lg-8">
+        <div className="header bg-gradient-info py-7 py-lg-8">
           <div className="separator separator-bottom separator-skew zindex-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +201,7 @@ const Reservation = () => {
                   md={6}
                   className="my-4 d-flex justify-content-end align-items-baseline"
                 >
-                  <Button color="primary" onClick={() => setReserve(!reserve)}>
+                  <Button color="primary" onClick={() => handleReserve()}>
                     {reserve ? "Retour" : "Réserver maintenant"}
                   </Button>{" "}
                 </Col>
@@ -213,7 +224,7 @@ const Reservation = () => {
                       <h1>Reservation System</h1>
                       <Card className="p-4">
                         <Calendar
-                          defaultDate={defaultDate}
+                          defaultDate={new Date()}
                           defaultView="day"
                           events={myEvents}
                           localizer={localizer}
