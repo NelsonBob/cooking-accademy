@@ -14,23 +14,22 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { Col, Container, Form, Input, Row } from "reactstrap";
-import { checkpaiementStripe } from "../../service/frontendService";
+import Swal from "sweetalert2";
+import {
+  checkpaiementStripe,
+  generateReceipt,
+} from "../../service/frontendService";
 import CheckoutForm from "../CheckoutForm";
 
 const Commande = () => {
   const { t } = useTranslation();
   const { isEmpty, cartTotal, items, emptyCart } = useCart();
-  const [name, setName] = useState("");
   const [numero, setNumero] = useState("");
   const [numero1, setNumero1] = useState("");
   const [ville, setVille] = useState("");
-  const [email, setEmail] = useState("");
   const [codePostal, setCodePostal] = useState("");
   const [telephone, setTelephone] = useState("");
   const [note, setNote] = useState("");
-  const [numeroCode, setNumeroCode] = useState("");
-  const [dateExp, setDateExp] = useState("");
-  const [cvc, setCvc] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [clientSecret, setClientSecret] = useState("");
@@ -41,18 +40,7 @@ const Commande = () => {
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = {};
-    if (!email) {
-      formIsValid = false;
-      newErrors.email = "Email is required";
-    }
-    if (!cvc) {
-      formIsValid = false;
-      newErrors.cvc = "CVC is required";
-    }
-    if (!name) {
-      formIsValid = false;
-      newErrors.name = "Name is required";
-    }
+
     if (!numero) {
       formIsValid = false;
       newErrors.numero = "Numero is required";
@@ -69,20 +57,34 @@ const Commande = () => {
       formIsValid = false;
       newErrors.telephone = "Telephone is required";
     }
-    if (!numeroCode) {
-      formIsValid = false;
-      newErrors.numeroCode = "Numero code is required";
-    }
-    if (!dateExp) {
-      formIsValid = false;
-      newErrors.dateExp = "Date Expiration is required";
-    }
+
     setErrors(newErrors);
     return formIsValid;
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmitPaiment = async () => {
     if (validateForm()) {
+      const data = {
+        numeroRue: numero,
+        numeroRueCompl: numero1,
+        ville,
+        codePostal,
+        telephone,
+        noteCommande: note,
+        items,
+        amount: cartTotal,
+      };
+      const response = await generateReceipt(
+        JSON.parse(localStorage.getItem("auth")).userid,
+        data
+      );
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        html: `<p>${response}</p> `,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      return navigate("/out/index");
     }
   };
 
@@ -104,7 +106,7 @@ const Commande = () => {
   }, []);
   const handleValidateOder = async () => {
     try {
-      const data = { items, amount: cartTotal, token: "eee" };
+      const data = { amount: cartTotal };
       const response = await checkpaiementStripe(
         JSON.parse(localStorage.getItem("auth")).userid,
         data
@@ -147,22 +149,6 @@ const Commande = () => {
                       <h2 className="mb-0 mt-3">Détails de facturation</h2>
                       <hr className="my-2" />
                       <FormGroup className="mt-4">
-                        <p className="mb-0">Nom complet*</p>
-                        <Input
-                          type="text"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                        />
-                        {errors.name && (
-                          <span
-                            className="text-danger"
-                            style={{ fontSize: "13px" }}
-                          >
-                            {errors.name}
-                          </span>
-                        )}
-                      </FormGroup>
-                      <FormGroup className="mt-2">
                         <p className="mb-0">Numéro et nom de rue*</p>
                         <Input
                           type="text"
@@ -234,22 +220,7 @@ const Commande = () => {
                           </span>
                         )}
                       </FormGroup>
-                      <FormGroup className="mt-2">
-                        <p className="mb-0">E-mail*</p>
-                        <Input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        {errors.email && (
-                          <span
-                            className="text-danger"
-                            style={{ fontSize: "13px" }}
-                          >
-                            {errors.email}
-                          </span>
-                        )}
-                      </FormGroup>
+
                       <h2 className="mb-0 mt-3">
                         Informations complémentaires
                       </h2>
@@ -306,6 +277,10 @@ const Commande = () => {
                                 >
                                   <CheckoutForm
                                     clearCartclick={() => clearCartclick()}
+                                    validateForm={() => validateForm()}
+                                    handleSubmitPaiment={() =>
+                                      handleSubmitPaiment()
+                                    }
                                   />
                                 </Elements>
                               ) : (

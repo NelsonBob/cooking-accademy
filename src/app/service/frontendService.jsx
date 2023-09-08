@@ -1017,3 +1017,55 @@ export const checkpaiementStripe = async (id, data) => {
     throw error.response?.data;
   }
 };
+
+export const generateReceipt = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(
+      `${baseURL}/payment/generate/${id}`,
+      data,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
+//event
+export const getListEvent = async (data, id) => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/v2/events/${data}/element/${id}`
+    );
+    return response.data;
+  } catch (error) {}
+};
+
+export const createEventReservation = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/event/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const removeEvent = async (id,dat) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.delete(`${baseURL}/event/${id}/element/${dat}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};

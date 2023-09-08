@@ -9,7 +9,7 @@ import { Button, Form } from "reactstrap";
 import Swal from "sweetalert2";
 import "./../../assets/scss/checkout.css";
 
-export default function CheckoutForm({clearCartclick}) {
+export default function CheckoutForm({ clearCartclick, validateForm,handleSubmitPaiment }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -49,51 +49,44 @@ export default function CheckoutForm({clearCartclick}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (validateForm()) {
+      if (!stripe || !elements) {
+        return;
+      }
 
-    if (!stripe || !elements) {
-      return;
-    }
+      setIsLoading(true);
 
-    setIsLoading(true);
-
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: "http://localhost:3000/out/order/return_url",
-      },
-      redirect: "if_required",
-    });
-    setIsLoading(false);
-
-    // Display a message based on the payment result
-    if (error) {
-      setMessage(error.message);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      clearCartclick();
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        html: `
-        <p>
-        Payment succeeded
-        </p>
-      `,
-        showConfirmButton: false,
-        timer: 2000,
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: "http://localhost:3000/out/order/return_url",
+        },
+        redirect: "if_required",
       });
-      return navigate("/out/index");
-    } else {
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        html: `
-        <p>
-        Payment failed
-        </p>
-      `,
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      setIsLoading(false);
+
+      // Display a message based on the payment result
+      if (error) {
+        setMessage(error.message);
+      } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        clearCartclick();
+        handleSubmitPaiment()
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          html: `<p>  Payment succeeded </p> `,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } else {
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          html: ` <p> Payment failed </p> `,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
     }
   };
 

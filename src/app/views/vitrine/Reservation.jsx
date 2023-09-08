@@ -12,18 +12,27 @@ import {
   UncontrolledCarousel,
 } from "reactstrap";
 import Swal from "sweetalert2";
-import { getSalleById, readFile } from "../../service/frontendService";
+import {
+  createEventReservation,
+  getListEvent,
+  getSalleById,
+  readFile,
+  removeEvent,
+} from "../../service/frontendService";
 const localizer = momentLocalizer(moment);
 
 const Reservation = () => {
   const [tableData, setTableData] = useState({});
   const [imageUrls, setImageUrls] = useState([]);
   const [reserve, setReserve] = useState(false);
+  const [myEvents, setEvents] = useState([]);
   const idSalle = localStorage.getItem("idSalle");
   const navigate = useNavigate();
   useEffect(() => {}, [imageUrls]);
+  useEffect(() => {}, [myEvents]);
   useEffect(() => {
     getSalle();
+    getReservation();
   }, []);
 
   const getSalle = async () => {
@@ -32,6 +41,47 @@ const Reservation = () => {
       let newgal = await callGal(res.gallerie);
       setImageUrls(newgal);
       setTableData(res);
+    } catch (error) {}
+  };
+  const createReservation = async (title, start, end) => {
+    try {
+      const data = {
+        title,
+        start,
+        end,
+        elementId: idSalle,
+      };
+      const res = await createEventReservation(
+        JSON.parse(localStorage.getItem("auth")).userid,
+        data
+      );
+      formatDateEvent(res);
+    } catch (error) {}
+  };
+  const removeReservation = async (idevent) => {
+    try {
+      const res = await removeEvent(idevent, idSalle);
+      formatDateEvent(res);
+      Swal.fire("Event Removed!", "The event has been removed.", "success");
+    } catch (error) {}
+  };
+  const formatDateEvent = (tab = []) => {
+    let res = [];
+    tab.forEach((it) => {
+      res.push({
+        id: it.id,
+        title: it.title,
+        start: new Date(it.start),
+        end: new Date(it.end),
+        user: it.user,
+      });
+    });
+    setEvents(res);
+  };
+  const getReservation = async () => {
+    try {
+      const res = await getListEvent("Reservation", idSalle);
+      formatDateEvent(res);
     } catch (error) {}
   };
   const callGal = (galleries) => {
@@ -47,20 +97,9 @@ const Reservation = () => {
       const response = await readFile(url);
       const imgUrl = URL.createObjectURL(response);
       return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
+    } catch (error) {}
   };
 
-  const [myEvents, setEvents] = useState([
-    {
-      id: 0,
-      title: "All Day Event very long title",
-      allDay: true,
-      start: new Date(2023, 9, 0),
-      end: new Date(2023, 9, 1),
-    },
-  ]);
   const minTime = new Date().setHours(8, 0, 0); // 8:00 AM
   const maxTime = new Date().setHours(18, 0, 0); // 6:00 PM
 
@@ -69,27 +108,35 @@ const Reservation = () => {
       const formattedStartTime = moment(event.start).format("LT");
       const formattedEndTime = moment(event.end).format("LT");
       const formattedDay = moment(event.start).format("LL");
-      Swal.fire({
-        html: `<h2>Remove Event at ${formattedDay} </h2> Are you sure you want to remove the event: 
+      if (
+        event.user.id == JSON.parse(localStorage.getItem("auth")).userid &&
+        event.end > new Date()
+      )
+        Swal.fire({
+          html: `<h2>Remove Event at ${formattedDay} </h2> Are you sure you want to remove the event: 
         <strong>${event.title}</strong>(<strong>${formattedStartTime}</strong> - <strong>${formattedEndTime}</strong>)?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, remove it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // User confirmed the removal, remove the event from myEvents
-          const updatedEvents = myEvents.filter(
-            (e) =>
-              e.start !== event.start &&
-              e.end !== event.end &&
-              e.title !== event.title
-          );
-          setEvents(updatedEvents);
-          Swal.fire("Event Removed!", "The event has been removed.", "success");
-        }
-      });
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, remove it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            removeReservation(event.id);
+          }
+        });
+      else
+        Swal.fire({
+          position: "top-end",
+          icon: "info",
+          html: `
+        <p>
+        Impossible de supprimer cet evenement
+        </p>
+      `,
+          showConfirmButton: false,
+          timer: 2000,
+        });
     },
     [myEvents, setEvents]
   );
@@ -136,29 +183,60 @@ const Reservation = () => {
           timer: 2000,
         });
       } else {
+        const now = new Date();
         const formattedStartTime = moment(start).format("LT");
         const formattedEndTime = moment(end).format("LT");
         const formattedDay = moment(start).format("LL");
-
-        Swal.fire({
-          html: `<h2>Reservation du ${formattedDay}</h2>
+        if (start <= now) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            html: `
+              <p>
+                You cannot create an event in the past. Please choose a future time.
+              </p>
+            `,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          return;
+        } else
+          Swal.fire({
+            html: `<h2>Reservation du ${formattedDay}</h2>
           <span>${formattedStartTime} - ${formattedEndTime}</span>`,
-          input: "text",
-          inputLabel: "Entrer un intutilé de reservation",
-          showCancelButton: true,
-          inputValidator: (value) => {
-            if (!value) {
-              return "You need to write something!";
-            } else {
-              setEvents((prev) => [...prev, { start, end, title: value }]);
-            }
-          },
-        });
+            input: "text",
+            inputLabel: "Entrer un intutilé de reservation",
+            showCancelButton: true,
+            inputValidator: (value) => {
+              if (!value) {
+                return "You need to write something!";
+              } else {
+                createReservation(value, start, end);
+              }
+            },
+          });
       }
     },
     [myEvents, setEvents]
   );
-
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    var style = {
+      backgroundColor: getRandomColor(),
+      borderRadius: "0px",
+      border: "0px",
+    };
+    return {
+      style: style,
+    };
+  };
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
   if (!idSalle) return navigate("/out/location");
   else
     return (
@@ -234,6 +312,7 @@ const Reservation = () => {
                           min={minTime}
                           max={maxTime}
                           selectable
+                          eventPropGetter={eventStyleGetter}
                         />
                       </Card>
                     </div>
