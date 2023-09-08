@@ -27,7 +27,6 @@ const CourClient = () => {
   const [typeAction, setTypeAction] = useState(null);
   const [description, setDescription] = useState(null);
   const [videoUrl, setVideoUrl] = useState({});
-  const [isVideoLocal, setIsVideoLocal] = useState(false);
 
   useEffect(() => {
     getList();
@@ -91,7 +90,6 @@ const CourClient = () => {
     setDescription(desc);
     setVideoModal(true);
     setTypeAction(typeActi);
-    setIsVideoLocal(isloc);
   };
   return (
     <>
@@ -130,7 +128,7 @@ const CourClient = () => {
           {tableData && tableData.length > 0 ? (
             tableData.map((row) => (
               <Col
-                lg={4}
+                lg={6}
                 style={{ cursor: "pointer" }}
                 onClick={() =>
                   previewVideo(

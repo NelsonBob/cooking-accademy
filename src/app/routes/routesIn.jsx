@@ -11,6 +11,7 @@ import Repas from "../views/Repas";
 import Salle from "../views/Salle";
 import ServiceAbonnement from "../views/ServiceAbonnement";
 import Paiement from "../views/Paiement";
+import Event from "../views/Event";
 
 var routes = [
   {
@@ -107,6 +108,16 @@ var routes = [
     name: "Salle",
     icon: "ni ni-single-02",
     component: <Salle />,
+    layout: "/in",
+    sidebar: true,
+    postion: 5,
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
+  },
+  {
+    path: "/reservation",
+    name: "Evenement",
+    icon: "fa fa-calendar",
+    component: <Event />,
     layout: "/in",
     sidebar: true,
     postion: 5,

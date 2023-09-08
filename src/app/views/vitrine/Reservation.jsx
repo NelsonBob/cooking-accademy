@@ -140,24 +140,6 @@ const Reservation = () => {
     },
     [myEvents, setEvents]
   );
-  const handleReserve = () => {
-    if (JSON.parse(localStorage.getItem("auth"))?.userid) setReserve(!reserve);
-    else {
-      Swal.fire({
-        position: "top-end",
-        icon: "info",
-        html: `
-        <p>
-          Veuillez vous connecter avant d'effectuer une reservation
-        </p>
-      `,
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      navigate("/out/login");
-    }
-  };
-
   const handleSelectSlot = useCallback(
     ({ start, end }) => {
       // Check for conflicts with existing events
@@ -219,6 +201,24 @@ const Reservation = () => {
     },
     [myEvents, setEvents]
   );
+  const handleReserve = () => {
+    if (JSON.parse(localStorage.getItem("auth"))?.userid) setReserve(!reserve);
+    else {
+      Swal.fire({
+        position: "top-end",
+        icon: "info",
+        html: `
+        <p>
+          Veuillez vous connecter avant d'effectuer une reservation
+        </p>
+      `,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      navigate("/out/login");
+    }
+  };
+
   const eventStyleGetter = (event, start, end, isSelected) => {
     var style = {
       backgroundColor: getRandomColor(),
@@ -308,7 +308,7 @@ const Reservation = () => {
                           localizer={localizer}
                           onSelectEvent={handleSelectEvent}
                           onSelectSlot={handleSelectSlot}
-                          views={["day"]}
+                          views={["day", "week", "agenda"]}
                           min={minTime}
                           max={maxTime}
                           selectable

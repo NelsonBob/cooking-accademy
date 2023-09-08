@@ -98,7 +98,7 @@ export const getListInternChef = async () => {
     return response.data;
   } catch (error) {}
 };
-export const  getListLivreurs = async (id) => {
+export const getListLivreurs = async (id) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
@@ -1127,6 +1127,18 @@ export const createEventReservation = async (id, data) => {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
     const response = await axios.post(`${baseURL}/event/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const listEvent = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/event/${id}`, {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
