@@ -10,6 +10,7 @@ import Profile from "../views/Profile";
 import Repas from "../views/Repas";
 import Salle from "../views/Salle";
 import ServiceAbonnement from "../views/ServiceAbonnement";
+import Paiement from "../views/Paiement";
 
 var routes = [
   {
@@ -125,7 +126,7 @@ var routes = [
     path: "/order",
     name: "Commande",
     icon: "fa fa-shopping-cart",
-    component: <Profile />,
+    component: <Paiement />,
     layout: "/in",
     sidebar: true,
     postion: 7,

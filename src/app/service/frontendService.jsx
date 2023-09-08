@@ -98,6 +98,30 @@ export const getListInternChef = async () => {
     return response.data;
   } catch (error) {}
 };
+export const  getListLivreurs = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/intern/livreur/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+  }
+};
 export const getInternById = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1018,6 +1042,40 @@ export const checkpaiementStripe = async (id, data) => {
   }
 };
 
+export const assignLivreurPayment = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.put(
+      `${baseURL}/payment/assign-livreur/${id}`,
+      data,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
+export const confirmLivraisonPayment = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.put(
+      `${baseURL}/payment/valided-livraison/${id}`,
+      data,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
 export const generateReceipt = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1034,7 +1092,26 @@ export const generateReceipt = async (id, data) => {
     throw error.response?.data;
   }
 };
-
+export const getListPayment = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/payment/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
+export const getByPaymentId = async (id, idk) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/payment/${id}/id/${idk}}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
 //event
 export const getListEvent = async (data, id) => {
   try {
@@ -1057,13 +1134,16 @@ export const createEventReservation = async (id, data) => {
     throw error.response?.data;
   }
 };
-export const removeEvent = async (id,dat) => {
+export const removeEvent = async (id, dat) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
-    const response = await axios.delete(`${baseURL}/event/${id}/element/${dat}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
+    const response = await axios.delete(
+      `${baseURL}/event/${id}/element/${dat}`,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error.response?.data;
