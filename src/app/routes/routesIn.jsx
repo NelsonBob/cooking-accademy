@@ -12,6 +12,7 @@ import Salle from "../views/Salle";
 import ServiceAbonnement from "../views/ServiceAbonnement";
 import Paiement from "../views/Paiement";
 import Event from "../views/Event";
+import EspaceCour from "../views/EspaceCour";
 
 var routes = [
   {
@@ -19,6 +20,15 @@ var routes = [
     name: "User Profile",
     icon: "ni ni-single-02",
     component: <Profile />,
+    layout: "/in",
+    sidebar: false,
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
+  },
+  {
+    path: "/lesson",
+    name: "Espace cours",
+    icon: "fa fa-book",
+    component: <EspaceCour />,
     layout: "/in",
     sidebar: false,
     role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],

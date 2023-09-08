@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -27,8 +28,11 @@ const CourClient = () => {
   const [typeAction, setTypeAction] = useState(null);
   const [description, setDescription] = useState(null);
   const [videoUrl, setVideoUrl] = useState({});
+  const [idcour, setIdcour] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
+    localStorage.removeItem("idcour");
     getList();
   }, []);
   useEffect(() => {}, [tableData]);
@@ -78,7 +82,16 @@ const CourClient = () => {
     } catch (error) {}
   };
   const handleClose = () => setVideoModal(!videoModal);
-  const previewVideo = async (video, title, content, desc, isloc, typeActi) => {
+  const previewVideo = async (
+    id,
+    video,
+    title,
+    content,
+    desc,
+    isloc,
+    typeActi
+  ) => {
+    setIdcour(id);
     if (isloc) {
       const videoUrl = await getFile(video);
       setVideoUrl(videoUrl);
@@ -90,6 +103,12 @@ const CourClient = () => {
     setDescription(desc);
     setVideoModal(true);
     setTypeAction(typeActi);
+  };
+
+  const handleVisualiser = () => {
+    localStorage.setItem("idcour", idcour);
+    handleClose();
+    return navigate("/in/lesson");
   };
   return (
     <>
@@ -132,6 +151,7 @@ const CourClient = () => {
                 style={{ cursor: "pointer" }}
                 onClick={() =>
                   previewVideo(
+                    row.id,
                     row.videoLink,
                     row.name,
                     row.contentCour,
@@ -193,7 +213,7 @@ const CourClient = () => {
                 <Button
                   color="primary"
                   className="btn-block"
-                  onClick={() => setTypeAction("visualiser")}
+                  onClick={() => handleVisualiser()}
                 >
                   Regarder la video
                 </Button>
