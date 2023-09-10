@@ -94,8 +94,10 @@ const Paiement = () => {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await getListPayment(id);
 
-      setTableData(res);
-      setTableDataCopy(res);
+      if (res) {
+        setTableData(res);
+        setTableDataCopy(res);
+      }
       setInputText("");
     } catch (error) {}
   };

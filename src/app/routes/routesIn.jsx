@@ -51,7 +51,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 2,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
   {
     path: "/user-intern",
@@ -61,7 +61,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 2,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
   {
     path: "/abonnement-service",

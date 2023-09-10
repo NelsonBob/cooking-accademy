@@ -1,0 +1,168 @@
+$primaryColor: #5e72e4;
+$secondaryColor: #f7fafc;
+$grey: #11cdef;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.tchat-cs-btn {
+  width: 40px;
+  height: 40px;
+  padding: 15px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+.register {
+  padding: 30px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  top: 35%;
+  left: 32%;
+  display: flex;
+  flex-direction: row;
+}
+.chat-box {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  /* height: 95vh; */
+  padding-top: 10px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.member-list {
+  width: 20%;
+}
+
+.chat-content {
+  width: 100%;
+}
+
+.chat-messages {
+  height: 500px;
+  border: 1px solid #ccc;
+  overflow-x: hidden;
+  margin-bottom: 10px;
+  background: $secondaryColor;
+  overflow-y: scroll;
+}
+
+.send-message {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.input-message {
+  width: 80%;
+  border-radius: 50px;
+}
+
+.send-button {
+  border-radius: 50px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.member {
+  padding: 10px;
+  background: $secondaryColor;
+  border: #000;
+  cursor: pointer;
+  margin: 5px 2px;
+  box-shadow: 0 8px 8px -4px lightblue;
+}
+.member.active {
+  background: blueviolet;
+  color: $secondaryColor;
+}
+.member:hover {
+  background: $grey;
+  color: $secondaryColor;
+}
+
+.avatar.self {
+  color: #000;
+  background-color: #3c86f4;
+  margin-left: 5px;
+}
+.message {
+  padding: 5px;
+  width: auto;
+  display: flex;
+  margin: 5px 10px;
+}
+.message-data {
+  padding: 5px;
+  white-space: pre-wrap;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  background: #f3cccf21;
+}
+.message.self {
+  justify-content: end;
+}
+
+.message-text {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.tcha-block {
+  width: 100%;
+  position: relative;
+}
+
+aside.EmojiPickerReact.epr-main {
+  border-color: var(--epr-picker-border-color);
+  border-radius: var(--epr-picker-border-radius);
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 70px;
+  box-shadow: 9px -9px 9px -1px rgba(0, 0, 0, 0.23);
+}
+
+.message-box-emoji {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12) textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+  }
+}
+
+.tcha-message-time {
+  font-size: 10px;
+  font-weight: 500;
+  color: #555;
+  font-style: italic;
+}
+.message-data-self {
+  background-color: $primaryColor;
+  color: $secondaryColor;
+  .tcha-message-time {
+    color: $secondaryColor;
+  }
+}

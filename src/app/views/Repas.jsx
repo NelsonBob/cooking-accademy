@@ -128,8 +128,10 @@ const Repas = () => {
         urls[row.id] = imgUrl;
       }
       setImageUrls(urls);
-      setTableData(res);
-      setTableDataCopy(res);
+      if (res) {
+        setTableData(res);
+        setTableDataCopy(res);
+      }
       setInputText("");
     } catch (error) {}
   };

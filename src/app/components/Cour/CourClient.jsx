@@ -76,8 +76,10 @@ const CourClient = () => {
       }
       setImageUrls(urls);
 
-      setTableData(res);
-      setTableDataCopy(res);
+      if (res) {
+        setTableData(res);
+        setTableDataCopy(res);
+      }
       setInputText("");
     } catch (error) {}
   };
@@ -145,8 +147,9 @@ const CourClient = () => {
       <Container className="mt--7" fluid>
         <Row className="row-grid">
           {tableData && tableData.length > 0 ? (
-            tableData.map((row) => (
+            tableData.map((row, index) => (
               <Col
+                key={index}
                 lg={6}
                 style={{ cursor: "pointer" }}
                 onClick={() =>
@@ -204,9 +207,9 @@ const CourClient = () => {
                     className="embed-responsive-item"
                     src={videoUrl}
                     title="YouTube video player"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                   ></iframe>
                 </div>
               ) : (

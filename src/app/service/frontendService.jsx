@@ -1121,6 +1121,12 @@ export const getListEvent = async (data, id) => {
     return response.data;
   } catch (error) {}
 };
+export const getListEventAll = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/v2/events`);
+    return response.data;
+  } catch (error) {}
+};
 
 export const createEventReservation = async (id, data) => {
   try {

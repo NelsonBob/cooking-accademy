@@ -57,8 +57,10 @@ const Intern = () => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await getListIntern(id);
-      setTableData(res);
-      setTableDataCopy(res);
+      if (res) {
+        setTableData(res);
+        setTableDataCopy(res);
+      }
       setInputText("");
     } catch (error) {}
   };
@@ -252,7 +254,8 @@ const Intern = () => {
               <Col md={12} className="d-flex justify-content-between mt-5">
                 <FormGroup md={6}>
                   <Button color="info" type="button" onClick={getList}>
-                    <i className="fa fa-refresh" aria-hidden="true"></i> Actualiser
+                    <i className="fa fa-refresh" aria-hidden="true"></i>{" "}
+                    Actualiser
                   </Button>
                 </FormGroup>
                 <FormGroup md={6}>
@@ -261,8 +264,8 @@ const Intern = () => {
                     type="button"
                     onClick={() => handleClickDesable(0, "create")}
                   >
-                    <i className="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
-                    un intern
+                    <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
+                    Ajouter un intern
                   </Button>
                 </FormGroup>
               </Col>

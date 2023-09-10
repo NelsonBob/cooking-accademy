@@ -50,6 +50,7 @@ const Reservation = () => {
         start,
         end,
         elementId: idSalle,
+        imgPath: tableData.imgPath,
       };
       const res = await createEventReservation(
         JSON.parse(localStorage.getItem("auth")).userid,
@@ -225,6 +226,11 @@ const Reservation = () => {
       borderRadius: "0px",
       border: "0px",
     };
+    // Adjust the height for events in the "Month" view
+    if (isSelected && event.view === "month") {
+      style.height = "20px"; // Adjust the height as needed
+    }
+
     return {
       style: style,
     };
@@ -308,7 +314,6 @@ const Reservation = () => {
                           localizer={localizer}
                           onSelectEvent={handleSelectEvent}
                           onSelectSlot={handleSelectSlot}
-                          views={["day", "week", "agenda"]}
                           min={minTime}
                           max={maxTime}
                           selectable

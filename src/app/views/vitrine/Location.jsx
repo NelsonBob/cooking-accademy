@@ -79,11 +79,11 @@ const Location = () => {
           <Col md={12} className="my-4">
             <h1 className="text-white text-center">{t("Location.title")}</h1>
           </Col>
-          <Col md={12} className="mt-5">
+          <Col md={12} className="mt-4">
             <Row>
               {tableData && tableData.length > 0 ? (
                 tableData.map((row, i) => (
-                  <Col lg={12} key={i}>
+                  <Col lg={12} key={i} className="mt-3">
                     <Card className="p-2">
                       <Row>
                         <Col lg={4}>

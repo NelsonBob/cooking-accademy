@@ -80,9 +80,9 @@ const EspaceCour = () => {
                         className="embed-responsive-item"
                         src={videoUrl}
                         title="YouTube video player"
-                        frameborder="0"
+                        frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
+                        allowFullScreen
                       ></iframe>
                     </div>
                   </Col>
@@ -102,11 +102,14 @@ const EspaceCour = () => {
               )}
             </Row>
           </Col>
-          {cour && cour.creator && (
-            <Col md={12}>
-              <ChatRoom receivername={cour.creator.id} idcour={idCour} />
-            </Col>
-          )}
+          {cour &&
+            cour.creator &&
+            cour.creator.id !=
+              JSON.parse(localStorage.getItem("auth")).userid && (
+              <Col md={12}>
+                <ChatRoom receivername={cour.creator.name} idcour={idCour} />
+              </Col>
+            )}
         </Row>
       </Container>
     </>

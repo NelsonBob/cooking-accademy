@@ -112,8 +112,10 @@ const OptionAbonnement = () => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await getListOptionAbonnement(id);
-      setTableData(res);
-      setTableDataCopy(res);
+      if (res) {
+        setTableData(res);
+        setTableDataCopy(res);
+      }
       setInputText("");
     } catch (error) {}
   };

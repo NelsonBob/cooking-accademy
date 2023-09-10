@@ -94,8 +94,10 @@ const CategorieMateriel = () => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await getListCategorieMateriel(id);
-      setTableData(res);
-      setTableDataCopy(res);
+      if (res) {
+        setTableData(res);
+        setTableDataCopy(res);
+      }
       setInputText("");
     } catch (error) {}
   };

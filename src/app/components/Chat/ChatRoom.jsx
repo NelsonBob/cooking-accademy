@@ -1,16 +1,14 @@
 import EmojiPicker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
+import { Col, Row } from "reactstrap";
 import SockJS from "sockjs-client/dist/sockjs";
 import { over } from "stompjs";
 import { baseURL } from "../../../environnements/environnement";
 import { UpdateFile, readFile } from "../../service/frontendService";
-import { Col, Row } from "reactstrap";
-
+import "./../../../assets/scss/chat.scss";
 var stompClient = null;
 const ChatRoom = ({ receivername, idcour }) => {
-  const [privateChats, setPrivateChats] = useState(new Map());
-  const [publicChats, setPublicChats] = useState([]);
-  const [tab, setTab] = useState(localStorage.getItem("idcour"));
+  const [privateChats, setPrivateChats] = useState([]);
   const [userData, setUserData] = useState({
     username: JSON.parse(localStorage.getItem("auth")).userName,
     receivername: receivername,
@@ -22,7 +20,6 @@ const ChatRoom = ({ receivername, idcour }) => {
   });
 
   const [message, setMessage] = useState("");
-  const [chatMessage, setChatMessage] = useState(true);
   const [clickButton, setClickButton] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
@@ -70,34 +67,25 @@ const ChatRoom = ({ receivername, idcour }) => {
       senderName: userData.username,
       receiverName: userData.receivername,
       currentDate: new Date().toLocaleString(),
+      status: "JOIN ",
     };
     stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   };
   const onMessageReceived = (payload) => {
     var payloadData = JSON.parse(payload.body);
-
-    if (!payloadData.status) {
-      const key = Object.keys(payloadData)[0];
-      privateChats.set(parseInt(key, 10), payloadData[key]);
-      setPrivateChats(new Map(privateChats));
-    } else {
-      publicChats.push(payloadData);
-      setPublicChats([...new Set(publicChats)]);
-    }
+    setPrivateChats(payloadData);
   };
   const onPrivateMessage = (payload) => {
     var payloadData = JSON.parse(payload.body);
     if (privateChats.get(payloadData.cour)) {
-      const oldval = privateChats.get(payloadData.cour).slice(-1)[0];
+      const oldval = privateChats.slice(-1)[0];
       if (oldval !== payloadData) {
-        privateChats.get(payloadData.cour).push(payloadData);
-        setPrivateChats(new Map(privateChats));
+        setPrivateChats(payloadData);
       }
     } else {
       let list = [];
       list.push(payloadData);
-      privateChats.set(payloadData.cour, [...new Set(list)]);
-      setPrivateChats(new Map(privateChats));
+      setPrivateChats(list);
     }
   };
 
@@ -116,13 +104,9 @@ const ChatRoom = ({ receivername, idcour }) => {
         currentDate: new Date().toLocaleString(),
         status: "MESSAGE",
       };
-      if (privateChats.has(tab) && Array.isArray(privateChats.get(tab))) {
-        privateChats.get(tab).push(chatMessage);
-      } else {
-        privateChats.set(tab, [chatMessage]);
-      }
+      privateChats.push(chatMessage);
 
-      setPrivateChats(new Map(privateChats));
+      setPrivateChats(privateChats);
 
       stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
       setMessage("");
@@ -197,7 +181,6 @@ const ChatRoom = ({ receivername, idcour }) => {
 
   /* End Voice
    */
-  useEffect(() => {}, [chatMessage]);
 
   return (
     <Row>
@@ -210,156 +193,146 @@ const ChatRoom = ({ receivername, idcour }) => {
             >
               <h2>Discussion</h2>
             </div>
-            {chatMessage && (
-              <>
-                <ul className="chat-messages">
-                  {privateChats.size > 0 &&
-                    privateChats.has(tab) &&
-                    Array.isArray(privateChats.get(tab)) &&
-                    privateChats.get(tab).map((chat, index) => (
-                      <li
-                        className={`message ${
-                          chat.senderName === userData.username && "self"
-                        }`}
-                        key={index}
-                      >
-                        {chat.senderName !== userData.username && (
-                          <div className="avatar">
-                            <span>
-                              {chat.senderName.substring(2, 0).toUpperCase()}
-                            </span>
-                          </div>
-                        )}
-                        <div
-                          className={
-                            chat.senderName !== userData.username
-                              ? "message-data"
-                              : "message-data message-data-self"
-                          }
-                        >
-                          {chat.message.includes("_blob") ? (
-                            <button
-                              className="tchat-cs-btn"
-                              onClick={() => handlePlay(chat.message)}
-                            >
-                              <i
-                                class="fa fa-play"
-                                aria-hidden="true"
-                                style={{
-                                  color:
-                                    chat.senderName !== userData.username
-                                      ? "#dc3545"
-                                      : "blue",
-                                  fontSize: "1.3em",
-                                }}
-                              ></i>
-                            </button>
-                          ) : (
-                            <span className="message-text">{chat.message}</span>
-                          )}
-
-                          <span
-                            className="text-info"
-                            style={{
-                              fontSize: "small",
-                            }}
-                          >
-                            <br />{" "}
-                            <span className="tcha-message-time">
-                              {chat.currentDate}
-                            </span>
-                          </span>
-                        </div>
-                        {chat.senderName === userData.username && (
-                          <div className="avatar self">
-                            <span>
-                              {chat.senderName.substring(2, 0).toUpperCase()}
-                            </span>
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                </ul>
-                <div className="send-message">
-                  <div
-                    className="message-box-emoji"
-                    style={{
-                      justifyContent: isRecording ? "center" : "space-between",
-                    }}
+            <ul className="chat-messages">
+              {privateChats.length > 0 &&
+                privateChats.map((chat, index) => (
+                  <li
+                    className={`message ${
+                      chat.senderName === userData.username && "self"
+                    }`}
+                    key={index}
                   >
-                    {!isRecording && (
-                      <div className="d-flex w-100 align-items-center">
-                        <textarea
-                          value={message}
-                          onChange={handleInputChange}
-                          placeholder="Message."
-                          className="w-100 form-control"
-                        />
+                    {chat.senderName !== userData.username && (
+                      <div className="avatar">
+                        <span>
+                          {chat.senderName.substring(2, 0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      className={
+                        chat.senderName !== userData.username
+                          ? "message-data"
+                          : "message-data message-data-self"
+                      }
+                    >
+                      {chat.message.includes("_blob") ? (
                         <button
-                          onClick={toggleEmojiPicker}
                           className="tchat-cs-btn"
+                          onClick={() => handlePlay(chat.message)}
                         >
                           <i
-                            class="fa fa-smile-o"
+                            className={
+                              chat.senderName !== userData.username
+                                ? "fa fa-play text-warning"
+                                : "fa fa-play text-info"
+                            }
                             aria-hidden="true"
                             style={{
-                              color: "#d1a521",
                               fontSize: "1.3em",
                             }}
                           ></i>
                         </button>
+                      ) : (
+                        <span className="message-text">{chat.message}</span>
+                      )}
+
+                      <span
+                        className="text-info"
+                        style={{
+                          fontSize: "small",
+                        }}
+                      >
+                        <br />{" "}
+                        <span className="tcha-message-time">
+                          {chat.currentDate}
+                        </span>
+                      </span>
+                    </div>
+                    {chat.senderName === userData.username && (
+                      <div className="avatar self">
+                        <span>
+                          {chat.senderName.substring(2, 0).toUpperCase()}
+                        </span>
                       </div>
                     )}
-
-                    {message != "" ? (
-                      <button
-                        type="button"
-                        className="tchat-cs-btn"
-                        onClick={() => sendPrivateValue()}
-                        disabled={clickButton}
-                      >
-                        <i
-                          class="fa fa-paper-plane"
-                          aria-hidden="true"
-                          style={{
-                            color: "#d1a521",
-                            fontSize: "1.3em",
-                          }}
-                        ></i>
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleToggleRecording}
-                        className="tchat-cs-btn"
-                      >
-                        {isRecording ? (
-                          <i
-                            class="fa fa-microphone-slash"
-                            aria-hidden="true"
-                            style={{
-                              color: "blue",
-                              fontSize: "1.3em",
-                            }}
-                          ></i>
-                        ) : (
-                          <i
-                            class="fa fa-microphone"
-                            aria-hidden="true"
-                            style={{
-                              color: "#d1a521",
-                              fontSize: "1.3em",
-                            }}
-                          ></i>
-                        )}
-                      </button>
-                    )}
+                  </li>
+                ))}
+            </ul>
+            <div className="send-message bg-white">
+              <div
+                className="message-box-emoji"
+                style={{
+                  justifyContent: isRecording ? "center" : "space-between",
+                }}
+              >
+                {!isRecording && (
+                  <div className="d-flex w-100 align-items-center">
+                    <textarea
+                      value={message}
+                      onChange={handleInputChange}
+                      placeholder="Message."
+                      className="w-100 form-control"
+                    />
+                    <button
+                      onClick={toggleEmojiPicker}
+                      className="tchat-cs-btn"
+                    >
+                      <i
+                        className="fa fa-smile text-primary"
+                        aria-hidden="true"
+                        style={{
+                          fontSize: "1.3em",
+                        }}
+                      ></i>
+                    </button>
                   </div>
-                  {showEmojiPicker && (
-                    <EmojiPicker onEmojiClick={handleEmojiClick} />
-                  )}
-                </div>
-              </>
-            )}
+                )}
+
+                {message != "" ? (
+                  <button
+                    type="button"
+                    className="tchat-cs-btn"
+                    onClick={() => sendPrivateValue()}
+                    disabled={clickButton}
+                  >
+                    <i
+                      className="fa fa-paper-plane text-primary"
+                      aria-hidden="true"
+                      style={{
+                        fontSize: "1.3em",
+                      }}
+                    ></i>
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleToggleRecording}
+                    className="tchat-cs-btn"
+                  >
+                    {isRecording ? (
+                      <i
+                        className="fa fa-microphone-slash text-info"
+                        aria-hidden="true"
+                        style={{
+                          fontSize: "1.3em",
+                        }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fa fa-microphone text-primary"
+                        aria-hidden="true"
+                        style={{
+                          fontSize: "1.3em",
+                        }}
+                      ></i>
+                    )}
+                  </button>
+                )}
+              </div>
+              {showEmojiPicker && (
+                <EmojiPicker onEmojiClick={handleEmojiClick} />
+              )}
+            </div>
           </>
         ) : (
           <div className="register">Loading ...</div>

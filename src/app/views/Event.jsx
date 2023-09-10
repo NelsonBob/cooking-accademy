@@ -23,7 +23,6 @@ const localizer = momentLocalizer(moment);
 
 const Event = () => {
   const [myEvents, setEvents] = useState([]);
-
   const [salles, setSalles] = useState("");
 
   useEffect(() => {
@@ -36,7 +35,7 @@ const Event = () => {
       const res = await getListSalle(
         JSON.parse(localStorage.getItem("auth")).userid
       );
-      setSalles(res);
+      if (res) setSalles(res);
     } catch (error) {}
   };
   const createReservation = async (title, start, end, idSalle) => {
@@ -51,13 +50,13 @@ const Event = () => {
         JSON.parse(localStorage.getItem("auth")).userid,
         data
       );
-      formatDateEvent(res);
+      if (res && res.length > 0) formatDateEvent(res);
     } catch (error) {}
   };
   const removeReservation = async (idevent, idSalle) => {
     try {
       const res = await removeEvent(idevent, idSalle);
-      formatDateEvent(res);
+      if (res && res.length > 0) formatDateEvent(res);
       Swal.fire("Event Removed!", "The event has been removed.", "success");
     } catch (error) {}
   };
@@ -78,7 +77,7 @@ const Event = () => {
     try {
       let id = JSON.parse(localStorage.getItem("auth")).userid;
       const res = await listEvent(id);
-      formatDateEvent(res);
+      if (res && res.length > 0) formatDateEvent(res);
     } catch (error) {}
   };
 
@@ -102,38 +101,40 @@ const Event = () => {
   };
   const handleSelectEvent = useCallback(
     (event) => {
-      const formattedStartTime = moment(event.start).format("LT");
-      const formattedEndTime = moment(event.end).format("LT");
-      const formattedDay = moment(event.start).format("LL");
-      if (
-        event.user.id == JSON.parse(localStorage.getItem("auth")).userid &&
-        event.end > new Date()
-      )
-        Swal.fire({
-          html: `<h2>Remove Event at ${formattedDay} </h2> Are you sure you want to remove the event: 
+      if (event && event.title) {
+        const formattedStartTime = moment(event.start).format("LT");
+        const formattedEndTime = moment(event.end).format("LT");
+        const formattedDay = moment(event.start).format("LL");
+        if (
+          event.user.id == JSON.parse(localStorage.getItem("auth")).userid &&
+          event.end > new Date()
+        )
+          Swal.fire({
+            html: `<h2>Remove Event at ${formattedDay} </h2> Are you sure you want to remove the event: 
         <strong>${event.title}</strong>(<strong>${formattedStartTime}</strong> - <strong>${formattedEndTime}</strong>)?`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, remove it!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            removeReservation(event.id);
-          }
-        });
-      else
-        Swal.fire({
-          position: "top-end",
-          icon: "info",
-          html: `
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, remove it!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              removeReservation(event.id);
+            }
+          });
+        else
+          Swal.fire({
+            position: "top-end",
+            icon: "info",
+            html: `
         <p>
         Impossible de supprimer cet evenement
         </p>
       `,
-          showConfirmButton: false,
-          timer: 2000,
-        });
+            showConfirmButton: false,
+            timer: 2000,
+          });
+      }
     },
     [myEvents, setEvents]
   );
@@ -200,6 +201,10 @@ const Event = () => {
     },
     [myEvents, setEvents]
   );
+
+  useEffect(() => {
+    console.log("rrrrrrrrrrrrrrrrrrrr ", myEvents);
+  }, [myEvents]);
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -235,7 +240,6 @@ const Event = () => {
                   localizer={localizer}
                   onSelectEvent={handleSelectEvent}
                   onSelectSlot={handleSelectSlot}
-                  views={["day", "week", "agenda"]}
                   min={minTime}
                   max={maxTime}
                   selectable
