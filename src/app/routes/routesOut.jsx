@@ -19,6 +19,7 @@ var routesOut = [
     component: <Home />,
     class: "nav-link-icon ",
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/market",
@@ -26,6 +27,7 @@ var routesOut = [
     class: "nav-link-icon text-xs-default",
     component: <Boutique />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
 
   {
@@ -34,6 +36,7 @@ var routesOut = [
     class: "nav-link-icon",
     component: <CourCollectif />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/evenement",
@@ -41,6 +44,7 @@ var routesOut = [
     class: "nav-link-icon",
     component: <Evenement />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/price",
@@ -48,6 +52,7 @@ var routesOut = [
     class: "nav-link-icon",
     component: <Prix />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/reservation",
@@ -55,6 +60,7 @@ var routesOut = [
     class: "nav-link-icon",
     component: <Reservation />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/login",
@@ -62,6 +68,7 @@ var routesOut = [
     class: "nav-link-icon",
     component: <Login />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
 
   {
@@ -70,6 +77,7 @@ var routesOut = [
     component: <Location />,
     class: "btn btn-warning rounded-pill mt-2 p-2",
     layout: "/out",
+    role: [ "Gestionnaire", "Formateur", "Chefs"],
   },
   {
     path: "/register",
@@ -77,6 +85,7 @@ var routesOut = [
     class: "nav-link-icon",
     component: <Register />,
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/index",
@@ -84,6 +93,7 @@ var routesOut = [
     class: "btn btn-danger rounded-pill mt-2 p-2",
     component: <Dashboard />,
     layout: "/in",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/cart",
@@ -91,6 +101,7 @@ var routesOut = [
     class: "nav-link-icon",
     icon: "fa fa-shopping-cart text-warning",
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/order",
@@ -98,6 +109,7 @@ var routesOut = [
     class: "nav-link-icon",
     icon: "fa fa-shopping-cart text-warning",
     layout: "/out",
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
 ];
 export default routesOut;

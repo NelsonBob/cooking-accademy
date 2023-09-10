@@ -37,7 +37,7 @@ const OutNavbar = () => {
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={require("../../../assets/img/brand/argon-react-white.png")}
+              src={require("../../../assets/img/brand/logo.png")}
             />
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
@@ -50,7 +50,7 @@ const OutNavbar = () => {
                   <Link to="/">
                     <img
                       alt="..."
-                      src={require("../../../assets/img/brand/argon-react.png")}
+                      src={require("../../../assets/img/brand/logo.png")}
                     />
                   </Link>
                 </Col>
@@ -130,7 +130,7 @@ const OutNavbar = () => {
                   </Button>
                 </div>
               ) : (
-                <>
+                <div className="mt-3">
                   {items.map((item, index) => {
                     return (
                       <div key={index}>
@@ -201,7 +201,7 @@ const OutNavbar = () => {
                       Commander
                     </Button>
                   </div>
-                </>
+                </div>
               )}
             </DropdownMenu>
           </UncontrolledDropdown>
