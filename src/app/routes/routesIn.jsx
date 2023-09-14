@@ -13,6 +13,7 @@ import ServiceAbonnement from "../views/ServiceAbonnement";
 import Paiement from "../views/Paiement";
 import Event from "../views/Event";
 import EspaceCour from "../views/EspaceCour";
+import MessageCour from "../views/MessageCour";
 
 var routes = [
   {
@@ -32,6 +33,15 @@ var routes = [
     layout: "/in",
     sidebar: false,
     role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
+  },
+  {
+    path: "/message-cour",
+    name: "Notifications",
+    icon: "fa fa-message",
+    component: <MessageCour />,
+    layout: "/in",
+    sidebar: false,
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/index",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
 import ChatRoom from "../components/Chat/ChatRoom";
-import { getCourById, readFile } from "../service/frontendService";
+import { getCourById, getFile, readFile } from "../service/frontendService";
 
 const EspaceCour = () => {
   const idCour = localStorage.getItem("idcour");
@@ -26,15 +26,7 @@ const EspaceCour = () => {
       setCour(res);
     } catch (error) {}
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Col, Container, Row } from "reactstrap";
 import {
+  getFile,
   getListOptionAbonnementActif,
   getListServiceAbonnementActif,
   readFile,
@@ -44,15 +45,7 @@ function Prix() {
 
     return idA - idB;
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   return (
     <>
       <div className="header bg-img-prix py-7 py-lg-8">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardImg, CardText, Col, Container, Row } from "reactstrap";
-import { getListEventAll, readFile } from "../../service/frontendService";
+import { getFile, getListEventAll, readFile } from "../../service/frontendService";
 import moment from "moment";
 
 function Evenement() {
@@ -26,15 +26,7 @@ function Evenement() {
       setTableData(res);
     } catch (error) {}
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
 
   const depart = (dat) => {
     return moment(dat).format("LL");

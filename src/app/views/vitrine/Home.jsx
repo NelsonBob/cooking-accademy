@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useCart } from "react-use-cart";
 import { Card, CardImg, Col, Container, Row } from "reactstrap";
 import {
+  getFile,
   getListInternChef,
   getListRepasActif,
   readFile,
@@ -54,15 +55,7 @@ function Home() {
       setTableData1(res);
     } catch (error) {}
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   const { addItem } = useCart();
   const handleAddToCart = (row) => {
     addItem(row);

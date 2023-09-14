@@ -28,12 +28,12 @@ import {
   UpdateFile,
   UploadFile,
   createServiceAbonnement,
+  getFile,
   getListServiceAbonnement,
   getServiceAbonnementById,
-  readFile,
   removeFile,
   removeServiceAbonnementById,
-  updateServiceAbonnement,
+  updateServiceAbonnement
 } from "../service/frontendService";
 
 const ServiceAbonnement = () => {
@@ -89,7 +89,8 @@ const ServiceAbonnement = () => {
       setName(res.name);
       setDescription(res.description);
       setImgPath(res.imgPath);
-      await getFile(res.imgPath);
+      let imgUl = await getFile(res.imgPath);
+      setImgContent(imgUl);
       setStatus(res.status);
     } catch (error) {}
   };
@@ -118,7 +119,7 @@ const ServiceAbonnement = () => {
       const res = await getListServiceAbonnement(id);
       const urls = {};
       for (const row of res) {
-        const imgUrl = await getFileContent(row.imgPath);
+        const imgUrl = await getFile(row.imgPath);
         urls[row.id] = imgUrl;
       }
       setImageUrls(urls);
@@ -298,7 +299,8 @@ const ServiceAbonnement = () => {
         try {
           const response = await UpdateFile(imgPath, formData);
           setImgPath(response);
-          await getFile(response);
+          let imgUl = await getFile(response);
+          setImgContent(imgUl);
         } catch (error) {
           console.error("Error uploading file:", error);
           Swal.fire({
@@ -322,7 +324,8 @@ const ServiceAbonnement = () => {
           tabUrl.push(response);
           setImgPath(response);
           setImgPathLast([...imgPathLast, tabUrl]);
-          await getFile(response);
+          let imgUl = await getFile(response);
+          setImgContent(imgUl);
         } catch (error) {
           console.error("Error uploading file:", error);
           Swal.fire({
@@ -340,39 +343,7 @@ const ServiceAbonnement = () => {
           });
         }
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      setImgContent(imgUrl);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "Error while displaying file",
-        showConfirmButton: false,
-        timer: 2000,
-        showClass: {
-          popup: "animate__animated animate__fadeInDown",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOutUp",
-        },
-      });
-    }
-  };
-  const getFileContent = async (imgPath) => {
-    try {
-      const response = await readFile(imgPath);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-      // Handle the error
-    }
-  };
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">

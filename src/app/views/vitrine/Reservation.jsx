@@ -14,10 +14,10 @@ import {
 import Swal from "sweetalert2";
 import {
   createEventReservation,
+  getFile,
   getListEvent,
   getSalleById,
-  readFile,
-  removeEvent,
+  removeEvent
 } from "../../service/frontendService";
 const localizer = momentLocalizer(moment);
 
@@ -92,13 +92,6 @@ const Reservation = () => {
       lienurl.push({ src: elUrl, key: index, caption: "" });
     });
     return lienurl;
-  };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {}
   };
 
   const minTime = new Date().setHours(8, 0, 0); // 8:00 AM

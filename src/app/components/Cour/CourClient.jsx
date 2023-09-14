@@ -15,7 +15,7 @@ import {
   Modal,
   Row,
 } from "reactstrap";
-import { getListCourActif, readFile } from "../../service/frontendService";
+import { getFile, getListCourActif, readFile } from "../../service/frontendService";
 
 const CourClient = () => {
   const [tableData, setTableData] = useState([]);
@@ -39,15 +39,6 @@ const CourClient = () => {
   useEffect(() => {}, [typeAction]);
   useEffect(() => {}, [videoModal]);
 
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
   const handleFilter = (text) => {
     setInputText(text);
     if (text) {

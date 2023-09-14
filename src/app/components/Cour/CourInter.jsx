@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -29,6 +30,7 @@ import {
   UploadFile,
   createCour,
   getCourById,
+  getFile,
   getListCour,
   readFile,
   removeCourById,
@@ -62,22 +64,28 @@ const CourInter = () => {
 
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
   useEffect(() => {
     getList();
   }, []);
 
   useEffect(() => {}, [tableData]);
   useEffect(() => {}, [videoModal]);
-  useEffect(() => {  if (!exampleModal)
-    imgPathLast.forEach(async (el) => {
-      if (el != imgPath) await removeFileUpload(el);
-    });}, [exampleModal]);
+  useEffect(() => {
+    if (!exampleModal)
+      imgPathLast.forEach(async (el) => {
+        if (el != imgPath) await removeFileUpload(el);
+      });
+  }, [exampleModal]);
 
-  const handleClickDesable = (id = 0, status) => {
+  const handleClickDesable = (id = 0, status, name = "") => {
     if (id != 0) {
       if (status != "delete") getById(id);
       setIsUser(id);
       setExampleModal(true);
+    } else if (status == "message") {
+      localStorage.setItem("idcour", id);
+      return navigate("/in/message-cour");
     } else {
       setName("");
       setImgPath("");
@@ -110,15 +118,7 @@ const CourInter = () => {
       setVideoContent(videofile);
     } catch (error) {}
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   const handleFilter = (text) => {
     setInputText(text);
     if (text) {
@@ -569,6 +569,28 @@ const CourInter = () => {
                                 ></i>
                                 Supprimer
                               </Button>
+                              {(JSON.parse(localStorage.getItem("auth")).token
+                                .role == "Formateur" ||
+                                JSON.parse(localStorage.getItem("auth")).token
+                                  .role == "Chefs") && (
+                                <Button
+                                  variant="contained"
+                                  color="danger"
+                                  onClick={() =>
+                                    handleClickDesable(
+                                      row.id,
+                                      "message",
+                                      row.name
+                                    )
+                                  }
+                                >
+                                  <i
+                                    className="fa fa-message mr-2"
+                                    aria-hidden="true"
+                                  ></i>
+                                  Message
+                                </Button>
+                              )}
                             </TableCell>
                           </TableRow>
                         ))

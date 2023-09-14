@@ -612,6 +612,30 @@ export const getCourById = async (id, data) => {
     });
   }
 };
+export const getUserMessageCourById = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/cour/message/${id}/id/${data}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+  }
+};
 export const createCour = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1023,7 +1047,28 @@ export const removeFile = async (fileName) => {
     throw error.response?.data;
   }
 };
-
+export const getFile = async (url) => {
+  try {
+    const response = await readFile(url);
+    const imgUrl = URL.createObjectURL(response);
+    return imgUrl;
+  } catch (error) {
+    console.error("Error displaying file:", error);
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Error while displaying file",
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+  }
+};
 //stripe
 export const checkpaiementStripe = async (id, data) => {
   try {

@@ -16,6 +16,7 @@ import UserHeader from "../components/Headers/UserHeader";
 import {
   UpdateFile,
   UploadFile,
+  getFile,
   readFile,
   removeFile,
   updatePicture,
@@ -51,15 +52,7 @@ const Profile = () => {
       setImgContent(imgUrl);
     }
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = {};

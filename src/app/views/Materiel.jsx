@@ -29,6 +29,7 @@ import {
   UpdateFile,
   UploadFile,
   createMateriel,
+  getFile,
   getListCategorieMateriel,
   getListMateriel,
   getMaterielById,
@@ -452,28 +453,7 @@ const Materiel = () => {
     setGallerie(updatedGallerie);
   };
 
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "Error while displaying file",
-        showConfirmButton: false,
-        timer: 2000,
-        showClass: {
-          popup: "animate__animated animate__fadeInDown",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOutUp",
-        },
-      });
-    }
-  };
+
   const previewGallerie = async (galle = [], title, content) => {
     let lienurl = [];
     galle.forEach(async (el, index) => {

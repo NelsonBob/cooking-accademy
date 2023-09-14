@@ -11,7 +11,7 @@ import {
   Row,
   UncontrolledCarousel,
 } from "reactstrap";
-import { getListMaterielActif, readFile } from "../../service/frontendService";
+import { getFile, getListMaterielActif, readFile } from "../../service/frontendService";
 import { useCart } from "react-use-cart";
 
 function Boutique() {
@@ -50,15 +50,7 @@ function Boutique() {
       setTableData(tab);
     } catch (error) {}
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   const previewGallerie = async (galle = [], title, content) => {
     let lienurl = [];
     galle.forEach(async (el, index) => {

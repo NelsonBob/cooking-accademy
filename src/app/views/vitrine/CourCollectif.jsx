@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardImg, CardText, Col, Container, Row } from "reactstrap";
-import { getListCourActif, readFile } from "../../service/frontendService";
+import { getFile, getListCourActif, readFile } from "../../service/frontendService";
 
 const CourCollectif = () => {
   const { t } = useTranslation();
@@ -25,15 +25,7 @@ const CourCollectif = () => {
       setTableData(res);
     } catch (error) {}
   };
-  const getFile = async (url) => {
-    try {
-      const response = await readFile(url);
-      const imgUrl = URL.createObjectURL(response);
-      return imgUrl;
-    } catch (error) {
-      console.error("Error displaying file:", error);
-    }
-  };
+
   return (
     <>
       <div className="header bg-img-party py-7 py-lg-8">
