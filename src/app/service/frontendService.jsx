@@ -616,9 +616,12 @@ export const getUserMessageCourById = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
-    const response = await axios.get(`${baseURL}/cour/message/${id}/id/${data}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
+    const response = await axios.get(
+      `${baseURL}/cour/message/${id}/id/${data}`,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
     return response.data;
   } catch (error) {
     Swal.fire({
@@ -1054,19 +1057,6 @@ export const getFile = async (url) => {
     return imgUrl;
   } catch (error) {
     console.error("Error displaying file:", error);
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
-      title: "Error while displaying file",
-      showConfirmButton: false,
-      timer: 2000,
-      showClass: {
-        popup: "animate__animated animate__fadeInDown",
-      },
-      hideClass: {
-        popup: "animate__animated animate__fadeOutUp",
-      },
-    });
   }
 };
 //stripe

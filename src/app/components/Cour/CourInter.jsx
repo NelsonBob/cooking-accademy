@@ -78,14 +78,15 @@ const CourInter = () => {
       });
   }, [exampleModal]);
 
-  const handleClickDesable = (id = 0, status, name = "") => {
+  const handleClickDesable = (id = 0, status) => {
     if (id != 0) {
-      if (status != "delete") getById(id);
+      if (status == "message") {
+        localStorage.setItem("idcour", id);
+        return navigate("/in/message-cour");
+      } else if (status != "delete") getById(id);
+
       setIsUser(id);
       setExampleModal(true);
-    } else if (status == "message") {
-      localStorage.setItem("idcour", id);
-      return navigate("/in/message-cour");
     } else {
       setName("");
       setImgPath("");
@@ -572,16 +573,14 @@ const CourInter = () => {
                               {(JSON.parse(localStorage.getItem("auth")).token
                                 .role == "Formateur" ||
                                 JSON.parse(localStorage.getItem("auth")).token
-                                  .role == "Chefs") && (
+                                  .role == "Chefs" ||
+                                JSON.parse(localStorage.getItem("auth")).token
+                                  .role == "Admin") && (
                                 <Button
                                   variant="contained"
-                                  color="danger"
+                                  color="info"
                                   onClick={() =>
-                                    handleClickDesable(
-                                      row.id,
-                                      "message",
-                                      row.name
-                                    )
+                                    handleClickDesable(row.id, "message")
                                   }
                                 >
                                   <i

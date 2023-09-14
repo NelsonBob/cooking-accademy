@@ -45,7 +45,7 @@ var routes = [
   },
   {
     path: "/index",
-    name: "Dashboard",
+    name: "Publication",
     icon: "ni ni-tv-2",
     component: <Dashboard />,
     layout: "/in",
