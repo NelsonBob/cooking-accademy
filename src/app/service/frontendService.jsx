@@ -55,6 +55,18 @@ export const updatePicture = async (id, data) => {
     throw error.response?.data;
   }
 };
+export const listUser = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/user/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
 // intern
 export const updateProfilIntern = async (id, data) => {
   try {
@@ -723,21 +735,7 @@ export const getSalleById = async (id) => {
   try {
     const response = await axios.get(`${baseURL}/v2/salles/${id}`);
     return response.data;
-  } catch (error) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
-      title: error.response?.data.errors.message,
-      showConfirmButton: false,
-      timer: 2000,
-      showClass: {
-        popup: "animate__animated animate__fadeInDown",
-      },
-      hideClass: {
-        popup: "animate__animated animate__fadeOutUp",
-      },
-    });
-  }
+  } catch (error) {}
 };
 export const createSalle = async (id, data) => {
   try {
@@ -1162,12 +1160,23 @@ export const getListEventAll = async () => {
     return response.data;
   } catch (error) {}
 };
-
 export const createEventReservation = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
     const response = await axios.post(`${baseURL}/event/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const createEventWithUserReservation = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/event/users/${id}`, data, {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
@@ -1197,6 +1206,58 @@ export const removeEvent = async (id, dat) => {
         headers: { Authorization: `Bearer ${userToken.userToken}` },
       }
     );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const removeEvenement = async (id, dat) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.delete(
+      `${baseURL}/event/${id}`,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const updateEvent = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.put(`${baseURL}/event/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+//event users
+export const listEventUsers = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/event-users/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+export const updateEventUsers = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.put(`${baseURL}/event-users/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data;

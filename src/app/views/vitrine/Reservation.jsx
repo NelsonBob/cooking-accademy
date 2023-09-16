@@ -17,7 +17,7 @@ import {
   getFile,
   getListEvent,
   getSalleById,
-  removeEvent
+  removeEvent,
 } from "../../service/frontendService";
 const localizer = momentLocalizer(moment);
 
@@ -94,8 +94,8 @@ const Reservation = () => {
     return lienurl;
   };
 
-  const minTime = new Date().setHours(8, 0, 0); // 8:00 AM
-  const maxTime = new Date().setHours(18, 0, 0); // 6:00 PM
+  const minTime = new Date().setHours(7, 0, 0); // 8:00 AM
+  const maxTime = new Date().setHours(19, 0, 0); // 6:00 PM
 
   const handleSelectEvent = useCallback(
     (event) => {
@@ -135,7 +135,7 @@ const Reservation = () => {
     [myEvents, setEvents]
   );
   const handleSelectSlot = useCallback(
-    ({ start, end }) => {
+    ({ start, end, status }) => {
       // Check for conflicts with existing events
       const isConflict = myEvents.some((event) => {
         return (
@@ -145,13 +145,13 @@ const Reservation = () => {
         );
       });
 
-      if (isConflict) {
+      if (isConflict && status == "Confirm") {
         Swal.fire({
           position: "top-end",
           icon: "error",
           html: `
           <p>
-            This time slot conflicts with an existing event. Please choose a
+            This time slot conflicts with an existing event confirm. Please choose a
             different time.
           </p>
         `,
@@ -214,8 +214,13 @@ const Reservation = () => {
   };
 
   const eventStyleGetter = (event, start, end, isSelected) => {
+    let color = "";
+    if (event.status == "Pending") color = "#ffd600";
+    else if (event.status == "Confirm") color = "#2dce89";
+    else if (event.status == "Cancel") color = "#f5365c";
+    else color = getRandomColor();
     var style = {
-      backgroundColor: getRandomColor(),
+      backgroundColor: color,
       borderRadius: "0px",
       border: "0px",
     };
@@ -310,6 +315,7 @@ const Reservation = () => {
                           min={minTime}
                           max={maxTime}
                           selectable
+                          style={{ height: "100vh" }}
                           eventPropGetter={eventStyleGetter}
                         />
                       </Card>
