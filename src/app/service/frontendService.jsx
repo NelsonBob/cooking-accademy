@@ -1196,6 +1196,18 @@ export const listEvent = async (id) => {
     throw error.response?.data;
   }
 };
+export const infoEvent = async (id, idk) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/event/${id}/participants/${idk}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
 export const removeEvent = async (id, dat) => {
   try {
     const tokenString = localStorage.getItem("auth");

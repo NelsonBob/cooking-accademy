@@ -81,7 +81,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 3,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
   {
     path: "/abonnement-option",
@@ -91,7 +91,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 3,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
   {
     path: "/cour",
@@ -111,7 +111,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 5,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
   {
     path: "/materiel",
@@ -121,12 +121,12 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 5,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
   {
     path: "/salle",
     name: "Salle",
-    icon: "ni ni-single-02",
+    icon: "fa fa-shopping-bag",
     component: <Salle />,
     layout: "/in",
     sidebar: true,
@@ -151,7 +151,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 6,
-    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/order",
@@ -161,7 +161,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 7,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire"],
   },
 ];
 export default routes;

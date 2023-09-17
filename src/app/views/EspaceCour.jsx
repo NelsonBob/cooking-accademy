@@ -39,10 +39,10 @@ const EspaceCour = () => {
         <Container fluid>
           <div className="header-body">
             <Row>
-              <Col md={6} sm={12}>
+              <Col md={6} xs={12}>
                 <h5 className="text-uppercase text-white mb-0">{cour.name}</h5>
               </Col>
-              <Col md={6} sm={12} className="d-flex justify-content-end">
+              <Col md={6} xs={12} className="d-flex justify-content-end">
                 <Button
                   color="success"
                   type="button"

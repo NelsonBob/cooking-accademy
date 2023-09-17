@@ -51,6 +51,16 @@ const Sidebar = (props) => {
         );
     });
   };
+  const getActiveRoute = (routes, postion = 1) => {
+    let present = false;
+    routes.map((prop, key) => {
+      let autorization = prop.role.includes(
+        JSON.parse(localStorage.getItem("auth")).token.role
+      );
+      if (prop.postion == postion && autorization) present = true;
+    });
+    return present;
+  };
 
   const { routes, logo } = props;
   let navbarBrandProps;
@@ -177,33 +187,67 @@ const Sidebar = (props) => {
                 </button>
               </Col>
             </Row>
-          </div>
-          <Nav navbar>{createLinks(routes, 1)}</Nav>
-          <hr className="my-3" />
-          <h6 className="navbar-heading text-muted">User</h6>
-          <Nav className="mb-md-3" navbar>
-            {createLinks(routes, 2)}
-          </Nav>
-          <h6 className="navbar-heading text-muted">Abonnement</h6>
-          <Nav className="mb-md-3" navbar>
-            {createLinks(routes, 3)}
-          </Nav>
-          <h6 className="navbar-heading text-muted">Etude</h6>
-          <Nav className="mb-md-3" navbar>
-            {createLinks(routes, 4)}
-          </Nav>
-          <h6 className="navbar-heading text-muted">Boutique</h6>
-          <Nav className="mb-md-3" navbar>
-            {createLinks(routes, 5)}
-          </Nav>
-          <h6 className="navbar-heading text-muted">Nutrition</h6>
-          <Nav className="mb-md-3" navbar>
-            {createLinks(routes, 6)}
-          </Nav>
-          <h6 className="navbar-heading text-muted">Stock</h6>
-          <Nav className="mb-md-3" navbar>
-            {createLinks(routes, 7)}
-          </Nav>
+          </div>{" "}
+          {getActiveRoute(routes, 1) && (
+            <>
+              <Nav navbar>{createLinks(routes, 1)}</Nav>
+              <hr className="my-3" />{" "}
+            </>
+          )}{" "}
+          {getActiveRoute(routes, 2) && (
+            <>
+              <h6 className="navbar-heading text-muted">User</h6>
+              <Nav className="mb-md-3" navbar>
+                {createLinks(routes, 2)}
+              </Nav>{" "}
+              <hr className="my-3" />
+            </>
+          )}{" "}
+          {getActiveRoute(routes, 3) && (
+            <>
+              <h6 className="navbar-heading text-muted">Abonnement</h6>
+              <Nav className="mb-md-3" navbar>
+                {createLinks(routes, 3)}
+              </Nav>{" "}
+              <hr className="my-3" />
+            </>
+          )}{" "}
+          {getActiveRoute(routes, 4) && (
+            <>
+              <h6 className="navbar-heading text-muted">Etude</h6>
+              <Nav className="mb-md-3" navbar>
+                {createLinks(routes, 4)}
+              </Nav>{" "}
+              <hr className="my-3" />
+            </>
+          )}{" "}
+          {getActiveRoute(routes, 5) && (
+            <>
+              <h6 className="navbar-heading text-muted">Boutique</h6>
+              <Nav className="mb-md-3" navbar>
+                {createLinks(routes, 5)}
+              </Nav>{" "}
+              <hr className="my-3" />
+            </>
+          )}
+          {getActiveRoute(routes, 6) && (
+            <>
+              <h6 className="navbar-heading text-muted">Nutrition</h6>
+              <Nav className="mb-md-3" navbar>
+                {createLinks(routes, 6)}
+              </Nav>{" "}
+              <hr className="my-3" />
+            </>
+          )}
+          {getActiveRoute(routes, 7) && (
+            <>
+              <h6 className="navbar-heading text-muted">Stock</h6>
+              <Nav className="mb-md-3" navbar>
+                {createLinks(routes, 7)}
+              </Nav>
+              <hr className="my-3" />
+            </>
+          )}
         </Collapse>
       </Container>
     </Navbar>

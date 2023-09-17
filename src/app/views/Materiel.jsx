@@ -62,9 +62,9 @@ const Materiel = () => {
   const [gallerieUrls, setGallerieUrls] = useState([]);
   const [galleriePathLast, setGalleriePathLast] = useState([]);
   const [videoModal, setVideoModal] = useState(false);
-
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
+
   useEffect(() => {
     getList();
     getListCateories();

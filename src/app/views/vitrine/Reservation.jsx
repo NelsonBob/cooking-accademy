@@ -75,6 +75,8 @@ const Reservation = () => {
         start: new Date(it.start),
         end: new Date(it.end),
         user: it.user,
+        typeEventEnum: it.typeEventEnum,
+        status: it.status,
       });
     });
     setEvents(res);
@@ -215,7 +217,7 @@ const Reservation = () => {
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     let color = "";
-    if (event.status == "Pending") color = "#ffd600";
+    if (event.status == "Pending") color = "#fb6340";
     else if (event.status == "Confirm") color = "#2dce89";
     else if (event.status == "Cancel") color = "#f5365c";
     else color = getRandomColor();
