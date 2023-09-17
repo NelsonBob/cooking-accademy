@@ -1,6 +1,4 @@
-import classnames from "classnames";
 import React, { useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
 import {
   Button,
   Card,
@@ -8,25 +6,72 @@ import {
   CardHeader,
   Col,
   Container,
-  Nav,
-  NavItem,
-  NavLink,
-  Progress,
   Row,
-  Table,
+  Form,
+  Input,
+  Modal,
 } from "reactstrap";
 import Header from "../components/Headers/Header";
-import {
-  chartExample1,
-  chartExample2,
-  chartOptions,
-  parseOptions,
-} from "../variables/charts.js";
+import { chartOptions, parseOptions } from "../variables/charts.js";
+
+import Post from "../components/publications/Post";
 const Chart = require("chart.js");
 
 const Dashboard = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [isOpen, setIsOpen] = useState(false);
+  const [showComment, setShowComment] = useState(false);
+  const [comments, setComments] = useState([]);
+
+  const handleShowComment = (id) => {
+    const tmpComments = [];
+    for (let i = 0; i < id; i++) {
+      tmpComments.push({
+        author: "User " + i,
+        comment:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. " + i,
+      });
+    }
+    setComments(tmpComments);
+    setShowComment(true);
+  };
+
+  const posts = [
+    {
+      id: 1,
+      author: "John Doe",
+      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Neque assumenda, delectus ratione repellat est fugit
+                      explicabo consequuntur ad nostrum molestias et a expedita
+                      ipsa provident odio alias, cum illo temporibus!`,
+      image:
+        "https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg",
+      created_at: "3 minutes",
+    },
+    {
+      id: 2,
+      author: "Winnie",
+      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Neque assumenda, delectus ratione repellat est fugit
+                      explicabo consequuntur ad nostrum molestias et a expedita
+                      ipsa provident odio alias, cum illo temporibus!`,
+      image:
+        "https://images.pexels.com/photos/8969237/pexels-photo-8969237.jpeg",
+      created_at: "1 heure",
+    },
+    {
+      id: 3,
+      author: "Alpha Roméo",
+      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Neque assumenda, delectus ratione repellat est fugit
+                      explicabo consequuntur ad nostrum molestias et a expedita
+                      ipsa provident odio alias, cum illo temporibus!`,
+      image:
+        "https://images.pexels.com/photos/16803393/pexels-photo-16803393/free-photo-of-nourriture-pizza-restaurant-diner.jpeg",
+      created_at: "1 semaine",
+    },
+  ];
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -37,6 +82,12 @@ const Dashboard = (props) => {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+  const uploadImg = async (contentFile, typeaction, fileNa = "", index = 0) => {
+    const formData = new FormData();
+    formData.append("file", contentFile);
+  };
+
   return (
     <>
       <Header />
@@ -47,51 +98,41 @@ const Dashboard = (props) => {
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
-                    </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </div>
-                  <div className="col">
-                    <Nav className="justify-content-end" pills>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 1,
-                          })}
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 1)}
-                        >
-                          <span className="d-none d-md-block">Month</span>
-                          <span className="d-md-none">M</span>
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 2,
-                          })}
-                          data-toggle="tab"
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 2)}
-                        >
-                          <span className="d-none d-md-block">Week</span>
-                          <span className="d-md-none">W</span>
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
+                    <div className="d-flex justify-content-between">
+                      <img
+                        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=John+Doe"
+                        className="rounded-circle mr-2"
+                        alt=""
+                      />
+
+                      <Button
+                        color="secondary"
+                        block
+                        size="lg"
+                        type="button"
+                        onClick={() => setIsOpen(true)}
+                      >
+                        Commencer un post
+                      </Button>
+                    </div>
                   </div>
                 </Row>
               </CardHeader>
               <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Line
-                    data={chartExample1[chartExample1Data]}
-                    options={chartExample1.options}
-                    getDatasetAtEvent={(e) => console.log(e)}
-                  />
-                </div>
+                {posts && posts.length > 0 ? (
+                  posts.map((element, index) => (
+                    <Post
+                      post={element}
+                      comment={handleShowComment}
+                      key={index}
+                    />
+                  ))
+                ) : (
+                  <h2 className="text-center">
+                    Oups, aucune publication n'est encore ajoutée, faites le
+                    premier pas !
+                  </h2>
+                )}
               </CardBody>
             </Card>
           </Col>
@@ -100,212 +141,111 @@ const Dashboard = (props) => {
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
-                    </h6>
-                    <h2 className="mb-0">Total orders</h2>
+                    <h2 className="mb-0">Nos prochains atelier</h2>
                   </div>
                 </Row>
               </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Page visits</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Page name</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col">Unique users</th>
-                    <th scope="col">Bounce rate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">/argon/</th>
-                    <td>4,569</td>
-                    <td>340</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/index.html</th>
-                    <td>3,985</td>
-                    <td>319</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/charts.html</th>
-                    <td>3,513</td>
-                    <td>294</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      36,49%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/tables.html</th>
-                    <td>2,050</td>
-                    <td>147</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/profile.html</th>
-                    <td>1,795</td>
-                    <td>190</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Card>
-          </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Social traffic</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Referral</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Facebook</th>
-                    <td>1,480</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-gradient-danger"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Facebook</th>
-                    <td>5,480</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">70%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="70"
-                            barClassName="bg-gradient-success"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Google</th>
-                    <td>4,807</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">80%</span>
-                        <div>
-                          <Progress max="100" value="80" />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Instagram</th>
-                    <td>3,678</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">75%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="75"
-                            barClassName="bg-gradient-info"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">twitter</th>
-                    <td>2,645</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">30%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="30"
-                            barClassName="bg-gradient-warning"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
+              <CardBody></CardBody>
             </Card>
           </Col>
         </Row>
       </Container>
+
+      {/* Modale create post */}
+
+      <Modal className="modal-dialog-centered" isOpen={isOpen}>
+        <div className="modal-header">
+          <h2 className="modal-title">Créer une publication</h2>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setIsOpen(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <Form role="form">
+          <div className="modal-body">
+            <Input placeholder="Quoi de neuf John?" rows="3" type="textarea" />
+            <Input
+              type="file"
+              className="mt-2 btn btn-secondary"
+              rows="3"
+              onChange={(e) => uploadImg(e.target.files[0], "image")}
+              accept="image/*"
+            />
+          </div>
+          <div className="modal-footer justify-content-start">
+            <Button color="primary" type="button">
+              Publier
+            </Button>
+          </div>
+        </Form>
+      </Modal>
+
+      {/* Show comments */}
+
+      <Modal className="modal-dialog-scrollable" isOpen={showComment}>
+        <div className="modal-header">
+          <h2 className="modal-title">Commentaire</h2>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setShowComment(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+
+        <div className="modal-body">
+          <div className="mb-4">
+            <Form role="form">
+              <Input
+                placeholder="Ecrivez un commentaire..."
+                rows="3"
+                type="textarea"
+              />
+
+              <Button block color="primary" className="mt-2" type="button">
+                Commenter
+              </Button>
+            </Form>
+          </div>
+
+          {comments && comments.length > 0 ? (
+            comments.map((element, index) => (
+              <div
+                className="d-flex mt-2 border-top border-bottom py-1"
+                key={index}
+              >
+                <div>
+                  <img
+                    src={
+                      "https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=40&name=" +
+                      element.author
+                    }
+                    className="rounded-circle mr-2"
+                    alt=""
+                  />
+                </div>
+                <div>
+                  <h4 className="mb-0">{element.author}</h4>
+                  <p className="text-muted ">{element.comment}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center mt-2">
+              Oups, aucun commentaire n'est encore ajoutée, faites le premier
+              pas !
+            </p>
+          )}
+        </div>
+      </Modal>
     </>
   );
 };

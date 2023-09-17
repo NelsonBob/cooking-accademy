@@ -51,7 +51,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 1,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/user-client",
@@ -101,7 +101,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 4,
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Client", "Chefs"],
   },
   {
     path: "/categorie",
@@ -131,7 +131,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 5,
-    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
+    role: ["Admin", "Gestionnaire", "Formateur", "Chefs"],
   },
   {
     path: "/reservation",
