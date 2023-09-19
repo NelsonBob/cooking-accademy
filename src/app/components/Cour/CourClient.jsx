@@ -15,7 +15,7 @@ import {
   Modal,
   Row,
 } from "reactstrap";
-import { getFile, getListCourActif, readFile } from "../../service/frontendService";
+import { getFile, getListCourActif } from "../../service/frontendService";
 
 const CourClient = () => {
   const [tableData, setTableData] = useState([]);

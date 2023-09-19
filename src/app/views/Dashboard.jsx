@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -6,87 +6,136 @@ import {
   CardHeader,
   Col,
   Container,
-  Row,
   Form,
   Input,
   Modal,
+  Row,
 } from "reactstrap";
+import Swal from "sweetalert2";
 import Header from "../components/Headers/Header";
-import { chartOptions, parseOptions } from "../variables/charts.js";
-
 import Post from "../components/publications/Post";
-const Chart = require("chart.js");
+import {
+  UploadFile,
+  addComment,
+  addPost,
+  getAuthUser,
+  getFile,
+  listEventFutur,
+  loadPost,
+} from "../service/frontendService";
+import moment from "moment";
 
 const Dashboard = (props) => {
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
   const [isOpen, setIsOpen] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [comments, setComments] = useState([]);
+  const [commentInput, setCommentInput] = useState([]);
+  const [postInput, setPostInput] = useState();
+  const [postId, setPostId] = useState();
+  const [posts, setPosts] = useState();
+  const [postInputErros, setPostInputErros] = useState();
+  const [postImagePath, setImagePath] = useState();
+  const [tableData, setTableData] = useState([]);
+  const [imageUrls, setImageUrls] = useState({});
 
   const handleShowComment = (id) => {
-    const tmpComments = [];
-    for (let i = 0; i < id; i++) {
-      tmpComments.push({
-        author: "User " + i,
-        comment:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. " + i,
-      });
-    }
-    setComments(tmpComments);
+    setPostId(id);
+    const post = posts.find((el) => el.id == id);
+
+    setComments(post.comments);
     setShowComment(true);
   };
 
-  const posts = [
-    {
-      id: 1,
-      author: "John Doe",
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Neque assumenda, delectus ratione repellat est fugit
-                      explicabo consequuntur ad nostrum molestias et a expedita
-                      ipsa provident odio alias, cum illo temporibus!`,
-      image:
-        "https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg",
-      created_at: "3 minutes",
-    },
-    {
-      id: 2,
-      author: "Winnie",
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Neque assumenda, delectus ratione repellat est fugit
-                      explicabo consequuntur ad nostrum molestias et a expedita
-                      ipsa provident odio alias, cum illo temporibus!`,
-      image:
-        "https://images.pexels.com/photos/8969237/pexels-photo-8969237.jpeg",
-      created_at: "1 heure",
-    },
-    {
-      id: 3,
-      author: "Alpha Roméo",
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Neque assumenda, delectus ratione repellat est fugit
-                      explicabo consequuntur ad nostrum molestias et a expedita
-                      ipsa provident odio alias, cum illo temporibus!`,
-      image:
-        "https://images.pexels.com/photos/16803393/pexels-photo-16803393/free-photo-of-nourriture-pizza-restaurant-diner.jpeg",
-      created_at: "1 semaine",
-    },
-  ];
-
-  if (window.Chart) {
-    parseOptions(Chart, chartOptions());
-  }
-
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
-
   const uploadImg = async (contentFile, typeaction, fileNa = "", index = 0) => {
-    const formData = new FormData();
-    formData.append("file", contentFile);
+    if (contentFile) {
+      const formData = new FormData();
+      formData.append("file", contentFile);
+      const response = await UploadFile(formData);
+      setImagePath(response);
+    }
   };
+
+  const validateForm = () => {
+    let isValide = true;
+    if (!postInput) {
+      isValide = false;
+      setPostInputErros("Ce champ est obligatoire");
+    } else {
+      setPostInputErros("");
+    }
+
+    return isValide;
+  };
+
+  const savePost = async () => {
+    if (validateForm()) {
+      let data = {
+        datepost: new Date(),
+        description: postInput,
+        imgPath: postImagePath ?? "",
+      };
+      const res = await addPost(getAuthUser().id, data);
+
+      Swal.fire({
+        title: "Votre poste a bien été publié.",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          popup: "bg-success",
+        },
+      });
+
+      setPostInput("");
+      setImagePath("");
+      getPost();
+      setIsOpen(false);
+    }
+  };
+
+  const saveComment = async () => {
+    if (commentInput) {
+      let data = {
+        description: commentInput,
+        post: postId,
+      };
+      const res = await addComment(getAuthUser().id, data);
+
+      Swal.fire({
+        title: "Votre commentaire a bien été ajouté.",
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          popup: "bg-success",
+        },
+      });
+      getPost();
+      setComments([]);
+      setShowComment(false);
+    }
+  };
+
+  const getPost = async () => {
+    const res = await loadPost(getAuthUser().id);
+    const urls = {};
+    for (const row of res) {
+      const imgUrl = await getFile(row.imgPath);
+      urls[row.id] = imgUrl;
+    }
+    setImageUrls(urls);
+    setPosts(res);
+  };
+  const getEventF = async () => {
+    const res = await listEventFutur(getAuthUser().id);
+    setTableData(res);
+  };
+  const suivre = async (id) => {
+    const res = await listEventFutur(getAuthUser().id);
+    setTableData(res);
+  };
+  useEffect(() => {
+    getPost();
+    getEventF();
+  }, []);
 
   return (
     <>
@@ -100,7 +149,12 @@ const Dashboard = (props) => {
                   <div className="col">
                     <div className="d-flex justify-content-between">
                       <img
-                        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=John+Doe"
+                        src={
+                          getAuthUser().picture
+                            ? getAuthUser().picture
+                            : "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=" +
+                              getAuthUser().name
+                        }
                         className="rounded-circle mr-2"
                         alt=""
                       />
@@ -123,6 +177,7 @@ const Dashboard = (props) => {
                   posts.map((element, index) => (
                     <Post
                       post={element}
+                      imageUrls={imageUrls[element.id]}
                       comment={handleShowComment}
                       key={index}
                     />
@@ -141,11 +196,45 @@ const Dashboard = (props) => {
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h2 className="mb-0">Nos prochains atelier</h2>
+                    <h2 className="mb-0">Nos prochains évènement</h2>
                   </div>
                 </Row>
               </CardHeader>
-              <CardBody></CardBody>
+              <CardBody>
+                <div className="list-group">
+                  {tableData && tableData.length > 0 ? (
+                    tableData.map((row, index) => (
+                      <div
+                        className="list-group-item list-group-item-action d-flex justify-content-between"
+                        key={index}
+                      >
+                        <div>
+                          {row.title}
+                          <br />
+                          Description : {row.description}
+                          <br />
+                          Date : {moment(row.start).format("LL")}
+                          <br />
+                          Heire :{" "}
+                          {moment(row.start).format("LT") +
+                            " - " +
+                            moment(row.end).format("LT")}
+                        </div>
+                        <div className="d-flex justify-content-end align-items-end">
+                          <Button
+                            color={row.isRegister ? "danger" : "primary"}
+                            onClick={() => suivre(row.id)}
+                          >
+                            {row.isRegister ? "Desinscrire" : "Participer"}
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </CardBody>
             </Card>
           </Col>
         </Row>
@@ -168,7 +257,17 @@ const Dashboard = (props) => {
         </div>
         <Form role="form">
           <div className="modal-body">
-            <Input placeholder="Quoi de neuf John?" rows="3" type="textarea" />
+            <Input
+              placeholder="Quoi de neuf John?"
+              rows="3"
+              type="textarea"
+              onChange={(e) => setPostInput(e.target.value)}
+            />
+            {postInputErros != "" ? (
+              <span className="text-danger">{postInputErros}</span>
+            ) : (
+              ""
+            )}
             <Input
               type="file"
               className="mt-2 btn btn-secondary"
@@ -178,7 +277,7 @@ const Dashboard = (props) => {
             />
           </div>
           <div className="modal-footer justify-content-start">
-            <Button color="primary" type="button">
+            <Button color="primary" type="button" onClick={savePost}>
               Publier
             </Button>
           </div>
@@ -208,9 +307,16 @@ const Dashboard = (props) => {
                 placeholder="Ecrivez un commentaire..."
                 rows="3"
                 type="textarea"
+                onChange={(e) => setCommentInput(e.target.value)}
               />
 
-              <Button block color="primary" className="mt-2" type="button">
+              <Button
+                block
+                color="primary"
+                className="mt-2"
+                type="button"
+                onClick={saveComment}
+              >
                 Commenter
               </Button>
             </Form>
@@ -226,15 +332,15 @@ const Dashboard = (props) => {
                   <img
                     src={
                       "https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=40&name=" +
-                      element.author
+                      element.author.name
                     }
                     className="rounded-circle mr-2"
                     alt=""
                   />
                 </div>
                 <div>
-                  <h4 className="mb-0">{element.author}</h4>
-                  <p className="text-muted ">{element.comment}</p>
+                  <h4 className="mb-0">{element.author.name}</h4>
+                  <p className="text-muted ">{element.description}</p>
                 </div>
               </div>
             ))

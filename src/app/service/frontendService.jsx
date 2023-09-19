@@ -600,6 +600,16 @@ export const getListCourActif = async () => {
     return response.data;
   } catch (error) {}
 };
+export const getLast3Cours = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/cour/last-cour/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
 export const getCourById = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1196,13 +1206,28 @@ export const listEvent = async (id) => {
     throw error.response?.data;
   }
 };
+export const listEventFutur = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/event/${id}/futur`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
 export const infoEvent = async (id, idk) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
-    const response = await axios.get(`${baseURL}/event/${id}/participants/${idk}`, {
-      headers: { Authorization: `Bearer ${userToken.userToken}` },
-    });
+    const response = await axios.get(
+      `${baseURL}/event/${id}/participants/${idk}`,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error.response?.data;
@@ -1227,12 +1252,9 @@ export const removeEvenement = async (id, dat) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
-    const response = await axios.delete(
-      `${baseURL}/event/${id}`,
-      {
-        headers: { Authorization: `Bearer ${userToken.userToken}` },
-      }
-    );
+    const response = await axios.delete(`${baseURL}/event/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data;
@@ -1274,4 +1296,54 @@ export const updateEventUsers = async (id, data) => {
   } catch (error) {
     throw error.response?.data;
   }
+};
+export const addPost = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/post/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
+
+export const addComment = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/comment/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
+
+export const loadPost = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/post/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
+
+/**
+ * Renvois les informations du user connecté
+ */
+export const getAuthUser = () => {
+  let user = {
+    id: JSON.parse(localStorage.getItem("auth")).token.id,
+    name: JSON.parse(localStorage.getItem("auth")).token.name,
+    picture: JSON.parse(localStorage.getItem("auth")).token.picture,
+    role: JSON.parse(localStorage.getItem("auth")).token.role,
+    sub: JSON.parse(localStorage.getItem("auth")).token.sub,
+    subscription: {
+      name: "free",
+      canFollow: true,
+    },
+  };
+  return user;
 };

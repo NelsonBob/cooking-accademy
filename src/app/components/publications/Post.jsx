@@ -9,68 +9,71 @@ const Post = (props) => {
             <img
               src={
                 "https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=40&name=" +
-                props.post.author
+                props.post.author.name
               }
               className="rounded-circle mr-2"
               alt=""
             />
           </div>
           <div>
-            <h4 className="mb-0">{props.post.author}</h4>
-            <span className="text-muted small">{props.post.created_at}</span>
+            <h4 className="mb-0">{props.post.author.name}</h4>
+            <span className="text-muted small">{props.post.datepost}</span>
           </div>
         </div>
         <div className="w-100">
           <p>{props.post.description}</p>
-          <img className="img-fluid" src={props.post.image} alt="" />
+          <img className="img-fluid" src={props.imageUrls} alt="" />
         </div>
 
-<Row className="mt-2">
-    <Col lg="6" xl="4">
-    <Button
-            className="btn-icon btn-3"
-            color="secondary"
-            outline
-            block
-            type="button"
-          >
-            <span className="btn-inner--icon">
-              <i className="ni ni-like-2" />
-            </span>
-            <span className="btn-inner--text">J'aime 0</span>
-          </Button>
-    </Col>
-    <Col lg="6" xl="4">
-    <Button
-            className="btn-icon btn-3"
-            color="secondary"
-            outline
-            block
-            type="button"
-            onClick={() => props.comment(props.post.id)}
-          >
-            <span className="btn-inner--icon">
-              <i className="ni ni-chat-round" />
-            </span>
-            <span className="btn-inner--text">Commenter {props.post.id}</span>
-          </Button>
-    </Col>
-    <Col lg="6" xl="4">
-    <Button
-            className="btn-icon btn-3"
-            color="secondary"
-            outline
-            block
-            type="button"
-          >
-            <span className="btn-inner--icon">
-              <i className="ni ni-curved-next" />
-            </span>
-            <span className="btn-inner--text">Partager</span>
-          </Button>
-    </Col>
-</Row>
-       
+        <Row className="mt-2">
+          <Col lg="6" xl="4">
+            <Button
+              className="btn-icon btn-3"
+              color={props.post.isLikes ? "primary" : "secondary"}
+              outline
+              block
+              type="button"
+            >
+              <span className="btn-inner--icon">
+                <i className="ni ni-like-2" />
+              </span>
+              <span className="btn-inner--text">
+                J'aime {props.post.nbLikes}
+              </span>
+            </Button>
+          </Col>
+          <Col lg="6" xl="4">
+            <Button
+              className="btn-icon btn-3"
+              color="secondary"
+              outline
+              block
+              type="button"
+              onClick={() => props.comment(props.post.id)}
+            >
+              <span className="btn-inner--icon">
+                <i className="ni ni-chat-round" />
+              </span>
+              <span className="btn-inner--text">
+                Commenter {props.post.comments.length}
+              </span>
+            </Button>
+          </Col>
+          <Col lg="6" xl="4">
+            <Button
+              className="btn-icon btn-3"
+              color="secondary"
+              outline
+              block
+              type="button"
+            >
+              <span className="btn-inner--icon">
+                <i className="ni ni-curved-next" />
+              </span>
+              <span className="btn-inner--text">Partager</span>
+            </Button>
+          </Col>
+        </Row>
       </div>
     </>
   );
