@@ -1297,6 +1297,19 @@ export const updateEventUsers = async (id, data) => {
     throw error.response?.data;
   }
 };
+export const checkEventUser = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/event-users/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+//post
 export const addPost = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1307,7 +1320,18 @@ export const addPost = async (id, data) => {
     return response.data;
   } catch (error) {}
 };
-
+export const getOnePost = async (id, idk) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/post/${id}/item/${idk}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
 export const addComment = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1318,7 +1342,16 @@ export const addComment = async (id, data) => {
     return response.data;
   } catch (error) {}
 };
-
+export const sharePost = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/post/${id}/share`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
 export const loadPost = async (id) => {
   try {
     const tokenString = localStorage.getItem("auth");
@@ -1330,6 +1363,17 @@ export const loadPost = async (id) => {
   } catch (error) {}
 };
 
+//like
+export const checkLike = async (id, idk) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/like/${id}/post/${idk}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {}
+};
 /**
  * Renvois les informations du user connecté
  */

@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { Button, Col, Row } from "reactstrap";
 const Post = (props) => {
@@ -17,7 +18,9 @@ const Post = (props) => {
           </div>
           <div>
             <h4 className="mb-0">{props.post.author.name}</h4>
-            <span className="text-muted small">{props.post.datepost}</span>
+            <span className="text-muted small">
+              {moment(props.post.datepost).calendar()}
+            </span>
           </div>
         </div>
         <div className="w-100">
@@ -30,7 +33,7 @@ const Post = (props) => {
             <Button
               className="btn-icon btn-3"
               color={props.post.isLikes ? "primary" : "secondary"}
-              outline
+              onClick={() => props.like(props.post.id)}
               block
               type="button"
             >
@@ -46,7 +49,6 @@ const Post = (props) => {
             <Button
               className="btn-icon btn-3"
               color="secondary"
-              outline
               block
               type="button"
               onClick={() => props.comment(props.post.id)}
@@ -63,8 +65,8 @@ const Post = (props) => {
             <Button
               className="btn-icon btn-3"
               color="secondary"
-              outline
               block
+              onClick={() => props.share(props.post.id)}
               type="button"
             >
               <span className="btn-inner--icon">

@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -18,12 +19,15 @@ import {
   UploadFile,
   addComment,
   addPost,
+  checkEventUser,
+  checkLike,
   getAuthUser,
   getFile,
+  getOnePost,
   listEventFutur,
   loadPost,
+  sharePost,
 } from "../service/frontendService";
-import moment from "moment";
 
 const Dashboard = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,11 +42,10 @@ const Dashboard = (props) => {
   const [tableData, setTableData] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
 
-  const handleShowComment = (id) => {
+  const handleShowComment = async (id) => {
     setPostId(id);
-    const post = posts.find((el) => el.id == id);
-
-    setComments(post.comments);
+    const response = await getOnePost(getAuthUser().id, id);
+    setComments(response.comments);
     setShowComment(true);
   };
 
@@ -74,7 +77,7 @@ const Dashboard = (props) => {
         description: postInput,
         imgPath: postImagePath ?? "",
       };
-      const res = await addPost(getAuthUser().id, data);
+      await addPost(getAuthUser().id, data);
 
       Swal.fire({
         title: "Votre poste a bien été publié.",
@@ -98,8 +101,7 @@ const Dashboard = (props) => {
         description: commentInput,
         post: postId,
       };
-      const res = await addComment(getAuthUser().id, data);
-
+      await addComment(getAuthUser().id, data);
       Swal.fire({
         title: "Votre commentaire a bien été ajouté.",
         showConfirmButton: false,
@@ -128,14 +130,38 @@ const Dashboard = (props) => {
     const res = await listEventFutur(getAuthUser().id);
     setTableData(res);
   };
-  const suivre = async (id) => {
-    const res = await listEventFutur(getAuthUser().id);
-    setTableData(res);
+  const suivre = async (idevent) => {
+    let data = {
+      statusEvent: "Confirm",
+      id: idevent,
+    };
+    await checkEventUser(getAuthUser().id, data);
+    getEventF();
   };
   useEffect(() => {
     getPost();
     getEventF();
   }, []);
+  useEffect(() => {}, [tableData]);
+
+  const handleLike = async (id) => {
+    setPostId(id);
+    await checkLike(getAuthUser().id, id);
+    getPost();
+  };
+  const handleShare = async (id) => {
+    setPostId(id);
+    let data = {
+      id,
+      datepost: new Date(),
+    };
+    await sharePost(getAuthUser().id, data);
+    getPost();
+    scrollToTop();
+  };
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
 
   return (
     <>
@@ -179,6 +205,8 @@ const Dashboard = (props) => {
                       post={element}
                       imageUrls={imageUrls[element.id]}
                       comment={handleShowComment}
+                      like={handleLike}
+                      share={handleShare}
                       key={index}
                     />
                   ))
@@ -203,33 +231,34 @@ const Dashboard = (props) => {
               <CardBody>
                 <div className="list-group">
                   {tableData && tableData.length > 0 ? (
-                    tableData.map((row, index) => (
-                      <div
-                        className="list-group-item list-group-item-action d-flex justify-content-between"
-                        key={index}
-                      >
-                        <div>
-                          {row.title}
-                          <br />
-                          Description : {row.description}
-                          <br />
-                          Date : {moment(row.start).format("LL")}
-                          <br />
-                          Heire :{" "}
-                          {moment(row.start).format("LT") +
-                            " - " +
-                            moment(row.end).format("LT")}
-                        </div>
-                        <div className="d-flex justify-content-end align-items-end">
-                          <Button
-                            color={row.isRegister ? "danger" : "primary"}
-                            onClick={() => suivre(row.id)}
+                    tableData.map(
+                      (row, index) =>
+                        new Date(row.end) > new Date() && (
+                          <div
+                            className="list-group-item list-group-item-action "
+                            key={index}
                           >
-                            {row.isRegister ? "Desinscrire" : "Participer"}
-                          </Button>
-                        </div>
-                      </div>
-                    ))
+                            {row.title}
+                            <br />
+                            Description : {row.description}
+                            <br />
+                            Date : {moment(row.start).format("LL")}
+                            <br />
+                            Heure :{" "}
+                            {moment(row.start).format("LT") +
+                              " - " +
+                              moment(row.end).format("LT")}
+                            <br />
+                            <Button
+                              className="mt-2"
+                              color={row.isRegister ? "danger" : "primary"}
+                              onClick={() => suivre(row.id)}
+                            >
+                              {row.isRegister ? "Desinscrire" : "Participer"}
+                            </Button>
+                          </div>
+                        )
+                    )
                   ) : (
                     <></>
                   )}
