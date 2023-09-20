@@ -118,12 +118,14 @@ const Dashboard = (props) => {
 
   const getPost = async () => {
     const res = await loadPost(getAuthUser().id);
-    const urls = {};
-    for (const row of res) {
-      const imgUrl = await getFile(row.imgPath);
-      urls[row.id] = imgUrl;
+    if (res) {
+      const urls = {};
+      for (const row of res) {
+        const imgUrl = await getFile(row.imgPath);
+        urls[row.id] = imgUrl;
+      }
+      setImageUrls(urls);
     }
-    setImageUrls(urls);
     setPosts(res);
   };
   const getEventF = async () => {

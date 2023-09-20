@@ -376,7 +376,7 @@ const Paiement = () => {
                                 }
                               >
                                 <i
-                                  className="fa fa-ban mr-2"
+                                  className="fa fa-paperclip mr-2"
                                   aria-hidden="true"
                                 ></i>
                                 Recu
