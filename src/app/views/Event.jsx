@@ -88,7 +88,7 @@ const Event = () => {
         description,
       };
       const res = await createEventWithUserReservation(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       setSelectedValue([]);
@@ -129,7 +129,7 @@ const Event = () => {
         statusEvent: type,
         id: idevent,
       };
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await updateEvent(id, data);
       formatDateEvent(res);
       Swal.fire({
@@ -149,7 +149,7 @@ const Event = () => {
         statusEvent: type,
         id: idevent,
       };
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await updateEventUsers(id, data);
       formatDateEvent(res);
       Swal.fire({
@@ -183,7 +183,7 @@ const Event = () => {
   };
   const getEvent = async () => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await listEvent(id);
       const res1 = await listEventUsers(id);
       let concatenatedArray = res.concat(res1);
@@ -231,7 +231,7 @@ const Event = () => {
   };
   const getEventInfo = async (idk) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await infoEvent(id, idk);
       if (res) {
         Swal.fire({
@@ -251,7 +251,7 @@ const Event = () => {
   };
   const getUsers = async () => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await listUser(id);
       setOptions(res);
     } catch (error) {}
@@ -286,15 +286,15 @@ const Event = () => {
         const formattedEndTime = moment(event.end).format("LT");
         const formattedDay = moment(event.start).format("LL");
         if (
-          event.idcreator == JSON.parse(localStorage.getItem("auth")).userid &&
+          event.idcreator == JSON.parse(localStorage.getItem("auth"))?.userid &&
           event.end > new Date() &&
           event.typeEventEnum != "Reservation"
         ) {
           getEventInfo(event.id);
           return;
         } else if (
-          event.idcreator != JSON.parse(localStorage.getItem("auth")).userid &&
-          JSON.parse(localStorage.getItem("auth")).token.role == "Admin" &&
+          event.idcreator != JSON.parse(localStorage.getItem("auth"))?.userid &&
+          JSON.parse(localStorage.getItem("auth"))?.token.role == "Admin" &&
           event.end > new Date() &&
           event.typeEventEnum == "Reservation" &&
           event.status == "Pending"
@@ -325,7 +325,7 @@ const Event = () => {
           });
           return;
         } else if (
-          event.idcreator != JSON.parse(localStorage.getItem("auth")).userid &&
+          event.idcreator != JSON.parse(localStorage.getItem("auth"))?.userid &&
           event.end > new Date() &&
           event.typeEventEnum != "Reservation" &&
           event.status == "Pending"

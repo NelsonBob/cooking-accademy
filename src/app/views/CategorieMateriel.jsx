@@ -66,7 +66,7 @@ const CategorieMateriel = () => {
   };
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getCategorieMaterielById(id, intern);
       setName(res.name);
     } catch (error) {}
@@ -92,7 +92,7 @@ const CategorieMateriel = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListCategorieMateriel(id);
       if (res) {
         setTableData(res);
@@ -139,7 +139,7 @@ const CategorieMateriel = () => {
     };
     try {
       const user = await createCategorieMateriel(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
 
@@ -165,7 +165,7 @@ const CategorieMateriel = () => {
   const removMethod = async () => {
     try {
       const user = await removeCategorieMaterielById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -194,7 +194,7 @@ const CategorieMateriel = () => {
     };
     try {
       const user = await updateCategorieMateriel(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
 

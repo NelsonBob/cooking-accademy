@@ -15,7 +15,7 @@ const EspaceCour = () => {
   useEffect(() => {}, [cour]);
   const getCour = async () => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getCourById(id, idCour);
       if (res.isVideoLocal) {
         const videoUrl = await getFile(res.videoLink);
@@ -97,7 +97,7 @@ const EspaceCour = () => {
           {cour &&
             cour.creator &&
             cour.creator.id !=
-              JSON.parse(localStorage.getItem("auth")).userid && (
+              JSON.parse(localStorage.getItem("auth"))?.userid && (
               <Col md={12}>
                 <ChatRoom receivername={cour.creator.name} idcour={idCour} />
               </Col>

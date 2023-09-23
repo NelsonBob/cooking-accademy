@@ -34,7 +34,7 @@ const Sidebar = (props) => {
   const createLinks = (routes, postion = 1) => {
     return routes.map((prop, key) => {
       let autorization = prop.role.includes(
-        JSON.parse(localStorage.getItem("auth")).token.role
+        JSON.parse(localStorage.getItem("auth"))?.token.role
       );
       if (prop.sidebar && prop.postion == postion && autorization)
         return (
@@ -52,10 +52,11 @@ const Sidebar = (props) => {
     });
   };
   const getActiveRoute = (routes, postion = 1) => {
+    if (localStorage.getItem("auth") === null) return navigate("/out/index");
     let present = false;
     routes.map((prop, key) => {
       let autorization = prop.role.includes(
-        JSON.parse(localStorage.getItem("auth")).token.role
+        JSON.parse(localStorage.getItem("auth"))?.token.role
       );
       if (prop.postion == postion && autorization) present = true;
     });
@@ -81,9 +82,9 @@ const Sidebar = (props) => {
     getPicture();
   }, []);
   const getPicture = async () => {
-    if (JSON.parse(localStorage.getItem("auth")).token.picture) {
+    if (JSON.parse(localStorage.getItem("auth"))?.token.picture) {
       let imgUrl = await getFile(
-        JSON.parse(localStorage.getItem("auth")).token.picture
+        JSON.parse(localStorage.getItem("auth"))?.token.picture
       );
       setImgContent(imgUrl);
     }

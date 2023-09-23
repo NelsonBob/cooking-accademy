@@ -53,7 +53,7 @@ const Reservation = () => {
         imgPath: tableData.imgPath,
       };
       const res = await createEventReservation(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       formatDateEvent(res);
@@ -105,7 +105,7 @@ const Reservation = () => {
       const formattedEndTime = moment(event.end).format("LT");
       const formattedDay = moment(event.start).format("LL");
       if (
-        event.user.id == JSON.parse(localStorage.getItem("auth")).userid &&
+        event.user.id == JSON.parse(localStorage.getItem("auth"))?.userid &&
         event.end > new Date()
       )
         Swal.fire({

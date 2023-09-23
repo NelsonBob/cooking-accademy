@@ -61,7 +61,7 @@ const Client = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListClient(id);
       if (res) {
         setTableData(res);

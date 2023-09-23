@@ -74,7 +74,7 @@ const Commande = () => {
         amount: cartTotal,
       };
       const response = await generateReceipt(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       Swal.fire({
@@ -108,7 +108,7 @@ const Commande = () => {
     try {
       const data = { amount: cartTotal };
       const response = await checkpaiementStripe(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       if (response) {

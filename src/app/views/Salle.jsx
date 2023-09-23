@@ -92,7 +92,7 @@ const Salle = () => {
 
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getSalleById(id, intern);
       let newgal = await callGal(res.gallerie);
       setGallerie(newgal);
@@ -133,7 +133,7 @@ const Salle = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListSalle(id);
       const urls = {};
       for (const row of res) {
@@ -207,7 +207,7 @@ const Salle = () => {
     };
     try {
       const user = await createSalle(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -243,7 +243,7 @@ const Salle = () => {
   const removMethod = async () => {
     try {
       const user = await removeSalleById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -279,7 +279,7 @@ const Salle = () => {
     };
     try {
       const user = await updateSalle(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {

@@ -5,7 +5,7 @@ import CourInter from "../components/Cour/CourInter";
 const Cour = () => {
   return (
     <>
-      {JSON.parse(localStorage.getItem("auth")).token.role == "Client" ? (
+      {JSON.parse(localStorage.getItem("auth"))?.token.role == "Client" ? (
         <CourClient />
       ) : (
         <CourInter />

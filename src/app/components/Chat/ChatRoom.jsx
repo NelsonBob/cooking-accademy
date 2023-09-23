@@ -10,9 +10,9 @@ var stompClient = null;
 const ChatRoom = ({ receivername, idcour }) => {
   const [privateChats, setPrivateChats] = useState([]);
   const [userData, setUserData] = useState({
-    username: JSON.parse(localStorage.getItem("auth")).userName,
+    username: JSON.parse(localStorage.getItem("auth"))?.userName,
     receivername: receivername,
-    senderUser: JSON.parse(localStorage.getItem("auth")).userid,
+    senderUser: JSON.parse(localStorage.getItem("auth"))?.userid,
     cour: idcour,
     connected: false,
     currentDate: new Date().toLocaleString(),

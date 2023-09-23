@@ -55,7 +55,7 @@ const Intern = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListIntern(id);
       if (res) {
         setTableData(res);
@@ -115,7 +115,7 @@ const Intern = () => {
   };
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getInternById(id, intern);
       setName(res.name);
       setEmail(res.email);
@@ -174,7 +174,7 @@ const Intern = () => {
     };
     try {
       const user = await createIntern(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       setName("");
@@ -213,7 +213,7 @@ const Intern = () => {
     };
     try {
       const user = await updateIntern(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       setName("");

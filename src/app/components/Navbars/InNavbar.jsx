@@ -15,12 +15,13 @@ const InNavbar = (props) => {
   const navigate = useNavigate();
   const [imgContent, setImgContent] = useState(null);
   useEffect(() => {
+    if (localStorage.getItem("auth") === null) return navigate("/out/index");
     getPicture();
   }, []);
   const getPicture = async () => {
-    if (JSON.parse(localStorage.getItem("auth")).token.picture) {
+    if (JSON.parse(localStorage.getItem("auth"))?.token.picture) {
       let imgUrl = await getFile(
-        JSON.parse(localStorage.getItem("auth")).token.picture
+        JSON.parse(localStorage.getItem("auth"))?.token.picture
       );
       setImgContent(imgUrl);
     }
@@ -61,7 +62,7 @@ const InNavbar = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      {JSON.parse(localStorage.getItem("auth")).userName}
+                      {JSON.parse(localStorage.getItem("auth"))?.userName}
                     </span>
                   </Media>
                 </Media>

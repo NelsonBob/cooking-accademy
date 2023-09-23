@@ -30,7 +30,7 @@ const MessageCour = () => {
 
   const getMessages = async () => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getUserMessageCourById(id, idCour);
       const urls = {};
       for (const row of res) {

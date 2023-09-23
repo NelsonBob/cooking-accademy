@@ -104,7 +104,7 @@ const CourInter = () => {
   };
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getCourById(id, intern);
       setName(res.name);
       setDescription(res.description);
@@ -140,7 +140,7 @@ const CourInter = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListCour(id);
       const urls = {};
       for (const row of res) {
@@ -215,7 +215,7 @@ const CourInter = () => {
     };
     try {
       const user = await createCour(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -258,7 +258,7 @@ const CourInter = () => {
   const removMethod = async () => {
     try {
       const user = await removeCourById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -302,7 +302,7 @@ const CourInter = () => {
     };
     try {
       const user = await updateCour(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       setImgPathLast([]);
@@ -570,11 +570,11 @@ const CourInter = () => {
                                 ></i>
                                 Supprimer
                               </Button>
-                              {(JSON.parse(localStorage.getItem("auth")).token
+                              {(JSON.parse(localStorage.getItem("auth"))?.token
                                 .role == "Formateur" ||
-                                JSON.parse(localStorage.getItem("auth")).token
+                                JSON.parse(localStorage.getItem("auth"))?.token
                                   .role == "Chefs" ||
-                                JSON.parse(localStorage.getItem("auth")).token
+                                JSON.parse(localStorage.getItem("auth"))?.token
                                   .role == "Admin") && (
                                 <Button
                                   variant="contained"

@@ -1,5 +1,11 @@
 import React from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Container } from "reactstrap";
 import AdminFooter from "../components/Footers/AdminFooter";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -10,7 +16,7 @@ import routes from "../routes/routesIn";
 const InLayout = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-
+  const navigate = useNavigate();
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -18,6 +24,7 @@ const InLayout = (props) => {
   }, [location]);
 
   const getRoutes = (routes) => {
+    if (localStorage.getItem("auth") === null) return navigate("/out/index");
     return routes.map((prop, key) => {
       if (prop.layout === "/in") {
         return (

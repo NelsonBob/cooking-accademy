@@ -89,7 +89,7 @@ const Repas = () => {
 
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getRepasById(id, intern);
       setName(res.name);
       setDescription(res.description);
@@ -121,7 +121,7 @@ const Repas = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListRepas(id);
       const urls = {};
       for (const row of res) {
@@ -191,7 +191,7 @@ const Repas = () => {
     };
     try {
       const user = await createRepas(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -225,7 +225,7 @@ const Repas = () => {
   const removMethod = async () => {
     try {
       const user = await removeRepasById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -262,7 +262,7 @@ const Repas = () => {
     };
     try {
       const user = await updateRepas(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {

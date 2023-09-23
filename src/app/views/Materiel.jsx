@@ -100,7 +100,7 @@ const Materiel = () => {
 
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getMaterielById(id, intern);
       let newgal = await callGal(res.gallerie);
       setGallerie(newgal);
@@ -143,7 +143,7 @@ const Materiel = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListMateriel(id);
       const urls = {};
       for (const row of res) {
@@ -161,7 +161,7 @@ const Materiel = () => {
   const getListCateories = async () => {
     setCategorieMateriels([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListCategorieMateriel(id);
       setCategorieMateriels(res);
     } catch (error) {}
@@ -240,7 +240,7 @@ const Materiel = () => {
     };
     try {
       const user = await createMateriel(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -279,7 +279,7 @@ const Materiel = () => {
   const removMethod = async () => {
     try {
       const user = await removeMaterielById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -320,7 +320,7 @@ const Materiel = () => {
     };
     try {
       const user = await updateMateriel(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {

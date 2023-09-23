@@ -26,13 +26,13 @@ import {
 
 const Profile = () => {
   const [name, setName] = useState(
-    JSON.parse(localStorage.getItem("auth")).token.name
+    JSON.parse(localStorage.getItem("auth"))?.token.name
   );
   const [email, setEmail] = useState(
-    JSON.parse(localStorage.getItem("auth")).token.sub
+    JSON.parse(localStorage.getItem("auth"))?.token.sub
   );
   const [adress, setAdress] = useState(
-    JSON.parse(localStorage.getItem("auth")).token.fonction
+    JSON.parse(localStorage.getItem("auth"))?.token.fonction
   );
   const [errors, setErrors] = useState({});
   const [password_confirm, setPasswordConfirm] = useState("");
@@ -45,9 +45,9 @@ const Profile = () => {
     getPicture();
   }, []);
   const getPicture = async () => {
-    if (JSON.parse(localStorage.getItem("auth")).token.picture) {
+    if (JSON.parse(localStorage.getItem("auth"))?.token.picture) {
       let imgUrl = await getFile(
-        JSON.parse(localStorage.getItem("auth")).token.picture
+        JSON.parse(localStorage.getItem("auth"))?.token.picture
       );
       setImgContent(imgUrl);
     }
@@ -72,16 +72,16 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       let data = {
         name,
         fontion: adress,
       };
       try {
         let user;
-        if (JSON.parse(localStorage.getItem("auth")).token.role == "Client")
+        if (JSON.parse(localStorage.getItem("auth"))?.token.role == "Client")
           user = await updateProfilClient(id, data);
-        if (JSON.parse(localStorage.getItem("auth")).token.role !== "Client")
+        if (JSON.parse(localStorage.getItem("auth"))?.token.role !== "Client")
           user = await updateProfilIntern(id, data);
         if (user) {
           Swal.fire({
@@ -139,7 +139,7 @@ const Profile = () => {
     };
     try {
       const user = await updatePicture(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -216,10 +216,10 @@ const Profile = () => {
                   </div>
                 </Row>
                 <div className="text-center">
-                  <h3>{JSON.parse(localStorage.getItem("auth")).userName}</h3>
+                  <h3>{JSON.parse(localStorage.getItem("auth"))?.userName}</h3>
                   <div className="h5 font-weight-300">
                     <i className="ni location_pin mr-2" />
-                    {JSON.parse(localStorage.getItem("auth")).fonction}
+                    {JSON.parse(localStorage.getItem("auth"))?.fonction}
                   </div>
                 </div>
               </CardBody>
@@ -317,7 +317,7 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-first-name"
                           >
-                            {JSON.parse(localStorage.getItem("auth")).token
+                            {JSON.parse(localStorage.getItem("auth"))?.token
                               .role == "Client"
                               ? "Adress"
                               : "Fonction"}
@@ -327,7 +327,7 @@ const Profile = () => {
                             value={adress}
                             id="input-first-name"
                             placeholder={
-                              JSON.parse(localStorage.getItem("auth")).token
+                              JSON.parse(localStorage.getItem("auth"))?.token
                                 .role == "Client"
                                 ? "Adress"
                                 : "Fonction"

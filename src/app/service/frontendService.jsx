@@ -52,6 +52,11 @@ export const updatePicture = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -64,6 +69,11 @@ export const listUser = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -77,6 +87,11 @@ export const updateProfilIntern = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -89,6 +104,11 @@ export const getListIntern = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -119,6 +139,11 @@ export const getListLivreurs = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -143,6 +168,11 @@ export const getInternById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -167,6 +197,11 @@ export const createIntern = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -179,6 +214,11 @@ export const updateIntern = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -193,6 +233,11 @@ export const updateProfilClient = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -205,6 +250,11 @@ export const getListClient = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -231,6 +281,11 @@ export const getListServiceAbonnement = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -264,6 +319,11 @@ export const getServiceAbonnementById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -292,7 +352,25 @@ export const createServiceAbonnement = async (id, data) => {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data;
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+    throw error.response?.data.errors.message;
   }
 };
 export const updateServiceAbonnement = async (id, data) => {
@@ -308,7 +386,25 @@ export const updateServiceAbonnement = async (id, data) => {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data;
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+    throw error.response?.data.errors.message;
   }
 };
 export const removeServiceAbonnementById = async (id, data) => {
@@ -323,6 +419,11 @@ export const removeServiceAbonnementById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -336,6 +437,7 @@ export const removeServiceAbonnementById = async (id, data) => {
         popup: "animate__animated animate__fadeOutUp",
       },
     });
+    throw error.response?.data.errors.message;
   }
 };
 
@@ -349,6 +451,11 @@ export const getListOptionAbonnement = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -362,6 +469,7 @@ export const getListOptionAbonnement = async (id) => {
         popup: "animate__animated animate__fadeOutUp",
       },
     });
+    throw error.response?.data.errors.message;
   }
 };
 export const getListOptionAbonnementActif = async () => {
@@ -382,6 +490,11 @@ export const getOptionAbonnementById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -410,6 +523,11 @@ export const createOptionAbonnement = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -426,6 +544,11 @@ export const updateOptionAbonnement = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -441,6 +564,11 @@ export const removeOptionAbonnementById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -467,6 +595,11 @@ export const getListCategorieMateriel = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -494,6 +627,11 @@ export const getCategorieMaterielById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -522,6 +660,11 @@ export const createCategorieMateriel = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -538,6 +681,11 @@ export const updateCategorieMateriel = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -553,6 +701,11 @@ export const removeCategorieMaterielById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -579,6 +732,11 @@ export const getListCour = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -608,7 +766,13 @@ export const getLast3Cours = async (id) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+  }
 };
 export const getCourById = async (id, data) => {
   try {
@@ -619,6 +783,11 @@ export const getCourById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -646,6 +815,11 @@ export const getUserMessageCourById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -670,6 +844,11 @@ export const createCour = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -682,6 +861,11 @@ export const updateCour = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -694,6 +878,11 @@ export const removeCourById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -720,6 +909,11 @@ export const getListSalle = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -756,6 +950,11 @@ export const createSalle = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -768,6 +967,11 @@ export const updateSalle = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -780,6 +984,11 @@ export const removeSalleById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -806,6 +1015,11 @@ export const getListRepas = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -836,6 +1050,11 @@ export const getRepasById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -860,6 +1079,11 @@ export const createRepas = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -872,6 +1096,11 @@ export const updateRepas = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -884,6 +1113,11 @@ export const removeRepasById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -910,6 +1144,11 @@ export const getListMateriel = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -940,6 +1179,11 @@ export const getMaterielById = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -964,6 +1208,11 @@ export const createMateriel = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -976,6 +1225,11 @@ export const updateMateriel = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -991,6 +1245,11 @@ export const removeMaterielById = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -1016,6 +1275,11 @@ export const UploadFile = async (data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1026,6 +1290,11 @@ export const readFile = async (fileName) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1042,6 +1311,11 @@ export const UpdateFile = async (fileName, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1055,6 +1329,11 @@ export const removeFile = async (fileName) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1064,6 +1343,11 @@ export const getFile = async (url) => {
     const imgUrl = URL.createObjectURL(response);
     return imgUrl;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     console.error("Error displaying file:", error);
   }
 };
@@ -1081,6 +1365,11 @@ export const checkpaiementStripe = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1098,6 +1387,11 @@ export const assignLivreurPayment = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1115,6 +1409,11 @@ export const confirmLivraisonPayment = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1132,6 +1431,11 @@ export const generateReceipt = async (id, data) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1143,7 +1447,14 @@ export const getListPayment = async (id) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 export const getByPaymentId = async (id, idk) => {
   try {
@@ -1153,7 +1464,14 @@ export const getByPaymentId = async (id, idk) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 //event
 export const getListEvent = async (data, id) => {
@@ -1162,7 +1480,14 @@ export const getListEvent = async (data, id) => {
       `${baseURL}/v2/events/${data}/element/${id}`
     );
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 export const getListEventAll = async () => {
   try {
@@ -1179,6 +1504,11 @@ export const createEventReservation = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1191,6 +1521,11 @@ export const createEventWithUserReservation = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1203,6 +1538,11 @@ export const listEvent = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1215,6 +1555,11 @@ export const listEventFutur = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1230,6 +1575,11 @@ export const infoEvent = async (id, idk) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1245,6 +1595,11 @@ export const removeEvent = async (id, dat) => {
     );
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1257,6 +1612,11 @@ export const removeEvenement = async (id, dat) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1269,6 +1629,11 @@ export const updateEvent = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1282,6 +1647,11 @@ export const listEventUsers = async (id) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1294,6 +1664,11 @@ export const updateEventUsers = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1306,6 +1681,11 @@ export const checkEventUser = async (id, data) => {
     });
     return response.data;
   } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
     throw error.response?.data;
   }
 };
@@ -1318,7 +1698,14 @@ export const addPost = async (id, data) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 export const getOnePost = async (id, idk) => {
   try {
@@ -1340,7 +1727,14 @@ export const addComment = async (id, data) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 export const sharePost = async (id, data) => {
   try {
@@ -1350,7 +1744,14 @@ export const sharePost = async (id, data) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 export const loadPost = async (id) => {
   try {
@@ -1360,7 +1761,14 @@ export const loadPost = async (id) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 
 //like
@@ -1372,22 +1780,32 @@ export const checkLike = async (id, idk) => {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.message.includes("jwt")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };
 /**
  * Renvois les informations du user connecté
  */
 export const getAuthUser = () => {
   let user = {
-    id: JSON.parse(localStorage.getItem("auth")).token.id,
-    name: JSON.parse(localStorage.getItem("auth")).token.name,
-    picture: JSON.parse(localStorage.getItem("auth")).token.picture,
-    role: JSON.parse(localStorage.getItem("auth")).token.role,
-    sub: JSON.parse(localStorage.getItem("auth")).token.sub,
+    id: JSON.parse(localStorage.getItem("auth"))?.token.id,
+    name: JSON.parse(localStorage.getItem("auth"))?.token.name,
+    picture: JSON.parse(localStorage.getItem("auth"))?.token.picture,
+    role: JSON.parse(localStorage.getItem("auth"))?.token.role,
+    sub: JSON.parse(localStorage.getItem("auth"))?.token.sub,
     subscription: {
       name: "free",
       canFollow: true,
     },
   };
   return user;
+};
+export const deconnect = () => {
+  localStorage.clear();
 };

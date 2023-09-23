@@ -33,7 +33,7 @@ import {
   getServiceAbonnementById,
   removeFile,
   removeServiceAbonnementById,
-  updateServiceAbonnement
+  updateServiceAbonnement,
 } from "../service/frontendService";
 
 const ServiceAbonnement = () => {
@@ -52,6 +52,7 @@ const ServiceAbonnement = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
+  const [isDefault, setIsDefault] = useState("");
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
   useEffect(() => {
@@ -78,13 +79,14 @@ const ServiceAbonnement = () => {
       setImgContent(null);
       setDescription("");
       setStatus("");
+      setIsDefault("");
       setExampleModal(true);
     }
     setTypeModal(status);
   };
   const getById = async (intern) => {
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getServiceAbonnementById(id, intern);
       setName(res.name);
       setDescription(res.description);
@@ -92,6 +94,7 @@ const ServiceAbonnement = () => {
       let imgUl = await getFile(res.imgPath);
       setImgContent(imgUl);
       setStatus(res.status);
+      setIsDefault(res.isDefault);
     } catch (error) {}
   };
   const handleFilter = (text) => {
@@ -115,7 +118,7 @@ const ServiceAbonnement = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListServiceAbonnement(id);
       const urls = {};
       for (const row of res) {
@@ -174,10 +177,11 @@ const ServiceAbonnement = () => {
       name,
       description,
       imgPath,
+      isDefault,
     };
     try {
-      const user = await createServiceAbonnement(
-        JSON.parse(localStorage.getItem("auth")).userid,
+      await createServiceAbonnement(
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -207,8 +211,8 @@ const ServiceAbonnement = () => {
   };
   const removMethod = async () => {
     try {
-      const user = await removeServiceAbonnementById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+      await removeServiceAbonnementById(
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -239,10 +243,11 @@ const ServiceAbonnement = () => {
       description,
       imgPath,
       status,
+      isDefault,
     };
     try {
-      const user = await updateServiceAbonnement(
-        JSON.parse(localStorage.getItem("auth")).userid,
+      await updateServiceAbonnement(
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       imgPathLast.forEach(async (el) => {
@@ -251,6 +256,7 @@ const ServiceAbonnement = () => {
       setName("");
       setDescription("");
       setStatus("");
+      setIsDefault("");
       setImgPath("");
       setImgPathLast([]);
       setImgContent(null);
@@ -274,7 +280,7 @@ const ServiceAbonnement = () => {
   };
   const removeFileUpload = async (img) => {
     try {
-      const response = await removeFile(img);
+      await removeFile(img);
     } catch (error) {
       Swal.fire({
         position: "top-end",
@@ -422,7 +428,14 @@ const ServiceAbonnement = () => {
                                 height={50}
                               />
                             </TableCell>
-                            <TableCell>{row.name}</TableCell>
+                            <TableCell>
+                              {row.name}{" "}
+                              {row.isDefault && (
+                                <span className="text-primary">
+                                  (Par defaut)
+                                </span>
+                              )}
+                            </TableCell>
                             <TableCell>{row.description}</TableCell>
                             <TableCell>
                               {row.status ? (
@@ -565,6 +578,26 @@ const ServiceAbonnement = () => {
                         {errors.name}
                       </span>
                     )}
+                  </FormGroup>
+                  <FormGroup>
+                    <div className="form-check">
+                      <Input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="flexCheckDefault1"
+                        checked={isDefault == true}
+                        value={isDefault}
+                        onChange={(e) => {
+                          setIsDefault(e.target.checked);
+                        }}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDefault1"
+                      >
+                        Definir ce service comme service par defaut?
+                      </label>
+                    </div>
                   </FormGroup>
                   <FormGroup>
                     <InputGroup className="input-group-alternative mb-3">

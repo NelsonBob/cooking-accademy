@@ -73,7 +73,7 @@ const OptionAbonnement = () => {
   const getById = async (intern) => {
     setOptionItems([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getOptionAbonnementById(id, intern);
       setName(res.name);
       const newOptionItems = res.optionServiceAbonnement.map((el) => ({
@@ -110,7 +110,7 @@ const OptionAbonnement = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListOptionAbonnement(id);
       if (res) {
         setTableData(res);
@@ -122,7 +122,7 @@ const OptionAbonnement = () => {
   const getListServiceAbbActif = async () => {
     setService([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListServiceAbonnementActif(id);
       setService(res);
     } catch (error) {}
@@ -178,7 +178,7 @@ const OptionAbonnement = () => {
     };
     try {
       const user = await createOptionAbonnement(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       setName("");
@@ -203,7 +203,7 @@ const OptionAbonnement = () => {
   const removMethod = async () => {
     try {
       const user = await removeOptionAbonnementById(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         idUser
       );
       setName("");
@@ -234,7 +234,7 @@ const OptionAbonnement = () => {
     };
     try {
       const user = await updateOptionAbonnement(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       setName("");

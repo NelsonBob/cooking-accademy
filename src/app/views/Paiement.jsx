@@ -91,7 +91,7 @@ const Paiement = () => {
     setTableData([]);
     setTableDataCopy([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListPayment(id);
 
       if (res) {
@@ -104,7 +104,7 @@ const Paiement = () => {
   const getListLivreur = async () => {
     setTableDataLivreur([]);
     try {
-      let id = JSON.parse(localStorage.getItem("auth")).userid;
+      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListLivreurs(id);
 
       setTableDataLivreur(res);
@@ -126,7 +126,7 @@ const Paiement = () => {
     };
     try {
       const user = await confirmLivraisonPayment(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
       getList();
@@ -153,7 +153,7 @@ const Paiement = () => {
     };
     try {
       const user = await assignLivreurPayment(
-        JSON.parse(localStorage.getItem("auth")).userid,
+        JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
 
