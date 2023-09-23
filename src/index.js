@@ -7,6 +7,7 @@ import "./assets/plugins/nucleo/css/nucleo.css";
 import "./assets/scss/argon-dashboard-react.scss";
 import "./assets/scss/custom.css";
 
+import AvisLayout from "./app/layouts/AvisLayout";
 import InLayout from "./app/layouts/InLayout";
 import OutLayout from "./app/layouts/OutLayout";
 import "./i18n";
@@ -18,6 +19,7 @@ root.render(
     <Routes>
       <Route path="/in/*" element={<InLayout />} />
       <Route path="/out/*" element={<OutLayout />} />
+      <Route path="/avis/*" element={<AvisLayout />} />
       <Route path="*" element={<Navigate to="/out/index" replace />} />
     </Routes>
   </BrowserRouter>

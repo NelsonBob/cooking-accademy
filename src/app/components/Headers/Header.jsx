@@ -9,7 +9,7 @@ import {
   Col,
   Container,
   Modal,
-  Row
+  Row,
 } from "reactstrap";
 import {
   getAuthUser,
@@ -32,13 +32,15 @@ const Header = () => {
   }, []);
   const getLastCour = async () => {
     const res = await getLast3Cours(getAuthUser().id);
-    const urls = {};
-    for (const row of res) {
-      const imgUrl = await getFile(row.imgPath);
-      urls[row.id] = imgUrl;
+    if (res) {
+      const urls = {};
+      for (const row of res) {
+        const imgUrl = await getFile(row.imgPath);
+        urls[row.id] = imgUrl;
+      }
+      setImageUrls(urls);
+      setTableData(res);
     }
-    setImageUrls(urls);
-    setTableData(res);
   };
   const handleClose = () => setVideoModal(!videoModal);
   useEffect(() => {}, [tableData]);

@@ -5,8 +5,7 @@ import { Card, CardImg, Col, Container, Row } from "reactstrap";
 import {
   getFile,
   getListInternChef,
-  getListRepasActif,
-  readFile,
+  getListRepasActif
 } from "../../service/frontendService";
 
 function Home() {

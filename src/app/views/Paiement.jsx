@@ -93,7 +93,7 @@ const Paiement = () => {
     try {
       let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getListPayment(id);
-
+      setExampleModal(false);
       if (res) {
         setTableData(res);
         setTableDataCopy(res);
@@ -125,7 +125,7 @@ const Paiement = () => {
       type: "Delivered",
     };
     try {
-      const user = await confirmLivraisonPayment(
+      await confirmLivraisonPayment(
         JSON.parse(localStorage.getItem("auth"))?.userid,
         data
       );
@@ -326,43 +326,53 @@ const Paiement = () => {
                               )}
                             </TableCell>
                             <TableCell>
-                              {!row.livreur && (
-                                <Button
-                                  variant="contained"
-                                  color="info"
-                                  onClick={() =>
-                                    handleClickDesable(
-                                      row.id,
-                                      "assigner",
-                                      row.paymentDate
-                                    )
-                                  }
-                                >
-                                  <i
-                                    className="fa fa-pencil mr-2"
-                                    aria-hidden="true"
-                                  ></i>
-                                  Assigner livreur
-                                </Button>
-                              )}
-                              {row.livreur && row.statusCommande == "Paid" && (
-                                <Button
-                                  variant="contained"
-                                  color="warning"
-                                  onClick={() =>
-                                    handleClickDesable(
-                                      row.id,
-                                      "Delivered",
-                                      row.paymentDate
-                                    )
-                                  }
-                                >
-                                 <i
-                                    className="fa fa-pencil mr-2"
-                                    aria-hidden="true"
-                                  ></i>
-                                  Livré
-                                </Button>
+                              {(JSON.parse(localStorage.getItem("auth"))?.token
+                                .role == "Admin" &&
+                                !row.livreur) && (
+                                  <Button
+                                    variant="contained"
+                                    color="info"
+                                    onClick={() =>
+                                      handleClickDesable(
+                                        row.id,
+                                        "assigner",
+                                        row.paymentDate
+                                      )
+                                    }
+                                  >
+                                    <i
+                                      className="fa fa-pencil mr-2"
+                                      aria-hidden="true"
+                                    ></i>
+                                    Assigner livreur
+                                  </Button>
+                                )}
+                              {(JSON.parse(localStorage.getItem("auth"))?.token
+                                .role == "Admin" ||
+                                JSON.parse(localStorage.getItem("auth"))?.token
+                                  .role == "Livreur") && (
+                                <>
+                                  {row.livreur &&
+                                    row.statusCommande == "Paid" && (
+                                      <Button
+                                        variant="contained"
+                                        color="warning"
+                                        onClick={() =>
+                                          handleClickDesable(
+                                            row.id,
+                                            "Delivered",
+                                            row.paymentDate
+                                          )
+                                        }
+                                      >
+                                        <i
+                                          className="fa fa-pencil mr-2"
+                                          aria-hidden="true"
+                                        ></i>
+                                        Livré
+                                      </Button>
+                                    )}
+                                </>
                               )}
                               <Button
                                 variant="contained"
