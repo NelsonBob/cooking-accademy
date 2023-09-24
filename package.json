@@ -52,7 +52,6 @@
     ],
     "rules": {
     "no-console": "off"
-    // Ajoutez d'autres règles ici si nécessaire
   }
   },
   "browserslist": {
