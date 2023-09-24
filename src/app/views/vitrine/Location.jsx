@@ -90,7 +90,7 @@ const Location = () => {
                           {imageUrls && imageUrls[row.id] && (
                             <UncontrolledCarousel
                               items={imageUrls[row.id]}
-                              className="location" 
+                              className="location"
                             />
                           )}
                         </Col>
@@ -100,12 +100,6 @@ const Location = () => {
                         >
                           <h2>{row.name}</h2>
                           <p>{row.description}</p>
-                          <p>
-                            <i className="fa fa-star text-warning"></i>
-                            <i className="fa fa-star text-warning"></i>
-                            <i className="fa fa-star text-warning"></i>
-                          </p>
-                          <a href="#">Lire les avis Google</a>
                           <br />
                           <Button
                             variant="contained"
