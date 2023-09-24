@@ -54,6 +54,9 @@
     "no-console": "off"
   }
   },
+  "compilerOptions": {
+  "noEmitOnError": false
+},
   "browserslist": {
     "production": [
       ">0.2%",
