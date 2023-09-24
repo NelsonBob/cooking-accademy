@@ -2,25 +2,42 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { getListRepasActif } from "../../service/frontendService";
+import SentimentDissatisfiedIcon from "../../../assets/img/emoji/SentimentDissatisfiedIcon.svg";
+import SentimentNeutral from "../../../assets/img/emoji/SentimentNeutral.svg";
+import SentimentSatisfiedAltIcon from "../../../assets/img/emoji/SentimentSatisfiedAltIcon.svg";
+import SentimentVeryDissatisfiedIcon from "../../../assets/img/emoji/SentimentVeryDissatisfiedIcon.svg";
+import SentimentVerySatisfiedIcon from "../../../assets/img/emoji/SentimentVerySatisfiedIcon.svg";
+import { getAvisExist, giveAvis } from "../../service/frontendService";
+
 function Avis() {
   const { t } = useTranslation();
   const [note, setNote] = useState(null);
+  const [exist, setExist] = useState(null);
   const emojis = [
     {
       id: 0,
-      name: "Sad",
-      imageUrl: "https://assets.ccbp.in/frontend/react-js/sad-emoji-img.png",
+      name: "Very Dissatisfied",
+      imageUrl: SentimentVeryDissatisfiedIcon,
     },
     {
       id: 1,
-      name: "None",
-      imageUrl: "https://assets.ccbp.in/frontend/react-js/none-emoji-img.png",
+      name: "Dissatisfied",
+      imageUrl: SentimentDissatisfiedIcon,
     },
     {
       id: 2,
-      name: "Happy",
-      imageUrl: "https://assets.ccbp.in/frontend/react-js/happy-emoji-img.png",
+      name: "Neutral",
+      imageUrl: SentimentNeutral,
+    },
+    {
+      id: 3,
+      name: "Satisfied",
+      imageUrl: SentimentSatisfiedAltIcon,
+    },
+    {
+      id: 4,
+      name: "Very Satisfied",
+      imageUrl: SentimentVerySatisfiedIcon,
     },
   ];
   const loveEmojiUrl =
@@ -28,23 +45,33 @@ function Avis() {
   const location = useLocation();
 
   const id = new URLSearchParams(location.search).get("id");
-  const giveAvis = async (idnote) => {
-    console.log("rrrrrrrrrrrrr  ", idnote);
-    setNote(idnote);
+
+  const avis = async (idnote) => {
     try {
-      // const res = await getListRepasActif();
+      const res = await giveAvis(id, idnote + 1);
+      setNote(idnote);
     } catch (error) {}
   };
-  // useEffect(() => {}, [note]);
+
+  const getExistAvis = async () => {
+    try {
+      const res = await getAvisExist(id);
+      setExist(res);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getExistAvis();
+  }, []);
+
   return (
     <>
-      {note ? (
+      {note || exist ? (
         <div className="header bg-gradient-success py-7 py-lg-8">
-          <Row className="justify-content-center">
+          <Row className="justify-content-center mx-0">
             <Col md={12} className="my-4">
               <Row className="justify-content-center">
-                <Col md={6} className="my-4 bg-white text-center ">
-                  <img src={loveEmojiUrl} className="emoji mt-2" />
+                <Col md={7} className="my-4 bg-white text-center ">
+                  <img src={loveEmojiUrl} className="emoji mt-2" alt="" />
                   <h1 className="text-center">Thank You!</h1>
                   <p className="text-center">
                     We’ll use your feedback to improve our customer support
@@ -57,29 +84,29 @@ function Avis() {
         </div>
       ) : (
         <div className="header bg-gradient-primary py-7 py-lg-8">
-          <Row className="justify-content-center">
+          <Row className="justify-content-center  mx-0">
             <Col md={12} className="my-4">
               <Row className="justify-content-center">
-                <Col md={6} className="my-4 bg-white">
+                <Col md={7} className="my-4 bg-white">
                   <h1 className="text-center mt-2">
                     how satisfied are you with our plaform performance?
                   </h1>
-                  <ul className="emojis-list-container">
+                  <div className="mt-3 d-flex justify-content-between">
                     {emojis.map((emoji) => (
-                      <li
+                      <div
                         key={emoji.id}
-                        className="list-item-container"
-                        onClick={(e) => giveAvis(emoji.name)}
+                        onClick={(e) => avis(emoji.id)}
+                        className="text-center"
                       >
                         <img
                           src={emoji.imageUrl}
                           alt={emoji.name}
-                          className="emoji"
+                          className={"emoji"}
                         />
                         <p className="emoji-title">{emoji.name}</p>
-                      </li>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </Col>
               </Row>
             </Col>

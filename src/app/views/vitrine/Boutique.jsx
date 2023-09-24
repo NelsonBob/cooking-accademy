@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Rating } from "react-simple-star-rating";
+import { useCart } from "react-use-cart";
 import {
   Card,
   CardImg,
@@ -11,8 +13,7 @@ import {
   Row,
   UncontrolledCarousel,
 } from "reactstrap";
-import { getFile, getListMaterielActif, readFile } from "../../service/frontendService";
-import { useCart } from "react-use-cart";
+import { getFile, getListMaterielActif } from "../../service/frontendService";
 
 function Boutique() {
   const { t } = useTranslation();
@@ -45,6 +46,7 @@ function Boutique() {
           price: row.price,
           imgUrl,
           type: "Materiel",
+          avis: row.avis,
         });
       }
       setTableData(tab);
@@ -111,13 +113,22 @@ function Boutique() {
                         <CardTitle>
                           <h3 className="bold">{row.name}</h3>
                         </CardTitle>
+                        {row.avis > 0 && (
+                          <span className="text-center">
+                            <Rating
+                              initialValue={row.avis}
+                              readonly
+                              size={17}
+                            />
+                          </span>
+                        )}
                         <CardText className="color-footer">
                           €{row.price}
                         </CardText>
                         <button
                           className="btn btn-primary btn-block"
                           type="button"
-                        onClick={() => handleAddToCart(row)}
+                          onClick={() => handleAddToCart(row)}
                         >
                           Ajouter au panier
                         </button>

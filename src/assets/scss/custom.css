@@ -181,21 +181,14 @@ button.btn-by:hover {
     color: black !important;
   }
 }
-.emojis-list-container {
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-  justify-content: space-around;
-  margin-top: 45px;
-}
+
 .emoji {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 }
-.list-item-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+.svg-icon {
+  transition: fill 0.3s; 
+}
+.svg-icon:hover {
+  fill: red;
 }

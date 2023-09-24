@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Rating } from "react-simple-star-rating";
 import { useCart } from "react-use-cart";
 import { Card, CardImg, Col, Container, Row } from "reactstrap";
 import {
   getFile,
   getListInternChef,
-  getListRepasActif
+  getListRepasActif,
 } from "../../service/frontendService";
-
 function Home() {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
@@ -32,6 +32,7 @@ function Home() {
           name: row.name,
           imgUrl,
           type: "Repas",
+          avis: row.avis,
         });
       }
       setTableData(tab);
@@ -59,6 +60,7 @@ function Home() {
   const handleAddToCart = (row) => {
     addItem(row);
   };
+
   return (
     <>
       <div className="header bg-img-home py-7 py-lg-8">
@@ -87,6 +89,11 @@ function Home() {
                   <Col lg={4} key={i}>
                     <Card className="card-food py-3 center-grid">
                       <p className="text-center font-weight-500">{row.name}</p>
+                      {row.avis > 0 && (
+                        <span className="text-center">
+                          <Rating initialValue={row.avis} readonly size={17} />
+                        </span>
+                      )}
                       <p className="text-center"> €{row.price}</p>
                       <div
                         className="center-grid mb-4"

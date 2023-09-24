@@ -1809,3 +1809,31 @@ export const getAuthUser = () => {
 export const deconnect = () => {
   localStorage.clear();
 };
+//like
+export const giveAvis = async (id, idk) => {
+  try {
+    const response = await axios.get(`${baseURL}/v2/paiment/${id}/note/${idk}`);
+    return response.data;
+  } catch (error) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data.errors.message,
+      showConfirmButton: false,
+      timer: 2000,
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+    });
+    throw error.response?.data;
+  }
+};
+export const getAvisExist = async (id) => {
+  try {
+    const response = await axios.get(`${baseURL}/v2/avis/${id}`);
+    return response.data;
+  } catch (error) {}
+};
