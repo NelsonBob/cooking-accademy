@@ -1,0 +1,8 @@
+{
+  "env": {
+    "netlify": true
+  },
+  "rules": {
+    "react-hooks/exhaustive-deps": "off"
+  }
+}
