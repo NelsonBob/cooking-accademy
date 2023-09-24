@@ -49,7 +49,11 @@
   "eslintConfig": {
     "extends": [
       "react-app"
-    ]
+    ],
+    "rules": {
+    "no-console": "off"
+    // Ajoutez d'autres règles ici si nécessaire
+  }
   },
   "browserslist": {
     "production": [
