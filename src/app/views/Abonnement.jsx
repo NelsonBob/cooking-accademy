@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Col, Container, Row, Button } from "reactstrap";
+import { Col, Container, Row, Button, Modal } from "reactstrap";
 import {
   getFile,
   getListOptionAbonnementActif,
   getListServiceAbonnementActif,
-  readFile,
-} from "../../service/frontendService";
+  saveSubscription,
+  getAuthUser,
+} from "../service/frontendService";
 
-function Prix() {
+import Swal from "sweetalert2";
+
+function Abonnement() {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [tableData1, setTableData1] = useState([]);
@@ -47,21 +50,67 @@ function Prix() {
     return idA - idB;
   };
 
+  const handleSubscrib = (idService) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Confiramtion",
+      input: "select",
+      inputOptions: {
+        MOIS: "Mensuelle",
+        AN: "Annuelle",
+      },
+      text: "Voulez-vous souscrire mensuelle ou notre offre annuelle ?",
+      confirmButtonText: "Oui",
+      showCancelButton: true,
+      cancelButtonText: "Non",
+      cancelButtonColor: "#d33",
+
+      showClass: {
+        popup: "animate__animated animate__fadeInDown",
+      },
+      hideClass: {
+        popup: "animate__animated animate__fadeOutUp",
+      },
+      showLoaderOnConfirm: true,
+      preConfirm: async (selected) => {
+        let data = {
+          amount: 9.99,
+          service: idService,
+          typeAbonnement: selected,
+        };
+        console.log(data);
+        const res = await saveSubscription(getAuthUser().id, data);
+        console.log("datadddddd",res);
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Votre abonnement a bien été enregistré.",
+          showConfirmButton: false,
+          timer: 1500,
+          customClass: {
+            popup: "bg-success",
+          },
+        });
+      }
+    });
+  };
+
   return (
     <>
-      <div className="header bg-img-prix py-7 py-lg-8">
-        <div className="separator separator-bottom separator-skew zindex-100">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-            version="1.1"
-            viewBox="0 0 2560 100"
-            x="0"
-            y="0"
-          >
-            <polygon className="fill-default" points="2560 0 2560 100 0 100" />
-          </svg>
-        </div>
+      <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
+        <Container fluid>
+          <div className="header-body">
+            <Row>
+              <Col md={12}></Col>
+              <Col
+                md={12}
+                className="d-flex justify-content-between mt-5"
+              ></Col>
+            </Row>
+          </div>
+        </Container>
       </div>
       <Container className="mt--8 pb-5 position-relative">
         <Row className="justify-content-center bg-white p-4">
@@ -102,7 +151,7 @@ function Prix() {
           {tableData1 && tableData1.length > 0 ? (
             tableData1.map((row, i) => (
               <>
-                <Col md={3} className="d-flex align-items-center">
+                <Col md={3} className="d-flex align-items-center" key={i}>
                   <h3 className="bold">{row.name}</h3>
                 </Col>
                 {row.optionServiceAbonnement.map((row1, inde) => (
@@ -152,9 +201,14 @@ function Prix() {
           {tableData && tableData.length > 0
             ? tableData.map((row, i) => (
                 <Col md={3} key={i} className="center-grid">
-                  {!row.isDefault && (
-                    <Button href="/out/register" color="primary">
-                      S'inscrire
+                  {row.isDefault ? (
+                    ""
+                  ) : (
+                    <Button
+                      color="primary"
+                      onClick={() => handleSubscrib(row.id)}
+                    >
+                      S'abonner
                     </Button>
                   )}
                 </Col>
@@ -166,4 +220,4 @@ function Prix() {
   );
 }
 
-export default Prix;
+export default Abonnement;

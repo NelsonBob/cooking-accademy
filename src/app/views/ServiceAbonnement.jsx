@@ -52,7 +52,7 @@ const ServiceAbonnement = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
-  const [isDefault, setIsDefault] = useState("");
+  const [isDefault, setIsDefault] = useState(false);
   const [idUser, setIsUser] = useState("");
   const [errors, setErrors] = useState({});
   useEffect(() => {
@@ -79,7 +79,7 @@ const ServiceAbonnement = () => {
       setImgContent(null);
       setDescription("");
       setStatus("");
-      setIsDefault("");
+      setIsDefault(false);
       setExampleModal(true);
     }
     setTypeModal(status);
@@ -256,7 +256,7 @@ const ServiceAbonnement = () => {
       setName("");
       setDescription("");
       setStatus("");
-      setIsDefault("");
+      setIsDefault(false);
       setImgPath("");
       setImgPathLast([]);
       setImgContent(null);

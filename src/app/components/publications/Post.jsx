@@ -72,7 +72,7 @@ const Post = (props) => {
               <span className="btn-inner--icon">
                 <i className="ni ni-curved-next" />
               </span>
-              <span className="btn-inner--text">Partager</span>
+              <span className="btn-inner--text">Republier</span>
             </Button>
           </Col>
         </Row>

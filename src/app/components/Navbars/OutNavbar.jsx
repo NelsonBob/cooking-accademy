@@ -70,7 +70,7 @@ const OutNavbar = () => {
                   el.path != "/reservation" &&
                   el.path != "/order" &&
                   ((JSON.parse(localStorage.getItem("auth"))?.userid &&
-                    el.path != "/login") ||
+                  el.path != "/price" &&  el.path != "/login") ||
                     (!JSON.parse(localStorage.getItem("auth"))?.userid &&
                       el.path != "/index" &&
                       el.layout != "in")) && (

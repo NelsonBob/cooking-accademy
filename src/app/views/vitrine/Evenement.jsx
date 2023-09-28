@@ -1,13 +1,16 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, CardImg, CardText, Col, Container, Row } from "reactstrap";
-import { getFile, getListEventAll, readFile } from "../../service/frontendService";
-import moment from "moment";
+import { Button, Col, Container, Row } from "reactstrap";
+import {
+  getAuthUser,
+  getListEventAll,
+  listEventFutur,
+} from "../../service/frontendService";
 
 function Evenement() {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
-  const [imageUrls, setImageUrls] = useState({});
 
   useEffect(() => {
     getList();
@@ -16,17 +19,15 @@ function Evenement() {
   const getList = async () => {
     setTableData([]);
     try {
-      const res = await getListEventAll();
-      const urls = {};
-      for (const row of res) {
-        const imgUrl = await getFile(row.imgPath);
-        urls[row.id] = imgUrl;
+      if (localStorage.getItem("auth") !== null) {
+        const res = await listEventFutur(getAuthUser().id);
+        setTableData(res);
+      } else {
+        const res = await getListEventAll();
+        setTableData(res);
       }
-      setImageUrls(urls);
-      setTableData(res);
     } catch (error) {}
   };
-
 
   const depart = (dat) => {
     return moment(dat).format("LL");
@@ -60,42 +61,39 @@ function Evenement() {
             <Row className="row-grid">
               {tableData && tableData.length > 0 ? (
                 tableData.map(
-                  (row, i) =>
+                  (row, index) =>
                     new Date(row.end) > new Date() && (
-                      <Col
-                        lg={4}
-                        className="mt-3"
-                        key={i}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <Card>
-                          <CardImg
-                            alt="..."
-                            src={imageUrls[row.id]}
-                            top
-                            height={300}
-                            className="centered-and-covered-img "
-                          />
-                          <div className="p-3">
-                            <CardText>{row.title}</CardText>
-                            <p>
-                              {depart(row.start) + " de "}{" "}
-                              <span className="text-muted">
-                                {" "}
-                                {debutfin(row.start) +
-                                  " to " +
-                                  debutfin(row.end)}
-                              </span>
-                            </p>
-                          </div>
-                        </Card>
+                      <Col className="list-group" key={index}>
+                        <div
+                          md={3}
+                          className="list-group-item list-group-item-action "
+                        >
+                          {row.title}
+                          <br />
+                          Description : {row.description}
+                          <br />
+                          Date : {moment(row.start).format("LL")}
+                          <br />
+                          Heure :{" "}
+                          {moment(row.start).format("LT") +
+                            " - " +
+                            moment(row.end).format("LT")}
+                          <br />
+                          {JSON.parse(localStorage.getItem("auth"))?.userid && (
+                            <Button
+                              className="mt-2"
+                              color={row.isRegister ? "danger" : "primary"}
+                              onClick={() => suivre(row.id)}
+                            >
+                              {row.isRegister ? "Desinscrire" : "Participer"}
+                            </Button>
+                          )}
+                        </div>
                       </Col>
                     )
                 )
               ) : (
-                <Col lg={12}>
-                  <h2 className="text-center">Aucun evenement trouvé</h2>
-                </Col>
+                <h2 className="text-center">Aucun evenement trouvé</h2>
               )}
             </Row>
           </Col>

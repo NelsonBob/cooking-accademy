@@ -202,7 +202,7 @@ const Profile = () => {
 
               <CardBody className="pt-0 pt-md-7">
                 <Row>
-                  <div className="col">
+                  {/* <div className="col">
                     <div className="card-profile-stats d-flex justify-content-center mt-md-4">
                       <div>
                         <span className="heading">22</span>
@@ -213,7 +213,7 @@ const Profile = () => {
                         <span className="description">Comments</span>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </Row>
                 <div className="text-center">
                   <h3>{JSON.parse(localStorage.getItem("auth"))?.userName}</h3>

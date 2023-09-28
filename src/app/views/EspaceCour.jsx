@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
 import ChatRoom from "../components/Chat/ChatRoom";
-import { getCourById, getFile, readFile } from "../service/frontendService";
+import { getCourById, getFile } from "../service/frontendService";
 
 const EspaceCour = () => {
   const idCour = localStorage.getItem("idcour");
@@ -17,12 +17,25 @@ const EspaceCour = () => {
     try {
       let id = JSON.parse(localStorage.getItem("auth"))?.userid;
       const res = await getCourById(id, idCour);
+
       if (res.isVideoLocal) {
         const videoUrl = await getFile(res.videoLink);
         setVideoUrl(videoUrl);
       } else {
         setVideoUrl(res.videoLink);
       }
+      let courArray = JSON.parse(localStorage.getItem("cours"))?.cours
+        .courArray;
+      if (!courArray) courArray = [];
+      courArray.push(res.id);
+
+      courArray = [...new Set(courArray)];
+      let cours = {
+        courArray,
+        user: id,
+        canFollow: true,
+      };
+      localStorage.setItem("cours", JSON.stringify({ cours: cours }));
       setCour(res);
     } catch (error) {}
   };

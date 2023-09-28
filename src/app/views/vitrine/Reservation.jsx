@@ -285,9 +285,12 @@ const Reservation = () => {
                   md={6}
                   className="my-4 d-flex justify-content-end align-items-baseline"
                 >
-                  <Button color="primary" onClick={() => handleReserve()}>
-                    {reserve ? "Retour" : "Réserver maintenant"}
-                  </Button>{" "}
+                  {JSON.parse(localStorage.getItem("auth"))?.token.role !=
+                    "Client" && (
+                    <Button color="primary" onClick={() => handleReserve()}>
+                      {reserve ? "Retour" : "Réserver maintenant"}
+                    </Button>
+                  )}{" "}
                 </Col>
                 {!reserve ? (
                   <>

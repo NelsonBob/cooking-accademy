@@ -300,8 +300,7 @@ const Event = () => {
           event.status == "Pending"
         ) {
           let tit = event.typeEventEnum == "Meeting" ? "Event" : "Reservation";
-          let des =`<strong>Description:</strong> ${event.description}<br/><br/>`;
-             
+          let des = `<strong>Description:</strong> ${event.description}<br/><br/>`;
 
           Swal.fire({
             html: `<h2>Confirm ${tit} at ${event.title} </h2> 
@@ -411,31 +410,33 @@ const Event = () => {
           timer: 2000,
         });
       } else {
-        const now = new Date();
-        const formattedStartTime = moment(start).format("LT");
-        const formattedEndTime = moment(end).format("LT");
-        const formattedDay = moment(start).format("LL");
-        if (start <= now) {
-          Swal.fire({
-            html: `
+        if (JSON.parse(localStorage.getItem("auth"))?.token.role != "Client") {
+          const now = new Date();
+          const formattedStartTime = moment(start).format("LT");
+          const formattedEndTime = moment(end).format("LT");
+          const formattedDay = moment(start).format("LL");
+          if (start <= now) {
+            Swal.fire({
+              html: `
               <p>
                 You cannot create an event in the past. Please choose a future time.
               </p>
             `,
-            showConfirmButton: false,
-            customClass: {
-              popup: "bg-danger text-white",
-            },
-            timer: 2000,
-          });
-          return;
-        } else {
-          setModalVisible(true);
-          setStart1(start);
-          setEnd1(end);
-          setFormattedDay1(formattedDay);
-          setFormattedStartTime1(formattedStartTime);
-          setFormattedEndTime1(formattedEndTime);
+              showConfirmButton: false,
+              customClass: {
+                popup: "bg-danger text-white",
+              },
+              timer: 2000,
+            });
+            return;
+          } else {
+            setModalVisible(true);
+            setStart1(start);
+            setEnd1(end);
+            setFormattedDay1(formattedDay);
+            setFormattedStartTime1(formattedStartTime);
+            setFormattedEndTime1(formattedEndTime);
+          }
         }
       }
     },

@@ -54,7 +54,7 @@ export const updatePicture = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -71,7 +71,7 @@ export const listUser = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -89,7 +89,7 @@ export const updateProfilIntern = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -106,7 +106,7 @@ export const getListIntern = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -141,7 +141,7 @@ export const getListLivreurs = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -170,7 +170,7 @@ export const getInternById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -199,7 +199,7 @@ export const createIntern = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -216,7 +216,7 @@ export const updateIntern = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -235,7 +235,7 @@ export const updateProfilClient = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -252,7 +252,7 @@ export const getListClient = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -283,7 +283,7 @@ export const getListServiceAbonnement = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -321,7 +321,7 @@ export const getServiceAbonnementById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -354,7 +354,7 @@ export const createServiceAbonnement = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -388,7 +388,7 @@ export const updateServiceAbonnement = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -421,7 +421,7 @@ export const removeServiceAbonnementById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -453,7 +453,7 @@ export const getListOptionAbonnement = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -492,7 +492,7 @@ export const getOptionAbonnementById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -525,7 +525,7 @@ export const createOptionAbonnement = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -546,7 +546,7 @@ export const updateOptionAbonnement = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -566,7 +566,7 @@ export const removeOptionAbonnementById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -597,7 +597,7 @@ export const getListCategorieMateriel = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -629,7 +629,7 @@ export const getCategorieMaterielById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -662,7 +662,7 @@ export const createCategorieMateriel = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -683,7 +683,7 @@ export const updateCategorieMateriel = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -703,7 +703,7 @@ export const removeCategorieMaterielById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -734,7 +734,7 @@ export const getListCour = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -769,7 +769,7 @@ export const getLast3Cours = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
   }
@@ -785,7 +785,7 @@ export const getCourById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -817,7 +817,7 @@ export const getUserMessageCourById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -846,7 +846,7 @@ export const createCour = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -863,7 +863,7 @@ export const updateCour = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -880,7 +880,7 @@ export const removeCourById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -911,7 +911,7 @@ export const getListSalle = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -952,7 +952,7 @@ export const createSalle = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -969,7 +969,7 @@ export const updateSalle = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -986,7 +986,7 @@ export const removeSalleById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1017,7 +1017,7 @@ export const getListRepas = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1052,7 +1052,7 @@ export const getRepasById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1081,7 +1081,7 @@ export const createRepas = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1098,7 +1098,7 @@ export const updateRepas = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1115,7 +1115,7 @@ export const removeRepasById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1146,7 +1146,7 @@ export const getListMateriel = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1181,7 +1181,7 @@ export const getMaterielById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1210,7 +1210,7 @@ export const createMateriel = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1227,7 +1227,7 @@ export const updateMateriel = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1247,7 +1247,7 @@ export const removeMaterielById = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     Swal.fire({
@@ -1277,7 +1277,7 @@ export const UploadFile = async (data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1292,7 +1292,7 @@ export const readFile = async (fileName) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1313,7 +1313,7 @@ export const UpdateFile = async (fileName, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1331,7 +1331,7 @@ export const removeFile = async (fileName) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1345,7 +1345,7 @@ export const getFile = async (url) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     console.error("Error displaying file:", error);
@@ -1367,7 +1367,7 @@ export const checkpaiementStripe = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1389,7 +1389,7 @@ export const assignLivreurPayment = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1411,7 +1411,7 @@ export const confirmLivraisonPayment = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1433,7 +1433,7 @@ export const generateReceipt = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1450,7 +1450,7 @@ export const getListPayment = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1467,7 +1467,7 @@ export const getByPaymentId = async (id, idk) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1483,7 +1483,7 @@ export const getListEvent = async (data, id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1506,7 +1506,7 @@ export const createEventReservation = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1523,7 +1523,7 @@ export const createEventWithUserReservation = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1540,7 +1540,7 @@ export const listEvent = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1557,7 +1557,7 @@ export const listEventFutur = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1577,7 +1577,7 @@ export const infoEvent = async (id, idk) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1597,7 +1597,7 @@ export const removeEvent = async (id, dat) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1614,7 +1614,7 @@ export const removeEvenement = async (id, dat) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1631,7 +1631,7 @@ export const updateEvent = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1649,7 +1649,7 @@ export const listEventUsers = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1666,7 +1666,7 @@ export const updateEventUsers = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1683,7 +1683,7 @@ export const checkEventUser = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1701,7 +1701,7 @@ export const addPost = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1730,7 +1730,7 @@ export const addComment = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1747,7 +1747,7 @@ export const sharePost = async (id, data) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1764,7 +1764,7 @@ export const loadPost = async (id) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1783,7 +1783,7 @@ export const checkLike = async (id, idk) => {
   } catch (error) {
     if (
       error.response?.status === 500 &&
-      error.response?.message.includes("jwt")
+      error.response?.data.message.includes("JWT expired")
     )
       return deconnect();
     throw error.response?.data;
@@ -1836,4 +1836,22 @@ export const getAvisExist = async (id) => {
     const response = await axios.get(`${baseURL}/v2/avis/${id}`);
     return response.data;
   } catch (error) {}
+};
+
+export const saveSubscription = async (id, data) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.post(`${baseURL}/payment/abonnement/${id}`, data, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.data.message.includes("JWT expired")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
 };

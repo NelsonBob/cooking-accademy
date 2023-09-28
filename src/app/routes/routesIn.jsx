@@ -14,6 +14,7 @@ import Paiement from "../views/Paiement";
 import Event from "../views/Event";
 import EspaceCour from "../views/EspaceCour";
 import MessageCour from "../views/MessageCour";
+import Abonnement from "../views/Abonnement";
 
 var routes = [
   {
@@ -162,6 +163,16 @@ var routes = [
     sidebar: true,
     postion: 7,
     role: ["Admin", "Gestionnaire"],
+  },
+  {
+    path: "/abonnement",
+    name: "Mes abonnements",
+    icon: "ni ni-tv-2",
+    component: <Abonnement />,
+    layout: "/in",
+    sidebar: true,
+    postion: 1,
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
   },
 ];
 export default routes;

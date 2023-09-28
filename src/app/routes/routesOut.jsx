@@ -110,14 +110,6 @@ var routesOut = [
     icon: "fa fa-shopping-cart text-warning",
     layout: "/out",
     role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
-  },
-  {
-    path: "/avis/:id",
-    name: "Menu.register",
-    class: "nav-link-icon",
-    component: <Register />,
-    layout: "/out",
-    role: ["Admin", "Gestionnaire", "Livreur", "Formateur", "Chefs"],
-  },
+  }
 ];
 export default routesOut;
