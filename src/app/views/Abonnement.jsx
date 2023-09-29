@@ -1,26 +1,69 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Col, Container, Row, Button, Modal } from "reactstrap";
+import { Button, Col, Container, Modal, Row } from "reactstrap";
+import Swal from "sweetalert2";
 import {
+  checkpaiementStripe,
+  getAuthUser,
+  getByIdUser,
   getFile,
   getListOptionAbonnementActif,
   getListServiceAbonnementActif,
   saveSubscription,
-  getAuthUser,
 } from "../service/frontendService";
+import CheckoutForm from "./CheckoutForm";
 
-import Swal from "sweetalert2";
-
-function Abonnement() {
+const Abonnement = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [tableData1, setTableData1] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
-
+  const [idservice, setIdservice] = useState("");
+  const [nomService, setNomService] = useState("");
+  const [montant, setMontant] = useState(0.0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [offre, setOffre] = useState("");
+  const stripePromise = loadStripe(
+    "pk_test_51NnKDQGdfs9w59yh0SXgMNpJHgtzNmzUVqcYDob1bkx0IZh7h5xVEcYedRIHsRaVzjyRDcn93kbjvMBzXxTrL4t500UIKjkZA0"
+  );
+  const [clientSecret, setClientSecret] = useState("");
+  const appearance = {
+    theme: "stripe",
+    variables: {
+      colorPrimary: "#fb6340",
+    },
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
   useEffect(() => {
     getList();
     getListService();
   }, []);
+  const handleValidateOder = async (total) => {
+    try {
+      const data = { amount: total };
+      const response = await checkpaiementStripe(
+        JSON.parse(localStorage.getItem("auth"))?.userid,
+        data
+      );
+      if (response) {
+        setClientSecret(response.clientSecret);
+      }
+    } catch (error) {}
+  };
+
   const getList = async () => {
     setTableData([]);
     try {
@@ -49,17 +92,20 @@ function Abonnement() {
 
     return idA - idB;
   };
-
-  const handleSubscrib = (idService) => {
+  const handleClose = () => setIsOpen(!isOpen);
+  const handleSubscrib = (idService, name) => {
     Swal.fire({
       icon: "warning",
       title: "Confiramtion",
       input: "select",
       inputOptions: {
-        MOIS: "Mensuelle",
-        AN: "Annuelle",
+        MOIS: "Mensuelle ( 9.9€ )",
+        AN: "Annuelle ( 19€ )",
       },
-      text: "Voulez-vous souscrire mensuelle ou notre offre annuelle ?",
+      text:
+        "Voulez-vous souscrire mensuellement ou annuellement à notre offre " +
+        name +
+        " ?",
       confirmButtonText: "Oui",
       showCancelButton: true,
       cancelButtonText: "Non",
@@ -73,28 +119,70 @@ function Abonnement() {
       },
       showLoaderOnConfirm: true,
       preConfirm: async (selected) => {
-        let data = {
-          amount: 9.99,
-          service: idService,
-          typeAbonnement: selected,
-        };
-        console.log(data);
-        const res = await saveSubscription(getAuthUser().id, data);
-        console.log("datadddddd",res);
+        setOffre(selected);
+        setIdservice(idService);
+        let amount = 0.0;
+        if (name.includes("Starter")) {
+          if (selected.includes("MOIS")) amount = 9.9;
+          else amount = 113;
+        } else if (name.includes("Master")) {
+          if (selected.includes("MOIS")) amount = 19;
+          else amount = 220;
+        }
+        setMontant(amount);
+        setNomService(name);
+        const resthan = handleValidateOder(amount);
+        if (resthan) setIsOpen(true);
       },
       allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Votre abonnement a bien été enregistré.",
-          showConfirmButton: false,
-          timer: 1500,
-          customClass: {
-            popup: "bg-success",
-          },
-        });
-      }
     });
+  };
+  const clearCartclick = () => {};
+  const validateForm = () => {
+    return true;
+  };
+  const handleSubmitPaiment = async () => {
+    let data = {
+      amount: montant,
+      service: idservice,
+      typeAbonnement: offre,
+    };
+    let result = await saveSubscription(getAuthUser().id, data);
+    handleClose();
+    Swal.fire({
+      text: result,
+      showConfirmButton: false,
+      customClass: {
+        popup: "bg-success",
+      },
+      timer: 2000,
+    });
+    let u = await getByIdUser(getAuthUser().id);
+    let userinfo = JSON.parse(localStorage.getItem("auth"));
+    
+    localStorage.setItem(
+      "auth",
+      JSON.stringify({
+        status: userinfo.status,
+        fonction: userinfo.fonction,
+        userName: userinfo.userName,
+        userToken: userinfo.userToken,
+        userid: userinfo.userid,
+        token: {
+          adress: userinfo.token.adress,
+          exp: userinfo.token.exp,
+          iat: userinfo.token.iat,
+          id: userinfo.token.id,
+          name: userinfo.token.name,
+          picture: userinfo.token.picture,
+          role: userinfo.token.role,
+          sub: userinfo.token.sub,
+          subscription: u.serviceAbonnement,
+        },
+      })
+    );
+    getList();
+    getListService();
   };
 
   return (
@@ -103,17 +191,18 @@ function Abonnement() {
         <Container fluid>
           <div className="header-body">
             <Row>
-              <Col md={12}></Col>
-              <Col
-                md={12}
-                className="d-flex justify-content-between mt-5"
-              ></Col>
+              <Col md={12}>
+              <h5 className="text-uppercase text-white mb-0">
+                  Liste des offres
+                </h5>
+              </Col>
+             
             </Row>
           </div>
         </Container>
       </div>
-      <Container className="mt--8 pb-5 position-relative">
-        <Row className="justify-content-center bg-white p-4">
+      <Container className="mt--7" fluid>
+        <Row className="row-grid p-4">
           <Col xs={12}>
             <Row className="justify-content-center bg-white pt-4 align-items-center">
               <Col md={3}>
@@ -201,12 +290,13 @@ function Abonnement() {
           {tableData && tableData.length > 0
             ? tableData.map((row, i) => (
                 <Col md={3} key={i} className="center-grid">
-                  {row.isDefault ? (
+                  {row.isDefault ||
+                  getAuthUser().subscription.name.includes(row.name) ? (
                     ""
                   ) : (
                     <Button
                       color="primary"
-                      onClick={() => handleSubscrib(row.id)}
+                      onClick={() => handleSubscrib(row.id, row.name)}
                     >
                       S'abonner
                     </Button>
@@ -216,8 +306,66 @@ function Abonnement() {
             : ""}
         </Row>
       </Container>
+
+      <Modal
+        className="modal-dialog-centered"
+        isOpen={isOpen}
+        toggle={handleClose}
+      >
+        <div className="modal-header">
+          <h5 className="modal-title">Abonnement</h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={handleClose}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <TableContainer>
+            <Table>
+              <TableHead className="bg-white">
+                <TableRow>
+                  <TableCell>
+                    <h3>Produit</h3>
+                  </TableCell>
+                  <TableCell style={{ textAlign: "end" }}>
+                    <h3>Sous-total</h3>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Offre {nomService}</TableCell>
+                  <TableCell style={{ textAlign: "end" }}>{montant}€</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2} className="my-3">
+                    {clientSecret ? (
+                      <Elements options={options} stripe={stripePromise}>
+                        <CheckoutForm
+                          clearCartclick={() => clearCartclick()}
+                          validateForm={() => validateForm()}
+                          handleSubmitPaiment={() => handleSubmitPaiment()}
+                        />
+                      </Elements>
+                    ) : (
+                      <div className="spinner-grow text-warning" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    )}{" "}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </Modal>
     </>
   );
-}
+};
 
 export default Abonnement;

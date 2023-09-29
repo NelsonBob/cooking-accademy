@@ -167,7 +167,9 @@ const Dashboard = (props) => {
 
   return (
     <>
-      <Header />
+      {getAuthUser().role == "Client" ? <Header />:
+       <div className="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+       <Container fluid></Container></div>}
       <Container className="mt--7" fluid>
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">

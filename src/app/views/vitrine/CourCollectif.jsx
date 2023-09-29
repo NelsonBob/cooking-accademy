@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, CardImg, CardText, Col, Container, Row } from "reactstrap";
-import { getFile, getListCourActif, readFile } from "../../service/frontendService";
+import { Button, Card, CardImg, CardText, Col, Container, Modal, Row } from "reactstrap";
+import {
+  getFile,
+  getListCourActif,
+  readFile,
+} from "../../service/frontendService";
 
 const CourCollectif = () => {
   const { t } = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
+  const [name, setName] = useState("");
+  const [contentCour, setContentCour] = useState("");
+  const [description, setDescription] = useState(null);
+  const [videoModal, setVideoModal] = useState(false);
 
   useEffect(() => {
     getList();
   }, []);
-
+  useEffect(() => {}, [videoModal]);
+  const handleClose = () => setVideoModal(!videoModal);
   const getList = async () => {
     setTableData([]);
     try {
@@ -25,7 +34,12 @@ const CourCollectif = () => {
       setTableData(res);
     } catch (error) {}
   };
-
+  const previewVideo = async (title, content, desc) => {
+    setName(title);
+    setContentCour(content);
+    setDescription(desc);
+    setVideoModal(true);
+  };
   return (
     <>
       <div className="header bg-img-party py-7 py-lg-8">
@@ -51,7 +65,14 @@ const CourCollectif = () => {
             <Row className="row-grid">
               {tableData && tableData.length > 0 ? (
                 tableData.map((row, i) => (
-                  <Col lg={4} key={i} style={{ cursor: "pointer" }}>
+                  <Col
+                    lg={4}
+                    key={i}
+                    onClick={() =>
+                      previewVideo(row.name, row.contentCour, row.description)
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
                     <Card>
                       <CardImg
                         alt="..."
@@ -73,6 +94,40 @@ const CourCollectif = () => {
               )}
             </Row>
           </Col>
+          <Modal
+            className="modal-dialog-centered"
+            isOpen={videoModal}
+            toggle={handleClose}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title">{name} </h5>
+              <button
+                aria-label="Close"
+                className="close"
+                data-dismiss="modal"
+                type="button"
+                onClick={handleClose}
+              >
+                <span aria-hidden={true}>×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <h3 className="mb-2">Descritpion</h3>
+              <p>{description}</p>
+              <h3 className="mt-4 mb-2">Contenu</h3>
+              <p>{contentCour}</p>
+            </div>
+            <div className="modal-footer">
+              <Button
+                color="secondary"
+                data-dismiss="modal"
+                type="button"
+                onClick={handleClose}
+              >
+                Close
+              </Button>
+            </div>
+          </Modal>
         </Row>
       </Container>
     </>

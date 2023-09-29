@@ -13,7 +13,12 @@ import {
   Row,
   UncontrolledCarousel,
 } from "reactstrap";
-import { getFile, getListMaterielActif } from "../../service/frontendService";
+import {
+  getAuthUser,
+  getFile,
+  getListMaterielActif,
+} from "../../service/frontendService";
+import Swal from "sweetalert2";
 
 function Boutique() {
   const { t } = useTranslation();
@@ -65,7 +70,36 @@ function Boutique() {
     setVideoModal(true);
   };
   const handleAddToCart = (row) => {
-    addItem(row);
+    if (
+      getAuthUser().role != "Client" ||
+      (getAuthUser().role == "Client" &&
+        !getAuthUser()?.subscription?.name.includes("Free"))
+    )
+      addItem(row);
+    else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Veuillez mettre à jour niveau votre abonnement pour effectuer l'action",
+        confirmButtonText: "Mettre à niveau",
+        showCancelButton: true,
+        cancelButtonText: "Annulé",
+        cancelButtonColor: "#d33",
+
+        showClass: {
+          popup: "animate__animated animate__fadeInDown",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (localStorage.getItem("auth") != null)
+            window.location.href = "/in/abonnement";
+          else window.location.href = "/out/register";
+        }
+      });
+    }
   };
   return (
     <>

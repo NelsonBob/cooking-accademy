@@ -29,7 +29,7 @@ const Post = (props) => {
         </div>
 
         <Row className="mt-2">
-          <Col lg="6" xl="4">
+          <Col xs="4" xl="4">
             <Button
               className="btn-icon btn-3"
               color={props.post.isLikes ? "primary" : "secondary"}
@@ -45,7 +45,7 @@ const Post = (props) => {
               </span>
             </Button>
           </Col>
-          <Col lg="6" xl="4">
+          <Col xs="4" xl="4">
             <Button
               className="btn-icon btn-3"
               color="secondary"
@@ -61,7 +61,7 @@ const Post = (props) => {
               </span>
             </Button>
           </Col>
-          <Col lg="6" xl="4">
+          <Col xs="4" xl="4">
             <Button
               className="btn-icon btn-3"
               color="secondary"

@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 import moment from "moment";
 import {
   createEventWithUserReservation,
+  getAuthUser,
   infoEvent,
   listEvent,
   listEventUsers,
@@ -410,7 +411,11 @@ const Event = () => {
           timer: 2000,
         });
       } else {
-        if (JSON.parse(localStorage.getItem("auth"))?.token.role != "Client") {
+        if (
+          JSON.parse(localStorage.getItem("auth"))?.token.role != "Client" ||
+          (getAuthUser()?.role == "Client" &&
+            !getAuthUser()?.subscription?.name.includes("Free"))
+        ) {
           const now = new Date();
           const formattedStartTime = moment(start).format("LT");
           const formattedEndTime = moment(end).format("LT");

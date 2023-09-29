@@ -15,7 +15,8 @@ import {
   Modal,
   Row,
 } from "reactstrap";
-import { getFile, getListCourActif } from "../../service/frontendService";
+import { checkPermissionCour, getAuthUser, getFile, getListCourActif } from "../../service/frontendService";
+import Swal from "sweetalert2";
 
 const CourClient = () => {
   const [tableData, setTableData] = useState([]);
@@ -98,10 +99,34 @@ const CourClient = () => {
     setTypeAction(typeActi);
   };
 
-  const handleVisualiser = () => {
-    localStorage.setItem("idcour", idcour);
+  const handleVisualiser = async () => {
+    let res = await checkPermissionCour(getAuthUser().id, idcour);
     handleClose();
-    return navigate("/in/lesson");
+    if (res) {
+      localStorage.setItem("idcour", idcour);
+      return navigate("/in/lesson");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Vous avez atteint le nombre cours quotidien, pour suivre ce cours, passer à l'offre supérieur.",
+        confirmButtonText: "Mettre à niveau",
+        showCancelButton: true,
+        cancelButtonText: "Annulé",
+        cancelButtonColor: "#d33",
+
+        showClass: {
+          popup: "animate__animated animate__fadeInDown",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/in/abonnement";
+        }
+      });
+    }
   };
   return (
     <>

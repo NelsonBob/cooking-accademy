@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Col,
-  Container,
-  Row
-} from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import {
   getAuthUser,
   getFile,
@@ -16,12 +12,13 @@ const Header = () => {
 
   const getLastCour = async () => {
     let res = await getLast3Cours(getAuthUser().id);
+    if (res) {
+      for (const element of res) {
+        element.imgPath = await getFile(element.imgPath);
+      }
 
-    for (const element of res) {
-      element.imgPath = await getFile(element.imgPath);
+      setLessons(res);
     }
-
-    setLessons(res);
   };
 
   useEffect(() => {
@@ -37,7 +34,7 @@ const Header = () => {
             <Row>
               {lessons && lessons.length > 0 ? (
                 lessons.map((element, index) => (
-                  <Col lg="6" xl="4" key={index}>
+                  <Col xs="12" md="4" className="mt-2" key={index}>
                     <CourItem lesson={element} />
                   </Col>
                 ))

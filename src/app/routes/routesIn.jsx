@@ -162,7 +162,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 7,
-    role: ["Admin", "Gestionnaire"],
+    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
   },
   {
     path: "/abonnement",
@@ -172,7 +172,7 @@ var routes = [
     layout: "/in",
     sidebar: true,
     postion: 1,
-    role: ["Admin", "Gestionnaire", "Client", "Livreur", "Formateur", "Chefs"],
+    role: ["Client"],
   },
 ];
 export default routes;

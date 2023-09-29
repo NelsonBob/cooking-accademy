@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
 import ChatRoom from "../components/Chat/ChatRoom";
-import { getCourById, getFile } from "../service/frontendService";
+import { getAuthUser, getCourById, getFile } from "../service/frontendService";
 
 const EspaceCour = () => {
   const idCour = localStorage.getItem("idcour");
@@ -10,6 +10,7 @@ const EspaceCour = () => {
 
   useEffect(() => {
     getCour();
+    console.log("ttttttttttt  ", getAuthUser()?.subscription.name);
   }, []);
 
   useEffect(() => {}, [cour]);
@@ -56,18 +57,20 @@ const EspaceCour = () => {
                 <h5 className="text-uppercase text-white mb-0">{cour.name}</h5>
               </Col>
               <Col md={6} xs={12} className="d-flex justify-content-end">
-                <Button
-                  color="success"
-                  type="button"
-                  className="rounded-pill p-2"
-                  onClick={scrollToBottom}
-                >
-                  <i
-                    className="fa fa-comment"
-                    aria-hidden="true"
-                    style={{ fontSize: "x-large" }}
-                  ></i>
-                </Button>
+                {!getAuthUser()?.subscription?.name.includes("Free") && (
+                  <Button
+                    color="success"
+                    type="button"
+                    className="rounded-pill p-2"
+                    onClick={scrollToBottom}
+                  >
+                    <i
+                      className="fa fa-comment"
+                      aria-hidden="true"
+                      style={{ fontSize: "x-large" }}
+                    ></i>
+                  </Button>
+                )}
               </Col>
             </Row>
           </div>
@@ -107,14 +110,15 @@ const EspaceCour = () => {
               )}
             </Row>
           </Col>
-          {cour &&
+          {((cour &&
             cour.creator &&
             cour.creator.id !=
-              JSON.parse(localStorage.getItem("auth"))?.userid && (
-              <Col md={12}>
-                <ChatRoom receivername={cour.creator.name} idcour={idCour} />
-              </Col>
-            )}
+              JSON.parse(localStorage.getItem("auth"))?.userid) ||
+            (cour && !getAuthUser()?.subscription?.name.includes("Free"))) && (
+            <Col md={12}>
+              <ChatRoom receivername={cour.creator?.name} idcour={idCour} />
+            </Col>
+          )}
         </Row>
       </Container>
     </>

@@ -27,6 +27,7 @@ import Swal from "sweetalert2";
 import {
   assignLivreurPayment,
   confirmLivraisonPayment,
+  getAuthUser,
   getListLivreurs,
   getListPayment,
   readFile,
@@ -102,13 +103,15 @@ const Paiement = () => {
     } catch (error) {}
   };
   const getListLivreur = async () => {
-    setTableDataLivreur([]);
-    try {
-      let id = JSON.parse(localStorage.getItem("auth"))?.userid;
-      const res = await getListLivreurs(id);
+    if (getAuthUser().role != "Client") {
+      setTableDataLivreur([]);
+      try {
+        let id = JSON.parse(localStorage.getItem("auth"))?.userid;
+        const res = await getListLivreurs(id);
 
-      setTableDataLivreur(res);
-    } catch (error) {}
+        setTableDataLivreur(res);
+      } catch (error) {}
+    }
   };
   const handleChangePage = (event, newpage) => {
     setpg(newpage);
@@ -326,9 +329,9 @@ const Paiement = () => {
                               )}
                             </TableCell>
                             <TableCell>
-                              {(JSON.parse(localStorage.getItem("auth"))?.token
+                              {JSON.parse(localStorage.getItem("auth"))?.token
                                 .role == "Admin" &&
-                                !row.livreur) && (
+                                !row.livreur && (
                                   <Button
                                     variant="contained"
                                     color="info"

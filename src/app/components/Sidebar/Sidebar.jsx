@@ -33,7 +33,7 @@ const Sidebar = (props) => {
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes, postion = 1) => {
     return routes.map((prop, key) => {
-      let autorization = prop.role.includes(
+      let autorization = prop?.role.includes(
         JSON.parse(localStorage.getItem("auth"))?.token.role
       );
       if (prop.sidebar && prop.postion == postion && autorization)
@@ -55,7 +55,7 @@ const Sidebar = (props) => {
     if (localStorage.getItem("auth") === null) return navigate("/out/index");
     let present = false;
     routes.map((prop, key) => {
-      let autorization = prop.role.includes(
+      let autorization = prop?.role.includes(
         JSON.parse(localStorage.getItem("auth"))?.token.role
       );
       if (prop.postion == postion && autorization) present = true;

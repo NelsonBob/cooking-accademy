@@ -77,6 +77,23 @@ export const listUser = async (id) => {
     throw error.response?.data;
   }
 };
+export const getByIdUser = async (id) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/user/id/${id}`, {
+      headers: { Authorization: `Bearer ${userToken.userToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.data.message.includes("JWT expired")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
+};
 // intern
 export const updateProfilIntern = async (id, data) => {
   try {
@@ -1799,10 +1816,7 @@ export const getAuthUser = () => {
     picture: JSON.parse(localStorage.getItem("auth"))?.token.picture,
     role: JSON.parse(localStorage.getItem("auth"))?.token.role,
     sub: JSON.parse(localStorage.getItem("auth"))?.token.sub,
-    subscription: {
-      name: "free",
-      canFollow: true,
-    },
+    subscription: JSON.parse(localStorage.getItem("auth"))?.token.subscription,
   };
   return user;
 };
@@ -1842,7 +1856,29 @@ export const saveSubscription = async (id, data) => {
   try {
     const tokenString = localStorage.getItem("auth");
     const userToken = JSON.parse(tokenString);
-    const response = await axios.post(`${baseURL}/payment/abonnement/${id}`, data, {
+    const response = await axios.post(
+      `${baseURL}/payment/abonnement/${id}`,
+      data,
+      {
+        headers: { Authorization: `Bearer ${userToken.userToken}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (
+      error.response?.status === 500 &&
+      error.response?.data.message.includes("JWT expired")
+    )
+      return deconnect();
+    throw error.response?.data;
+  }
+};
+
+export const checkPermissionCour = async (id, idk) => {
+  try {
+    const tokenString = localStorage.getItem("auth");
+    const userToken = JSON.parse(tokenString);
+    const response = await axios.get(`${baseURL}/cour/${id}/cour/${idk}`, {
       headers: { Authorization: `Bearer ${userToken.userToken}` },
     });
     return response.data;
